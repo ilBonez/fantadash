@@ -1,6 +1,7 @@
 import { dec, int, pct } from '../lib/format'
 import { useLeague } from '../lib/useLeague'
 import { useAuction } from '../store/useAuction'
+import type { Utente } from '../lib/utente'
 import { Bar } from './ui'
 
 export type Tab = 'asta' | 'piani' | 'squadre' | 'stats' | 'setup'
@@ -13,7 +14,15 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'setup', label: 'Impostazioni' },
 ]
 
-export default function Header({ tab, onTab }: { tab: Tab; onTab: (t: Tab) => void }) {
+export default function Header({
+  tab,
+  onTab,
+  utente,
+}: {
+  tab: Tab
+  onTab: (t: Tab) => void
+  utente: Utente
+}) {
   const settings = useAuction((s) => s.settings)
   const setMode = useAuction((s) => s.setMode)
   const undo = useAuction((s) => s.undo)
@@ -28,6 +37,12 @@ export default function Header({ tab, onTab }: { tab: Tab; onTab: (t: Tab) => vo
             Fanta<span className="text-sky-400">Dash</span>
           </span>
           <span className="max-w-52 truncate text-sm text-ink-300">{settings.lega}</span>
+          <span
+            title={`Accesso come ${utente.nome}. Esci da Impostazioni.`}
+            className="hidden max-w-40 truncate text-xs text-ink-500 lg:inline"
+          >
+            {utente.nome}
+          </span>
         </div>
 
         <div className="flex items-center rounded-lg border border-ink-700 bg-ink-850 p-0.5 text-xs">

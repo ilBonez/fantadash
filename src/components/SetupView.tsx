@@ -4,9 +4,10 @@ import { listone, noteSquadre } from '../lib/listone'
 import { TEMPERATURE, type Temperatura } from '../lib/market'
 import { useAuction, type Snapshot } from '../store/useAuction'
 import { ROLES, ROLE_LABEL } from '../types'
+import { esciUtente, type Utente } from '../lib/utente'
 import { RoleBadge, Section } from './ui'
 
-export default function SetupView() {
+export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: () => void }) {
   const settings = useAuction((s) => s.settings)
   const teams = useAuction((s) => s.teams)
   const picks = useAuction((s) => s.picks)
@@ -253,6 +254,16 @@ export default function SetupView() {
                 }}
               >
                 Reset totale
+              </button>
+              <button
+                className="btn"
+                title={`Accesso come ${utente.nome} dal ${new Date(utente.dal).toLocaleDateString('it-IT')}`}
+                onClick={() => {
+                  esciUtente()
+                  onEsci()
+                }}
+              >
+                Esci ({utente.nome})
               </button>
             </div>
             {msg && <p className="text-xs text-sky-300">{msg}</p>}

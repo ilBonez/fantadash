@@ -96,6 +96,31 @@ Detto tutto questo, un `.exe` qui non aggiunge nulla: la dashboard non accede a
 file, non stampa, non usa il sistema. GitHub Pages o la cartella servita fanno
 lo stesso lavoro senza niente da compilare.
 
+## Accesso e dati: chi vede cosa
+
+All'apertura c'e' una schermata di accesso: nome nel formato `nome.cognome` e una
+password qualsiasi. Serve a dare un nome a chi apre la dashboard, e il nome
+compare nell'intestazione. Si esce da Impostazioni.
+
+**Non e' una misura di sicurezza e non prova a esserlo.** Il controllo gira nel
+browser, quindi chiunque puo' leggere il bundle o saltare la schermata. Sta
+scritto anche in cima a `src/lib/utente.ts`, perche' nessuno lo prenda per
+protezione leggendo il codice.
+
+Del resto non c'e' nulla da proteggere: **ogni browser ha la sua asta**. Il sito
+serve solo file statici, non esiste un server ne' un database. Due persone che
+aprono lo stesso indirizzo vedono due aste separate e vuote; niente di quello che
+fai tu arriva a loro, e viceversa. Nessun dato lascia il tuo dispositivo.
+
+Per spostare un'asta tra i tuoi dispositivi: Impostazioni → Esporta backup JSON,
+poi Importa sull'altro.
+
+Se un giorno servisse accesso vero, la strada e' un controllo **lato server**
+davanti al sito, non codice nel browser: con l'hosting su Cloudflare Pages,
+[Cloudflare Access](https://cloudflare.com/products/cloudflare-access) fa login
+con PIN via email ed e' gratis fino a 50 utenti. Su GitHub Pages non e'
+possibile: il sito privato richiede GitHub Enterprise.
+
 ## Come si usa durante l'asta
 
 1. **Impostazioni** – nome lega, modalita' (Classic o Mantra), crediti per squadra, slot per
@@ -438,6 +463,7 @@ src/lib/listone.ts           caricamento listone, ricerca, accessori per modalit
 src/lib/stats.ts             crediti, slot, offerta massima, statistiche di lega
 src/lib/market.ts            listino d'asta: curva di prezzo per reparto
 src/lib/advice.ts            prezzo atteso e Score dei consigli
+src/lib/utente.ts            splash di accesso (non e' sicurezza, vedi commento)
 src/lib/plans.ts             strategie, coppia portieri, piani rosa
 src/store/useAuction.ts      stato asta (zustand + persist), undo, obiettivi, prezzi corretti
 src/components/              Asta, Piani, Squadre, Statistiche, Impostazioni

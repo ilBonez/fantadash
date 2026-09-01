@@ -6,6 +6,8 @@ import SetupView from './components/SetupView'
 import StatsView from './components/StatsView'
 import TeamsView from './components/TeamsView'
 import { storageDisponibile } from './lib/storage'
+import { leggiUtente, type Utente } from './lib/utente'
+import LoginSplash from './components/LoginSplash'
 import { useAuction } from './store/useAuction'
 
 // Calcolato una volta: se il browser non concede localStorage va detto subito,
@@ -13,6 +15,7 @@ import { useAuction } from './store/useAuction'
 const SENZA_STORAGE = !storageDisponibile()
 
 export default function App() {
+  const [utente, setUtente] = useState<Utente | null>(() => leggiUtente())
   const [tab, setTab] = useState<Tab>('asta')
   const undo = useAuction((s) => s.undo)
 
@@ -30,9 +33,11 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [undo])
 
+  if (!utente) return <LoginSplash onEntra={setUtente} />
+
   return (
     <div className="flex h-full flex-col">
-      <Header tab={tab} onTab={setTab} />
+      <Header tab={tab} onTab={setTab} utente={utente} />
       {SENZA_STORAGE && (
         <div className="border-b border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs text-amber-200">
           <strong>Questo browser non salva niente in locale.</strong> L&apos;asta funziona, ma ricaricando la pagina si
@@ -44,7 +49,7 @@ export default function App() {
       {tab === 'piani' && <PlansView />}
       {tab === 'squadre' && <TeamsView />}
       {tab === 'stats' && <StatsView />}
-      {tab === 'setup' && <SetupView />}
+      {tab === 'setup' && <SetupView utente={utente} onEsci={() => setUtente(null)} />}
     </div>
   )
 }
