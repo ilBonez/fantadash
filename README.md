@@ -4,8 +4,11 @@ Dashboard locale per l'asta del fantacalcio di Serie A: segna i giocatori acquis
 crediti tuoi e degli avversari, vedi in tempo reale chi manca a chi e le statistiche su affari,
 scommesse e top acquisti.
 
-Gira solo sul tuo computer, senza account e senza server: i dati stanno nel browser
-(`localStorage`) e si esportano in JSON.
+Online su **https://ilbonez.github.io/fantadash/** — si apre da qualunque PC, tablet
+o telefono, senza installare niente.
+
+Gira senza account e senza server: i dati dell'asta stanno nel browser di chi la
+apre (`localStorage`) e si esportano in JSON. Nessun dato passa dal sito.
 
 ## Avvio
 
@@ -43,9 +46,12 @@ nel browser di chi la usa. Tre modi per portarla in giro, dal piu' comodo.
 
 ### 1. GitHub Pages (consigliato, anche su Surface ARM)
 
-`.github/workflows/pages.yml` pubblica la dashboard a ogni push su `main`. Da
-abilitare una volta: **Settings → Pages → Source: GitHub Actions**. Dopo il
-primo deploy l'indirizzo e' `https://<utente>.github.io/fantadash/`.
+Attivo su **https://ilbonez.github.io/fantadash/**.
+
+`.github/workflows/pages.yml` ripubblica a ogni push su `main`. Se rifai il
+setup da zero su un altro repo servono due cose: repo pubblico (su repo privato
+Pages richiede GitHub Pro) e **Settings → Pages → Source: GitHub Actions** — con
+`Deploy from a branch` il workflow fallisce su `actions/configure-pages`.
 
 Si apre da qualunque PC, tablet o telefono, con qualunque processore: non c'e'
 niente da compilare, quindi **il chip ARM non c'entra**. I dati dell'asta restano
