@@ -5,7 +5,12 @@ import PlansView from './components/PlansView'
 import SetupView from './components/SetupView'
 import StatsView from './components/StatsView'
 import TeamsView from './components/TeamsView'
+import { storageDisponibile } from './lib/storage'
 import { useAuction } from './store/useAuction'
+
+// Calcolato una volta: se il browser non concede localStorage va detto subito,
+// non alla prima ricarica con l'asta a metà.
+const SENZA_STORAGE = !storageDisponibile()
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('asta')
@@ -28,6 +33,13 @@ export default function App() {
   return (
     <div className="flex h-full flex-col">
       <Header tab={tab} onTab={setTab} />
+      {SENZA_STORAGE && (
+        <div className="border-b border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs text-amber-200">
+          <strong>Questo browser non salva niente in locale.</strong> L&apos;asta funziona, ma ricaricando la pagina si
+          perde tutto: esporta il backup JSON da Impostazioni a ogni pausa. Succede aprendo il file direttamente
+          (file://) o in finestra anonima — servi la cartella con <code>avvia.cmd</code> per risolvere.
+        </div>
+      )}
       {tab === 'asta' && <AstaView />}
       {tab === 'piani' && <PlansView />}
       {tab === 'squadre' && <TeamsView />}

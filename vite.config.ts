@@ -86,5 +86,8 @@ function autoIngest(): Plugin {
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), autoIngest()],
+  // Percorsi relativi: la cartella dist/ funziona anche aperta da file://,
+  // quindi si copia su qualunque PC e si apre index.html senza installare nulla.
+  base: './',
   server: { port: 5180, open: true },
 })

@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "ingest": "python scripts/ingest_xlsx.py",
-    "enrich": "node --env-file=.env scripts/fetch_enrichment.mjs"
+    "enrich": "node --env-file=.env scripts/fetch_enrichment.mjs",
+    "serve": "node scripts/serve.mjs",
+    "start": "npm run build && node scripts/serve.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

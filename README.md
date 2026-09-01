@@ -9,12 +9,86 @@ Gira solo sul tuo computer, senza account e senza server: i dati stanno nel brow
 
 ## Avvio
 
+Serve [Node.js](https://nodejs.org) 20 o superiore. Una volta sola:
+
 ```bash
 npm install
+```
+
+Poi, per lavorare al progetto (ricarica automatica a ogni modifica):
+
+```bash
 npm run dev
 ```
 
 Apre `http://localhost:5180`. Il listone ufficiale 2026/27 e' gia' incluso.
+
+Per **usare** la dashboard all'asta, senza il server di sviluppo:
+
+```bash
+npm start
+```
+
+Compila e serve la versione ottimizzata, aprendo il browser da solo. Su Windows
+basta anche fare doppio clic su `avvia.cmd`.
+
+Lo script di ingest dell'Excel richiede Python 3 con `openpyxl`
+(`pip install openpyxl`), ma solo se vuoi aggiornare le quotazioni: il listone
+gia' generato e' nel repository.
+
+## Usarla su piu' PC
+
+La dashboard e' una pagina statica: nessun server, nessun account, i dati stanno
+nel browser di chi la usa. Tre modi per portarla in giro, dal piu' comodo.
+
+### 1. GitHub Pages (consigliato, anche su Surface ARM)
+
+`.github/workflows/pages.yml` pubblica la dashboard a ogni push su `main`. Da
+abilitare una volta: **Settings → Pages → Source: GitHub Actions**. Dopo il
+primo deploy l'indirizzo e' `https://<utente>.github.io/fantadash/`.
+
+Si apre da qualunque PC, tablet o telefono, con qualunque processore: non c'e'
+niente da compilare, quindi **il chip ARM non c'entra**. I dati dell'asta restano
+nel browser che la apre, non sul sito.
+
+### 2. Cartella copiata (offline)
+
+```bash
+npm run build
+```
+
+Copia la cartella `dist/` dove vuoi — chiavetta USB, cartella condivisa. Il
+build usa percorsi relativi, quindi funziona anche aperta con doppio clic su
+`dist/index.html`, senza installare nulla.
+
+Un avvertimento vero: aperta da `file://` il browser puo' **rifiutare
+localStorage**, e in quel caso l'asta non si salva ricaricando la pagina. La
+dashboard te lo dice con una fascia gialla in cima. Per evitarlo copia anche
+`avvia.cmd` e `scripts/serve.mjs` e usa quelli: servono la cartella in locale
+con un'origine vera, e il salvataggio torna a funzionare. In ogni caso esporta
+il backup JSON a ogni pausa.
+
+### 3. Eseguibile vero (.exe)
+
+Si puo' fare, ma per questa dashboard e' la strada peggiore delle tre.
+
+| | Peso | Windows ARM | Cosa serve per compilare |
+| --- | --- | --- | --- |
+| [Tauri](https://tauri.app) | ~10 MB | si, `aarch64-pc-windows-msvc` | Rust + Visual Studio Build Tools |
+| [Electron](https://www.electronforge.io/) | ~150 MB | si, `--arch=arm64` | solo Node |
+
+Con Tauri il `.exe` usa la WebView2 gia' presente in Windows 11, quindi resta
+piccolo; Electron si porta dietro un Chromium intero.
+
+Se vuoi provarci, la cosa importante e' questa: **compila direttamente sul
+Surface**. Un binario ARM64 fatto da un PC x86 richiede toolchain di cross
+compilazione, mentre sul Surface stesso `npm run tauri build` produce
+l'eseguibile ARM64 nativo senza configurare niente. Il progetto e' gia' pronto
+per essere impacchettato: `dist/` e' statico e autosufficiente.
+
+Detto tutto questo, un `.exe` qui non aggiunge nulla: la dashboard non accede a
+file, non stampa, non usa il sistema. GitHub Pages o la cartella servita fanno
+lo stesso lavoro senza niente da compilare.
 
 ## Come si usa durante l'asta
 
@@ -346,10 +420,13 @@ collegamento con una tabella di corrispondenze.
 ## Struttura
 
 ```
+avvia.cmd                    doppio clic su Windows: compila (se serve) e apre
+.github/workflows/pages.yml  deploy automatico su GitHub Pages
 data/                        .xlsx ufficiali (il watcher guarda qui)
 data/extra.json              titolari, rigoristi, piazzati, prezzi di mercato
 scripts/ingest_xlsx.py       .xlsx + extra.json -> src/data/listone.json
 scripts/fetch_enrichment.mjs football-data.org -> src/data/enrichment.json
+scripts/serve.mjs            server statico senza dipendenze per dist/
 vite.config.ts               plugin autoIngest: rigenera il listone al volo
 src/lib/listone.ts           caricamento listone, ricerca, accessori per modalita'
 src/lib/stats.ts             crediti, slot, offerta massima, statistiche di lega
