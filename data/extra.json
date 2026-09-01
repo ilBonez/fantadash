@@ -1,0 +1,742 @@
+{
+  "stagione": "2026/27",
+  "aggiornato": "2026-09-01",
+  "nota": "Overlay curato a mano: titolari, rigoristi e tiratori di piazzati. Modificalo liberamente e rilancia npm run ingest (o salva un .xlsx in data/): lo script riporta ogni nome che non riesce ad agganciare al listone. Le gerarchie cambiano ogni settimana, quindi va riverificato.",
+  "fonti": [
+    "Formazioni tipo: fantacalcio-online.com/it/consigli-fantacalcio/probabili-formazioni-serie-a",
+    "Rigoristi: sport.sky.it/fantacalcio/2026/08/10/rigoristi-serie-a-fantacalcio-2026-2027",
+    "Rigoristi (secondo parere): goal.com/it/liste/fantacalcio-rigoristi-serie-a-2026-2027",
+    "Punizioni e angoli: fantamaster.it/tiratori-punizioni-corner-calci-dangolo-seriea-2026-2027-gerarchie-fantacalcio",
+    "Marcatori: dazn.com/it-IT/news/calcio/capocannonieri-serie-a-classifica-marcatori-aggiornata",
+    "Fantamedia 2025/26: playermanager.info/2026/05/26/fanta-top-11-serie-a-2025-2026-il-pagellone-del-fantacalcio"
+  ],
+  "squadre": {
+    "Atalanta": {
+      "titolari": [
+        "Carnesecchi",
+        "Bernasconi",
+        "Scalvini",
+        "Kristensen",
+        "Zappacosta",
+        "Ederson",
+        "Pasalic",
+        "Samardzic",
+        "De Ketelaere",
+        "Scamacca",
+        "Raspadori"
+      ],
+      "rigoristi": [
+        "Scamacca",
+        "Kessie",
+        "Ederson",
+        "Krstovic"
+      ],
+      "punizioni": [
+        "De Ketelaere",
+        "Samardzic",
+        "Raspadori"
+      ],
+      "angoli": [
+        "Samardzic",
+        "Bernasconi",
+        "Bellanova",
+        "Ederson"
+      ],
+      "nota": "Gerarchia dal dischetto contesa: Sky mette Scamacca primo, Goal.com indica Kessie."
+    },
+    "Bologna": {
+      "titolari": [
+        "Skorupski",
+        "Miranda J.",
+        "Vitik",
+        "Heggem",
+        "Zortea",
+        "Ferguson",
+        "Pobega",
+        "Bernardeschi",
+        "Rowe",
+        "Dovbyk",
+        "Orsolini"
+      ],
+      "rigoristi": [
+        "Orsolini",
+        "Bernardeschi",
+        "Dovbyk"
+      ],
+      "punizioni": [
+        "Orsolini",
+        "Bernardeschi"
+      ],
+      "angoli": [
+        "Orsolini",
+        "Bernardeschi",
+        "Miranda J.",
+        "Ferguson"
+      ]
+    },
+    "Cagliari": {
+      "titolari": [
+        "Caprile",
+        "Ze Pedro",
+        "Mina",
+        "Obert",
+        "Rodriguez",
+        "Winks",
+        "Adopo",
+        "Romano",
+        "Fazzini",
+        "Maldini"
+      ],
+      "rigoristi": [
+        "Maldini",
+        "Fazzini",
+        "Mina"
+      ],
+      "punizioni": [
+        "Maldini",
+        "Winks",
+        "Fazzini"
+      ],
+      "angoli": [
+        "Winks",
+        "Fazzini",
+        "Obert"
+      ],
+      "nota": "Sky indica Maldini primo rigorista, Goal.com e altre guide danno Fazzini: coppia da tenere d'occhio."
+    },
+    "Como": {
+      "titolari": [
+        "Butez",
+        "Valle",
+        "Ramon",
+        "Chalobah",
+        "Couto",
+        "Perrone",
+        "Da Cunha",
+        "Paz N.",
+        "Baturina",
+        "Diao",
+        "Douvikas"
+      ],
+      "rigoristi": [
+        "Da Cunha",
+        "Douvikas",
+        "Paz N."
+      ],
+      "punizioni": [
+        "Paz N.",
+        "Baturina",
+        "Da Cunha",
+        "Perrone"
+      ],
+      "angoli": [
+        "Baturina",
+        "Paz N.",
+        "Da Cunha",
+        "Perrone"
+      ]
+    },
+    "Fiorentina": {
+      "titolari": [
+        "De Gea",
+        "Jimenez A.",
+        "Dragusin",
+        "Viery",
+        "Pongracic",
+        "Mastantuono",
+        "Fagioli",
+        "Atta",
+        "Pellegrino",
+        "Kean",
+        "Gudmundsson A."
+      ],
+      "rigoristi": [
+        "Gudmundsson A.",
+        "Kean",
+        "Mandragora"
+      ],
+      "punizioni": [
+        "Gudmundsson A.",
+        "Mastantuono",
+        "Mandragora",
+        "Fagioli"
+      ],
+      "angoli": [
+        "Gudmundsson A.",
+        "Mandragora",
+        "Fagioli"
+      ]
+    },
+    "Frosinone": {
+      "titolari": [
+        "Palmisani",
+        "Bracaglia",
+        "Monterisi",
+        "Akpoguma",
+        "Oyono",
+        "Schmid",
+        "Grillitsch",
+        "Calo",
+        "Zerbin",
+        "Raimondo",
+        "Ghedjemis"
+      ],
+      "rigoristi": [
+        "Calo",
+        "Ghedjemis",
+        "Raimondo"
+      ],
+      "punizioni": [
+        "Calo",
+        "Kvernadze",
+        "Schmid"
+      ],
+      "angoli": [
+        "Calo",
+        "Kvernadze",
+        "Schmid",
+        "Masini"
+      ]
+    },
+    "Genoa": {
+      "titolari": [
+        "Bijlow",
+        "Vasquez",
+        "Ostigard",
+        "Marcandalli",
+        "Martin",
+        "Frendrup",
+        "Sow",
+        "Norton-Cuffy",
+        "Baldanzi",
+        "Vitinha",
+        "Colombo"
+      ],
+      "rigoristi": [
+        "Colombo",
+        "Messias",
+        "Vitinha"
+      ],
+      "punizioni": [
+        "Baldanzi",
+        "Messias",
+        "Frendrup"
+      ],
+      "angoli": [
+        "Baldanzi",
+        "Messias",
+        "Frendrup",
+        "Ellertsson"
+      ]
+    },
+    "Inter": {
+      "titolari": [
+        "Martinez Jo.",
+        "Akanji",
+        "Bastoni",
+        "Stones",
+        "Spence",
+        "Barella",
+        "Calhanoglu",
+        "Zielinski",
+        "Dimarco",
+        "Martinez L.",
+        "Thuram"
+      ],
+      "rigoristi": [
+        "Calhanoglu",
+        "Zielinski",
+        "Martinez L."
+      ],
+      "punizioni": [
+        "Calhanoglu",
+        "Dimarco",
+        "Zielinski"
+      ],
+      "angoli": [
+        "Calhanoglu",
+        "Dimarco",
+        "Zielinski",
+        "Barella",
+        "Sucic P."
+      ]
+    },
+    "Juventus": {
+      "titolari": [
+        "Vicario",
+        "Cambiaso",
+        "Bremer",
+        "Kalulu",
+        "Celik",
+        "McKennie",
+        "Locatelli",
+        "Yildiz",
+        "Alajbegovic",
+        "Conceicao",
+        "Kolo Muani"
+      ],
+      "rigoristi": [
+        "Kolo Muani",
+        "Yildiz",
+        "Locatelli"
+      ],
+      "punizioni": [
+        "Alajbegovic",
+        "Locatelli"
+      ],
+      "angoli": [
+        "Conceicao",
+        "Alajbegovic",
+        "Cambiaso"
+      ],
+      "nota": "Sky mette Kolo Muani primo dal dischetto, Goal.com Yildiz: gerarchia non consolidata."
+    },
+    "Lazio": {
+      "titolari": [
+        "Mandas",
+        "Marusic",
+        "Sutalo",
+        "Doekhi",
+        "Pedraza",
+        "Frattesi",
+        "Rovella",
+        "Taylor",
+        "Isaksen",
+        "Pinamonti",
+        "Zaccagni"
+      ],
+      "rigoristi": [
+        "Zaccagni",
+        "Cataldi",
+        "Taylor",
+        "Pinamonti"
+      ],
+      "punizioni": [
+        "Zaccagni",
+        "Taylor",
+        "Rovella"
+      ],
+      "angoli": [
+        "Zaccagni",
+        "Taylor",
+        "Rovella"
+      ]
+    },
+    "Lecce": {
+      "titolari": [
+        "Falcone",
+        "Gallo",
+        "Tiago Gabriel",
+        "Gaspar",
+        "Veiga",
+        "Coulibaly L.",
+        "Ilic",
+        "Pierotti",
+        "Stulic",
+        "N'Dri",
+        "Geubbels"
+      ],
+      "rigoristi": [
+        "Geubbels",
+        "Stulic",
+        "Berisha"
+      ],
+      "punizioni": [
+        "Pierotti",
+        "Berisha",
+        "Gallo"
+      ],
+      "angoli": [
+        "Gallo",
+        "Pierotti",
+        "Berisha"
+      ]
+    },
+    "Milan": {
+      "titolari": [
+        "Maignan",
+        "Pavlovic",
+        "Gila",
+        "Gabbia",
+        "Bartesaghi",
+        "Rabiot",
+        "Modric",
+        "Saelemaekers",
+        "Pulisic",
+        "Ramos G."
+      ],
+      "rigoristi": [
+        "Ramos G.",
+        "Pulisic",
+        "Modric"
+      ],
+      "punizioni": [
+        "Modric",
+        "Pulisic",
+        "Jashari"
+      ],
+      "angoli": [
+        "Modric",
+        "Pulisic",
+        "Bartesaghi",
+        "Jashari"
+      ],
+      "nota": "La formazione tipo cita Leao e Nkunku, che il listone ufficiale marca come ceduti: due maglie offensive libere. Sky dava Nkunku primo rigorista, qui la gerarchia parte da Ramos."
+    },
+    "Monza": {
+      "titolari": [
+        "Thiam",
+        "Mangas",
+        "Carboni",
+        "Toure I.",
+        "Akinsanmiro",
+        "Colpani",
+        "Pessina",
+        "Birindelli",
+        "Robinson",
+        "Dany Mota",
+        "Cutrone"
+      ],
+      "rigoristi": [
+        "Pessina",
+        "Colpani",
+        "Cutrone"
+      ],
+      "punizioni": [
+        "Colpani",
+        "Ciurria"
+      ],
+      "angoli": [
+        "Colpani",
+        "Ciurria",
+        "Folorunsho"
+      ]
+    },
+    "Napoli": {
+      "titolari": [
+        "Meret",
+        "Spinazzola",
+        "Rrahmani",
+        "Buongiorno",
+        "Di Lorenzo",
+        "De Bruyne",
+        "McTominay",
+        "Lobotka",
+        "Santos A.",
+        "Hojlund",
+        "Politano"
+      ],
+      "rigoristi": [
+        "De Bruyne",
+        "Hojlund",
+        "McTominay"
+      ],
+      "punizioni": [
+        "De Bruyne",
+        "Politano",
+        "Neres"
+      ],
+      "angoli": [
+        "De Bruyne",
+        "Politano",
+        "Lobotka"
+      ]
+    },
+    "Parma": {
+      "titolari": [
+        "Daffara",
+        "Britschgi",
+        "Valenti",
+        "Troilo",
+        "Delprato",
+        "Valeri",
+        "Bernabe",
+        "Keita",
+        "Romero D.",
+        "Toure E.",
+        "Frigan"
+      ],
+      "rigoristi": [
+        "Valeri",
+        "Bernabe",
+        "Toure E."
+      ],
+      "punizioni": [
+        "Bernabe",
+        "Valeri",
+        "Toure E."
+      ],
+      "angoli": [
+        "Bernabe",
+        "Valeri"
+      ],
+      "nota": "Sky cita Pellegrino come primo rigorista, ma le formazioni tipo lo danno alla Fiorentina: qui la gerarchia parte da Valeri."
+    },
+    "Roma": {
+      "titolari": [
+        "Svilar",
+        "Mancini",
+        "Ndicka",
+        "Hermoso",
+        "Molina N.",
+        "Kone M.",
+        "Cristante",
+        "Wesley",
+        "Mora",
+        "Dybala",
+        "Malen"
+      ],
+      "rigoristi": [
+        "Malen",
+        "Dybala",
+        "Pellegrini Lo.",
+        "Soule"
+      ],
+      "punizioni": [
+        "Dybala",
+        "Mora",
+        "Soule"
+      ],
+      "angoli": [
+        "Dybala",
+        "Mora",
+        "Wesley",
+        "Molina N."
+      ],
+      "nota": "Malen rigorista e in forma record: e il giocatore piu caro dell'asta di quest'anno."
+    },
+    "Sassuolo": {
+      "titolari": [
+        "Muric",
+        "Obrador",
+        "Idzes",
+        "Leysen",
+        "Thorstvedt",
+        "Matic",
+        "Adzic",
+        "Lauriente",
+        "Bowie",
+        "Berardi",
+        "Doig"
+      ],
+      "rigoristi": [
+        "Berardi",
+        "Lauriente",
+        "Esposito Se."
+      ],
+      "punizioni": [
+        "Berardi",
+        "Adzic",
+        "Lauriente",
+        "Thorstvedt"
+      ],
+      "angoli": [
+        "Berardi",
+        "Adzic",
+        "Lauriente",
+        "Volpato",
+        "Doig"
+      ],
+      "nota": "Sky elencava Pinamonti tra i rigoristi, ma le formazioni tipo lo danno alla Lazio: sostituito con Esposito. Missori risulta ceduto: fascia destra da riassegnare."
+    },
+    "Torino": {
+      "titolari": [
+        "Paleari",
+        "Coco",
+        "Comuzzo",
+        "Ismajli",
+        "Cacciamani",
+        "Casadei",
+        "Gineitis",
+        "Vlasic",
+        "Oristanio",
+        "Simeone"
+      ],
+      "rigoristi": [
+        "Vlasic",
+        "Simeone",
+        "Casadei"
+      ],
+      "punizioni": [
+        "Vlasic",
+        "Oristanio",
+        "Casadei"
+      ],
+      "angoli": [
+        "Vlasic",
+        "Oristanio"
+      ],
+      "nota": "Attenzione al portiere: la formazione tipo indica Paleari, ma il listone quota Perri 9 e Paleari 1. Verifica chi para prima di spendere. Pedersen risulta ceduto."
+    },
+    "Udinese": {
+      "titolari": [
+        "Okoye",
+        "Vojvoda",
+        "Solet",
+        "Kabasele",
+        "Kamara H.",
+        "Karlstrom",
+        "Piotrowski",
+        "Ekkelenkamp",
+        "Bertola",
+        "Davis K.",
+        "Zaniolo"
+      ],
+      "rigoristi": [
+        "Davis K.",
+        "Solet",
+        "Zaniolo"
+      ],
+      "punizioni": [
+        "Zaniolo",
+        "Ekkelenkamp",
+        "Vojvoda"
+      ],
+      "angoli": [
+        "Zaniolo",
+        "Vojvoda",
+        "Ekkelenkamp"
+      ]
+    },
+    "Venezia": {
+      "titolari": [
+        "Stankovic F.",
+        "Moreno",
+        "Bella-Kotchap",
+        "Correia",
+        "Haps",
+        "Busio",
+        "Basic",
+        "Sohm",
+        "Helgason",
+        "Adams A.",
+        "Rrahmani Al."
+      ],
+      "rigoristi": [
+        "Adams A.",
+        "Busio",
+        "Yeboah"
+      ],
+      "punizioni": [
+        "Busio",
+        "Basic",
+        "Yeboah"
+      ],
+      "angoli": [
+        "Busio",
+        "Basic",
+        "Helgason",
+        "Yeboah"
+      ]
+    }
+  },
+  "giocatori": [
+    {
+      "nome": "Malen",
+      "squadra": "Roma",
+      "gol": 5,
+      "atteso": 300,
+      "nota": "5 gol in 2 giornate: tripletta alla Fiorentina e doppietta a Lecce. Eguagliato il record di Batistuta (1997/98). Rigorista. All'asta va molto oltre la quotazione.",
+      "fm2025": 9.1,
+      "gol2025": 14
+    },
+    {
+      "nome": "Calhanoglu",
+      "squadra": "Inter",
+      "gol": 2,
+      "nota": "Rigorista, punizioni e angoli: il pacchetto bonus piu completo tra i centrocampisti.",
+      "fm2025": 7.5,
+      "gol2025": 9
+    },
+    {
+      "nome": "Douvikas",
+      "squadra": "Como",
+      "gol": 2,
+      "nota": "2 gol in 2 giornate, seconda scelta dal dischetto dietro Da Cunha."
+    },
+    {
+      "nome": "Frattesi",
+      "squadra": "Lazio",
+      "gol": 2,
+      "nota": "2 gol in 2 giornate da titolare in mediana."
+    },
+    {
+      "nome": "Kamara H.",
+      "squadra": "Udinese",
+      "gol": 2,
+      "nota": "2 gol in 2 giornate da centrocampista/esterno: partenza fuori scala."
+    },
+    {
+      "nome": "Raimondo",
+      "squadra": "Frosinone",
+      "gol": 2,
+      "nota": "2 gol in 2 giornate nella neopromossa, terza scelta dal dischetto."
+    },
+    {
+      "nome": "De Bruyne",
+      "squadra": "Napoli",
+      "nota": "Rigorista, punizioni e angoli del Napoli."
+    },
+    {
+      "nome": "Orsolini",
+      "squadra": "Bologna",
+      "nota": "Rigorista, punizioni e angoli: tre fonti di bonus in un solo slot."
+    },
+    {
+      "nome": "Zaccagni",
+      "squadra": "Lazio",
+      "nota": "Rigorista, punizioni e angoli della Lazio."
+    },
+    {
+      "nome": "Berardi",
+      "squadra": "Sassuolo",
+      "nota": "Rigorista, punizioni e angoli: il riferimento offensivo del Sassuolo."
+    },
+    {
+      "nome": "Dybala",
+      "squadra": "Roma",
+      "nota": "Punizioni e angoli, seconda scelta sui rigori dietro Malen. Rischio continuita fisica."
+    },
+    {
+      "nome": "Perri",
+      "squadra": "Torino",
+      "nota": "Quotato come primo portiere ma la formazione tipo indica Paleari: ballottaggio aperto."
+    },
+    {
+      "nome": "Paleari",
+      "squadra": "Torino",
+      "nota": "Indicato titolare dalle formazioni tipo pur essendo quotato 1: possibile occasione o possibile errore di listino."
+    },
+    {
+      "nome": "Martinez L.",
+      "squadra": "Inter",
+      "fm2025": 8.2,
+      "gol2025": 17
+    },
+    {
+      "nome": "Thuram",
+      "squadra": "Inter",
+      "fm2025": 7.9
+    },
+    {
+      "nome": "Hojlund",
+      "squadra": "Napoli",
+      "fm2025": 7.4
+    },
+    {
+      "nome": "McTominay",
+      "squadra": "Napoli",
+      "fm2025": 7.2
+    },
+    {
+      "nome": "Paz N.",
+      "squadra": "Como",
+      "fm2025": 7.2
+    },
+    {
+      "nome": "Dimarco",
+      "squadra": "Inter",
+      "fm2025": 8.4
+    }
+  ]
+}
