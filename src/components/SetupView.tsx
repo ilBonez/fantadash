@@ -3,8 +3,10 @@ import { int } from '../lib/format'
 import { listone } from '../lib/listone'
 import { TEMPERATURE, type Temperatura } from '../lib/market'
 import { useAuction, type Snapshot } from '../store/useAuction'
-import { ROLES, ROLE_LABEL } from '../types'
+import { ROLES, ROLE_LABEL, type Pick, type Team } from '../types'
 import { esciUtente, type Utente } from '../lib/utente'
+import ImportRose from './ImportRose'
+import type { EsitoImport } from '../lib/importRose'
 import { RoleBadge, Section } from './ui'
 
 export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: () => void }) {
@@ -53,6 +55,20 @@ export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: 
     } catch (e) {
       setMsg(`Import fallito: ${e instanceof Error ? e.message : 'errore'}`)
     }
+  }
+
+  /**
+   * Applica l'import delle rose. Sostituisce squadre e assegnazioni ma tiene le
+   * regole di lega: budget e slot sono scelte dell'utente, non del file.
+   */
+  const applicaRose = (teams: Team[], picks: Pick[], mioTeam: string | null, esito: EsitoImport) => {
+    loadSnapshot({ settings, teams, picks, myTeamId: mioTeam, targetIds: [], priceOverrides: {} })
+    setMsg(
+      `Importate ${teams.length} squadre e ${picks.length} assegnazioni` +
+        (esito.fuoriLista.length ? `, ${esito.fuoriLista.length} fuori listone saltati` : '') +
+        (esito.nonTrovati.length ? `, ${esito.nonTrovati.length} non trovati` : '') +
+        '.',
+    )
   }
 
   return (
@@ -346,6 +362,9 @@ export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: 
             </dl>
           </div>
         </Section>
+        <div className="lg:col-span-2">
+          <ImportRose slots={settings.slots} onConferma={applicaRose} />
+        </div>
       </div>
     </div>
   )

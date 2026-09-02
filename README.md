@@ -595,12 +595,59 @@ src/lib/stats.ts             crediti, slot, offerta massima, statistiche di lega
 src/lib/market.ts            listino d'asta: spinta per fascia e lambda
 src/lib/advice.ts            prezzo atteso e Score dei consigli
 src/lib/utente.ts            splash di accesso (non e' sicurezza, vedi commento)
+src/lib/xlsxLite.ts          lettore .xlsx senza dipendenze (zip + XML del browser)
+src/lib/importRose.ts        export rose di Fantasego -> squadre e assegnazioni
 src/lib/plans.ts             strategie, blocco portieri, piani rosa
 src/store/useAuction.ts      stato asta (zustand + persist), undo, obiettivi, prezzi corretti
 src/components/PlayerCard.tsx  la scheda che si apre quando il giocatore va all'asta
 src/components/GriglieView.tsx matrice, coppie e terzetti
 src/components/              Asta, Griglie, Piani, Squadre, Statistiche, Impostazioni
 ```
+
+## Importare le rose da Fantasego
+
+Se l'asta l'hai fatta su Fantasego, l'export delle rose si carica direttamente:
+**Impostazioni -> Importa rose da Excel**. La dashboard ricrea le squadre con i
+nomi veri e tutte le assegnazioni ai prezzi pagati, cosi' puoi usare piani e
+statistiche su un'asta gia' conclusa, o rimetterti in pari a meta' asta.
+
+Il foglio `ROSE` mette le squadre in blocchi affiancati di tre colonne — nome,
+`costo`, una vuota — con i giocatori sotto raggruppati per reparto e una riga
+`totale` a chiudere. L'importatore riconosce i blocchi dall'intestazione, quindi
+funziona con qualunque numero di squadre.
+
+Il **ruolo lo prende dal listone**, non dalla posizione nel foglio: nel listone
+non ci sono omonimi, quindi il nome basta ed e' piu' solido del contare le righe.
+La posizione serve solo a controllare che i conti per reparto tornino con gli
+slot di lega.
+
+Prima di sovrascrivere niente mostra un'anteprima: squadre, giocatori per
+reparto, spesa, e una colonna **vs file** che confronta la spesa calcolata con il
+totale scritto nel foglio. Se quella colonna dice `torna` per tutti, il file e'
+stato letto correttamente.
+
+**I nomi con ` *`** sono giocatori usciti dalla Serie A: non stanno nel listone,
+quindi lo slot resta libero e la spesa non li conta. Sono elencati a parte, e
+spiegano la differenza con il totale del file. Un nome **senza** marcatore che non
+si aggancia e' invece un problema segnalato in rosso.
+
+Ogni squadra ha una **spunta**: i blocchi a rosa vuota partono esclusi, perche'
+negli export capita di trovarne uno in coda che non e' una squadra vera. Non si
+possono pero' scartare in automatico: a inizio asta una squadra senza giocatori
+e' del tutto legittima, quindi la spunta si rimette. Puoi anche scegliere subito
+quale squadra e' la tua.
+
+L'import sostituisce squadre e assegnazioni, ma **tiene le regole di lega**:
+budget, slot e temperatura sono scelte tue, non del file.
+
+### Nessuna libreria per leggere gli .xlsx
+
+`src/lib/xlsxLite.ts` legge gli .xlsx con quello che il browser ha gia':
+`DecompressionStream('deflate-raw')` per lo zip e `DOMParser` per l'XML. Il
+pacchetto npm `xlsx` era stato tolto per due CVE senza fix, e riaggiungere una
+libreria da un mega per leggere una tabella di 27 righe sarebbe stato uno scambio
+peggiore. Copre celle testo, numeri e stringhe condivise; non gestisce zip64 ne'
+le date seriali, che qui non servono.
 
 ## Backup
 
