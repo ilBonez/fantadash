@@ -41,7 +41,7 @@ export default function PlayerCard({
   const bal = ballottaggioDi(p)
 
   return (
-    <div className="max-h-[46vh] shrink-0 overflow-auto border-t border-sky-500/40 bg-ink-900 shadow-[0_-12px_28px_-12px_rgba(0,0,0,0.8)]">
+    <div className="max-h-[46vh] min-h-28 overflow-auto border-t border-sky-500/40 bg-ink-900 shadow-[0_-12px_28px_-12px_rgba(0,0,0,0.8)]">
       <div className="flex flex-wrap items-start gap-x-4 gap-y-2 border-b border-ink-800 px-3 py-2">
         <div className="flex min-w-0 items-center gap-2">
           <RoleBadge role={p.r} />
@@ -87,7 +87,7 @@ export default function PlayerCard({
         </div>
       )}
 
-      <div className="grid gap-3 px-3 py-2.5 md:grid-cols-2 2xl:grid-cols-4">
+      <div className="grid gap-3 px-3 py-2.5 md:grid-cols-2 xl:grid-cols-4">
         <Blocco titolo="Prezzi">
           <Riga label="Quotazione" value={`${int(p.qtI)} → ${int(p.qtA)}`} hint="iniziale → attuale" />
           <Riga label="FVM" value={int(p.fvm)} hint="Fanta Valore di Mercato" />

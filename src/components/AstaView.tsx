@@ -226,7 +226,10 @@ export default function AstaView() {
           </span>
         </div>
 
-        <div ref={tableWrapRef} className="flex min-h-0 flex-1 flex-col">
+        {/* Il pavimento tiene in vita la lista quando si apre la scheda: su uno
+            schermo basso, senza, il giocatore in asta si prende tutto e delle
+            righe non resta niente da scorrere. */}
+        <div ref={tableWrapRef} className="flex min-h-44 flex-1 flex-col">
           <PlayerTable
             rows={rows}
             pickByPlayer={league.pickByPlayer}

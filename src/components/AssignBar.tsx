@@ -185,7 +185,7 @@ export default function AssignBar({
           </span>
         )}
 
-        <div className="flex flex-1 flex-wrap items-center gap-1">
+        <div className="flex w-full flex-wrap items-center gap-1 order-last">
           {teams.map((t, i) => {
             const active = t.team.id === teamId
             const full = player ? t.byRole[player.r].left <= 0 : false
