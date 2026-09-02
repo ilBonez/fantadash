@@ -130,7 +130,7 @@ export default function PlansView() {
  * compra due top nello stesso reparto.
  */
 function Listino({ market, sogliaTop }: { market: Market; sogliaTop: number }) {
-  const salito = ROLES.filter((r) => market.reparti[r].topOra > market.reparti[r].topIniziale)
+  const salito = ROLES.filter((r) => market.reparti[r].lambda > 1.05)
 
   return (
     <Section
@@ -138,16 +138,41 @@ function Listino({ market, sogliaTop }: { market: Market; sogliaTop: number }) {
       right={
         <span className="text-[11px] text-ink-500">
           {TEMPERATURE[market.temperatura].label}
-          {salito.length > 0 && ` · in salita su ${salito.join(', ')}`}
+          {salito.length > 0 && ` · sopra il listone su ${salito.join(', ')}`}
         </span>
       }
     >
       <p className="border-b border-ink-800 px-3 py-2 text-xs text-ink-400">
-        Le quotazioni dell&apos;Excel sono una base d&apos;asta, non un prezzo, e il prezzo{' '}
-        <strong className="text-ink-200">cambia mentre la lista si svuota</strong>. In una lega da 10 squadre ognuna
-        vuole almeno un attaccante di livello: la domanda scende solo quando qualcuno il suo l&apos;ha preso, l&apos;offerta
-        si svuota a ogni acquisto. Quando restano quattro squadre senza bomber e tre bomber liberi, quei tre costano
-        molto piu&apos; di prima. Questa tabella si ricalcola a ogni assegnazione.
+        Si parte dal <strong className="text-ink-200">prezzo consigliato</strong> del listone e si corregge con quello
+        che l&apos;asta sta dicendo. Comprato un attaccante Top salgono gli altri Top, sale poco la 1a fascia e non si
+        muove la 2a: la spinta dipende da quanta parte della fascia e&apos; gia&apos; andata, e ogni acquisto pesa meno del
+        precedente. Sopra a tutto c&apos;e&apos; <strong className="text-ink-200">lambda</strong>, che tiene insieme quanti
+        crediti restano e quanto la lega ha strapagato finora.
+      </p>
+      <p className="border-b border-ink-800 px-3 py-2 text-xs text-ink-400">
+        Temperatura attesa <span className="font-semibold text-ink-200">{dec(market.clima.prior, 2)}x</span>
+        {market.clima.osservata !== null && (
+          <>
+            {' · osservata finora '}
+            <span
+              className={`font-semibold ${
+                market.clima.osservata > 1.1
+                  ? 'text-rose-400'
+                  : market.clima.osservata < 0.9
+                    ? 'text-emerald-400'
+                    : 'text-ink-200'
+              }`}
+            >
+              {dec(market.clima.osservata, 2)}x
+            </span>
+            {' · usata adesso '}
+            <span className="font-semibold text-ink-200">{dec(market.clima.usata, 2)}x</span>
+            {' (fiducia '}
+            {Math.round(market.clima.confidenza * 100)}
+            {'%)'}
+          </>
+        )}
+        {market.clima.osservata === null && ' · nessuna assegnazione ancora: si va di sola attesa.'}
       </p>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[820px] text-sm">
@@ -162,9 +187,9 @@ function Listino({ market, sogliaTop }: { market: Market; sogliaTop: number }) {
               </th>
               <th
                 className="px-3 py-1.5 text-right font-semibold"
-                title="Quanti giocatori di fascia alta cercano ancora le squadre: e la domanda che fa salire i prezzi"
+                title="Scostamento dai prezzi consigliati in questo reparto: sopra 1 la lega sta pagando piu del listone"
               >
-                Top cercati
+                Lambda
               </th>
               <th className="px-3 py-1.5 text-right font-semibold" title="Prezzo del migliore ancora libero">
                 Il migliore libero
@@ -176,10 +201,10 @@ function Listino({ market, sogliaTop }: { market: Market; sogliaTop: number }) {
                 Era il top
               </th>
               <th
-                className="px-3 py-1.5 text-right font-semibold"
-                title="Di quanto e salito il livello dei prezzi sulla fascia alta rispetto a inizio asta"
+                className="px-3 py-1.5 text-left font-semibold"
+                title="Quanto e salita ogni fascia da inizio asta, e quanti giocatori le restano"
               >
-                Spinta
+                Spinta per fascia
               </th>
               <th className="px-3 py-1.5 text-right font-semibold" title="Giocatori liberi che valgono 1 credito">
                 A 1 credito
@@ -196,15 +221,28 @@ function Listino({ market, sogliaTop }: { market: Market; sogliaTop: number }) {
                   </td>
                   <td className="px-3 py-1.5 text-right text-ink-300">{int(m.budgetResiduo)}</td>
                   <td className="px-3 py-1.5 text-right text-ink-300">{int(m.slotResidui)}</td>
-                  <td className="px-3 py-1.5 text-right font-semibold text-ink-200">{int(m.cercati)}</td>
-                  <td className="px-3 py-1.5 text-right font-semibold">{int(m.topOra)}</td>
-                  <td className="px-3 py-1.5 text-right text-ink-500">{int(m.topIniziale)}</td>
                   <td
                     className={`px-3 py-1.5 text-right font-semibold ${
-                      m.multFascia > 1.15 ? 'text-rose-400' : m.multFascia < 0.9 ? 'text-emerald-400' : 'text-ink-400'
+                      m.lambda > 1.1 ? 'text-rose-400' : m.lambda < 0.9 && m.lambda > 0 ? 'text-emerald-400' : 'text-ink-200'
                     }`}
                   >
-                    {m.multFascia > 0 ? `${dec(m.multFascia, 2)}x` : '-'}
+                    {m.lambda > 0 ? `${dec(m.lambda, 2)}x` : '-'}
+                  </td>
+                  <td className="px-3 py-1.5 text-right font-semibold">{int(m.topOra)}</td>
+                  <td className="px-3 py-1.5 text-right text-ink-500">{int(m.topIniziale)}</td>
+                  <td className="px-3 py-1.5">
+                    <span className="flex flex-wrap gap-x-2 gap-y-0.5 text-[11px]">
+                      {m.pressioni.map((f) => (
+                        <span
+                          key={f.fascia}
+                          title={`${f.fascia}: ${f.liberi} liberi su ${f.iniziali}`}
+                          className={f.spinta > 1.1 ? 'text-rose-400' : 'text-ink-500'}
+                        >
+                          {f.fascia.replace(' fascia', '')} {dec(f.spinta, 2)}x
+                        </span>
+                      ))}
+                      {!m.pressioni.length && <span className="text-ink-600">-</span>}
+                    </span>
                   </td>
                   <td className="px-3 py-1.5 text-right text-ink-400">{int(m.aUnCredito)}</td>
                 </tr>
@@ -214,12 +252,13 @@ function Listino({ market, sogliaTop }: { market: Market; sogliaTop: number }) {
         </table>
       </div>
       <p className="border-t border-ink-800 px-3 py-2 text-[11px] text-ink-500">
-        La colonna <strong className="text-ink-300">Spinta</strong> e&apos; il rapporto tra il livello dei prezzi di
-        adesso e quello di inizio asta: sopra 1 i top costano piu&apos; di prima perche&apos; ne restano meno di quanti
-        se ne cercano. Un giocatore conta come &ldquo;fascia alta&rdquo; sopra {int(sogliaTop)} crediti. I piani ne
-        prendono al massimo
-        2 a centrocampo e 1 in attacco, che e&apos; la media reale di una rosa: non perche&apos; il budget non basti, ma
-        perche&apos; all&apos;asta gli avversari rilanciano su ognuno.
+        <strong className="text-ink-300">Spinta per fascia</strong> e&apos; quanto i prezzi di quella fascia sono saliti
+        da inizio asta: sopra 1 ne restano meno di quanti ne servono. Si scaldano solo le fasce che concentrano
+        crediti — gli attaccanti Top, i portieri di 2a-3a, i difensori di 3a — e il contagio arriva alla fascia
+        accanto, non oltre. <strong className="text-ink-300">Lambda</strong> e&apos; lo scostamento complessivo dai
+        prezzi consigliati: presto segue quanto la lega ha strapagato, tardi quanti crediti restano davvero.
+        Un giocatore conta come &ldquo;fascia alta&rdquo; sopra {int(sogliaTop)} crediti: i piani ne prendono al massimo
+        2 a centrocampo e 1 in attacco, che e&apos; la media reale di una rosa.
       </p>
     </Section>
   )

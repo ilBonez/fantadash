@@ -18,9 +18,10 @@ export interface PrezzoAtteso {
  * 1. correzione a mano fatta in dashboard (`priceOverrides`);
  * 2. listino d'asta dinamico calcolato da `buildMarket`.
  *
- * Il prezzo consigliato del workbook (`p.cons`) resta visibile a parte: e' una
- * taratura fissa sulla lega da 500 crediti e 10 squadre, mentre il listino qui
- * si muove con l'asta, perche la quotazione e' una base d'asta e non un prezzo.
+ * Il listino parte proprio dal prezzo consigliato del workbook e lo corregge
+ * con quello che l'asta sta dicendo: pressione della fascia che si svuota, e
+ * quanto la lega sta pagando sopra o sotto il listone. Il consigliato resta
+ * visibile a parte, come riferimento fisso da cui misurare lo scostamento.
  */
 export function makePrezzoAtteso(market: Market, overrides: Record<number, number> = {}): PrezzoAtteso {
   const fn = ((p: Player) => {
@@ -35,13 +36,6 @@ export function makePrezzoAtteso(market: Market, overrides: Record<number, numbe
   }
 
   return fn
-}
-
-/** Inflazione da usare nei consigli: significativa solo dopo un po' di acquisti. */
-export function usableInflation(inflazione: number, assegnati: number): number {
-  if (assegnati < 10 || !Number.isFinite(inflazione) || inflazione <= 0) return 1
-  // Limitata per non trasformare un'asta iniziale sbilanciata in prezzi assurdi.
-  return Math.min(2.5, Math.max(0.5, inflazione))
 }
 
 export interface RoleNorm {

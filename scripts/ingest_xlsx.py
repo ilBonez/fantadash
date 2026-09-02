@@ -11,9 +11,15 @@ matrice degli abbinamenti di calendario, coppie e terzetti consigliati,
 infortunati, statistiche 2025/26 e parametri di lega finiscono tutti nel JSON
 che l'app importa. Non ci sono overlay da agganciare a mano ne' fetch di rete.
 
-L'unica eccezione e' data/ceduti.txt: l'elenco di chi ha lasciato la Serie A
-dopo la data del workbook, che va tolto dal listone senza aspettare un file
-nuovo. Non aggiunge dati, ne toglie.
+Ci sono due file accanto, che non sono fonti alternative ma correzioni:
+
+- data/ceduti.txt, l'elenco di chi ha lasciato la Serie A dopo la data del
+  workbook. Non aggiunge dati, ne toglie.
+- data/formazioni-tipo.json, gli undici titolari probabili letti da due siti.
+  Servono solo a contare quante fonti danno un giocatore titolare: la gerarchia
+  del workbook e' derivata dalle quotazioni, e sulle quotazioni un titolare
+  economico sembra una riserva.
+- data/infortuni.json, gli infortuni successivi alla data del workbook.
 """
 from __future__ import annotations
 
@@ -23,11 +29,15 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import unicodedata
+
 import openpyxl
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "src" / "data" / "listone.json"
 CEDUTI = ROOT / "data" / "ceduti.txt"
+FORMAZIONI = ROOT / "data" / "formazioni-tipo.json"
+INFORTUNI = ROOT / "data" / "infortuni.json"
 
 # Nei fogli di reparto la riga 1 e' il titolo, la 2 il conteggio, la 3 l'header.
 HEADER_ROW = 3
@@ -272,6 +282,122 @@ def leggi_infortunati(ws) -> dict[tuple[str, str], dict]:
     return out
 
 
+# --- formazioni tipo: quante fonti danno un giocatore titolare ---------------
+
+# Nel listone le iniziali del nome hanno sempre il punto ("Martinez Jo.",
+# "Paz N."), quindi il punto e' il modo affidabile per distinguerle dalle
+# particelle dei cognomi ("De Gea", "Van Der Brempt").
+INIZIALE = re.compile(r"^(?:[A-Za-z]{1,3}\.)+$")
+
+
+def senza_accenti(s: str) -> str:
+    base = unicodedata.normalize("NFD", s)
+    return "".join(c for c in base if not unicodedata.combining(c))
+
+
+def norm_nome(t: str) -> str:
+    return re.sub(r"[.'’-]", "", senza_accenti(t)).lower().strip()
+
+
+def match_giocatore(nome: str, candidati: list[dict]) -> dict | None:
+    """Aggancia un nome della fonte al listone, dentro la stessa squadra.
+
+    Il listone scrive "Martinez Jo.", le fonti "Martinez Josep" o solo
+    "Martinez": si cerca il cognome fra i token della fonte e, se il listone ha
+    un'iniziale, la si verifica sul resto. Un nome che resta ambiguo (due
+    Martinez nell'Inter, fonte che scrive solo "Martinez") non viene agganciato:
+    meglio un dato mancante che uno attribuito alla persona sbagliata.
+    """
+    src = [norm_nome(t) for t in nome.split() if norm_nome(t)]
+    # "Del Prato" nella fonte e "Delprato" nel listone sono la stessa persona.
+    unito = "".join(src)
+    migliori: list[tuple[int, dict]] = []
+
+    for p in candidati:
+        token = p["nome"].split()
+        cognome = [norm_nome(t) for t in token if not INIZIALE.match(t)]
+        iniziali = [norm_nome(t) for t in token if INIZIALE.match(t)]
+        if not cognome:
+            continue
+        if not all(c in src for c in cognome) and "".join(cognome) != unito:
+            continue
+        resto = [t for t in src if t not in cognome]
+        if iniziali and resto and not any(r.startswith(i) for r in resto for i in iniziali):
+            continue
+        migliori.append((len("".join(cognome)) * 10 + (5 if iniziali and resto else 0), p))
+
+    if not migliori:
+        return None
+    migliori.sort(key=lambda x: -x[0])
+    if len(migliori) > 1 and migliori[0][0] == migliori[1][0]:
+        return None
+    return migliori[0][1]
+
+
+def applica_formazioni(giocatori: list[dict]) -> tuple[dict, list[str]]:
+    """Conta per ogni giocatore da quante fonti e' dato titolare."""
+    for p in giocatori:
+        p["fonti"] = 0
+    if not FORMAZIONI.exists():
+        return {}, []
+
+    dati = json.loads(FORMAZIONI.read_text(encoding="utf-8"))
+    per_squadra: dict[str, list[dict]] = {}
+    for p in giocatori:
+        per_squadra.setdefault(p["squadra"], []).append(p)
+
+    problemi: list[str] = []
+    for fonte, squadre in (dati.get("formazioni") or {}).items():
+        for squadra, undici in squadre.items():
+            candidati = per_squadra.get(squadra)
+            if not candidati:
+                problemi.append(f"{fonte}: squadra '{squadra}' non nel listone")
+                continue
+            for nome in undici:
+                p = match_giocatore(nome, candidati)
+                if p is None:
+                    problemi.append(f"{fonte} / {squadra}: '{nome}'")
+                    continue
+                p["fonti"] += 1
+
+    meta = {
+        "aggiornato": dati.get("_aggiornato", ""),
+        "fonti": dati.get("_fonti", {}),
+        "totale": len(dati.get("formazioni") or {}),
+    }
+    return meta, problemi
+
+
+# --- infortuni successivi alla data del workbook -----------------------------
+
+
+def applica_infortuni(giocatori: list[dict]) -> tuple[int, list[str]]:
+    """Sovrascrive lo stato fisico per i giocatori elencati in infortuni.json.
+
+    Il workbook e' una fotografia: chi si opera il giorno dopo resta segnato
+    sano, e all'asta e' l'errore che costa di piu'.
+    """
+    if not INFORTUNI.exists():
+        return 0, []
+
+    dati = json.loads(INFORTUNI.read_text(encoding="utf-8"))
+    per_chiave = {p["chiave"]: p for p in giocatori}
+    ignoti: list[str] = []
+    applicati = 0
+
+    for voce in dati.get("infortuni") or []:
+        p = per_chiave.get(voce.get("chiave", ""))
+        if p is None:
+            ignoti.append(voce.get("chiave", "?"))
+            continue
+        p["inf"] = {"stato": voce.get("stato", ""), "dettaglio": voce.get("dettaglio", "")}
+        if voce.get("nota"):
+            p["nota"] = voce["nota"]
+        applicati += 1
+
+    return applicati, ignoti
+
+
 # --- giocatori usciti dopo la data del workbook ------------------------------
 
 
@@ -403,6 +529,14 @@ def main() -> None:
         via = set(ceduti)
         giocatori = [p for p in giocatori if p["chiave"] not in via]
 
+    formazioni, form_persi = applica_formazioni(giocatori)
+    n_inf, inf_ignoti = applica_infortuni(giocatori)
+    if inf_ignoti:
+        sys.exit(
+            f"data/infortuni.json: chiavi non trovate nel listone {inf_ignoti}. "
+            "Il formato e' \"Cognome (SIG)\", come nella colonna Chiave del foglio DB."
+        )
+
     giocatori.sort(key=lambda p: p["id"])
     per_chiave = {p["chiave"]: p["id"] for p in giocatori}
 
@@ -426,6 +560,7 @@ def main() -> None:
         "generatoIl": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "parametri": leggi_parametri(wb["Guida"]),
         "guida": leggi_guida(wb["Guida"]),
+        "formazioni": formazioni,
         "conteggi": {r: sum(1 for p in giocatori if p["r"] == r) for r in SHEETS.values()},
         "fasce": FASCE,
         "squadre": squadre,
@@ -448,6 +583,14 @@ def main() -> None:
     print(f"  {sum(1 for p in giocatori if 'inf' in p)} con nota infortunio")
     if ceduti:
         print(f"  {len(ceduti)} tolti da data/ceduti.txt: {', '.join(ceduti)}")
+    if n_inf:
+        print(f"  {n_inf} infortuni aggiornati da data/infortuni.json")
+    if formazioni:
+        due = sum(1 for p in giocatori if p["fonti"] >= 2)
+        una = sum(1 for p in giocatori if p["fonti"] == 1)
+        print(f"  formazioni tipo: {due} titolari per entrambe le fonti, {una} per una sola")
+    if form_persi:
+        print(f"  {len(form_persi)} nomi delle formazioni non agganciati: {', '.join(form_persi)}")
     if orfani:
         print(f"  {len(orfani)} giocatori senza sigla nel foglio DB: {', '.join(orfani[:5])}")
     if abb_persi:

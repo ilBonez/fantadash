@@ -187,84 +187,94 @@ Passa il mouse sul punteggio per vedere il perche'.
 
 Questa e' la parte che conta piu' di tutte, perche' e' quella che rende i piani realistici.
 
-**Le quotazioni dell'Excel sono una base d'asta, non un prezzo.** La loro somma torna col budget, ma
-la distribuzione reale e' molto piu' ripida — e soprattutto **cambia durante l'asta**. Prezzando
-tutto a quotazione si pianificano rose impossibili, tipo Lautaro e Thuram insieme.
+Il prezzo consigliato del workbook e' gia' tarato sulla lega da 500 crediti e 10 squadre, quindi il
+listino non ricostruisce una curva da zero: parte da li' e modella solo lo **scostamento** che
+l'asta produce mentre va avanti.
 
-La colonna `Asta` e' quindi un prezzo ricostruito da zero, con due vincoli presi da aste realmente
-concluse:
+```
+prezzo = consigliato x spintaDellaFascia x lambda     dentro [1, offerta massima sostenibile]
+```
 
-1. la spesa per reparto segue la **ripartizione mediana**: 7% portieri, 19% difesa, 32% centrocampo,
-   42% attacco — su 500 crediti fa 35-95-160-210;
-2. il **migliore di ogni reparto** costa quanto si osserva nelle aste.
+#### La spinta della fascia
 
-In mezzo si interpola con `prezzo = top x (fvm / fvmTop)^gamma`, e `gamma` si calibra per far tornare
-la spesa totale del reparto. Chi sta oltre il numero di slot della lega vale 1 credito: passato quel
-punto nessuno rilancia piu'. Il risultato e' convesso come nella realta' — pochi giocatori carissimi
-e una lunga coda da 1-2 crediti, che e' proprio cio' che serve per tenersi i crediti per centrocampo
-e attacco.
+Comprato un attaccante Top salgono gli altri Top, sale poco la 1a fascia, non si muove la 2a. La
+spinta dipende da **quanta parte della fascia e' gia' andata**, elevata a 0,6: l'esponente sotto 1
+fa si' che ogni acquisto alzi meno del precedente. Il contagio raggiunge solo la fascia adiacente
+(esponente 0,35) ed e' troncato oltre: che comprare un Top muova la 2a fascia non e' un
+comportamento che si vuole, e troncare e' piu' onesto di un esponente piccolo.
 
-#### La scarsita' fa salire i prezzi
+Provato dal vivo, comprando i primi due attaccanti Top — prezzo medio dei rimanenti:
 
-In una lega da 10 squadre ognuna vuole almeno un attaccante di livello. La **domanda** parte da 10 e
-scende solo quando qualcuno il suo l'ha preso; l'**offerta** si svuota a ogni acquisto. Quando
-restano due bomber liberi e due squadre senza, quei due costano molto piu' di prima.
-
-Il listino si ricalcola a ogni assegnazione con questo meccanismo. Per ogni reparto:
-
-- la **fascia alta** sono i migliori ancora liberi, tanti quanti ne cercano ancora le squadre
-  (portieri 1 a testa, difensori 2, centrocampisti 2, attaccanti 1, meno quelli che una squadra ha
-  gia' in rosa);
-- la fascia si divide una quota fissa del budget di reparto, quindi **meno sono e piu' costano**;
-- il resto si divide quel che rimane, con una spinta molto piu' contenuta: e' la scarsita' dei top a
-  fare i prezzi, non quella dei tappabuchi.
-
-Misurato sul listone 2026/27, 10 squadre, temperatura normale, vendendo i bomber uno alla volta:
-
-| Bomber venduti | Squadre a caccia | Spinta | Miglior attaccante libero |
-| --- | --- | --- | --- |
-| 0 | 10 | 1,00x | Lautaro 80 |
-| 2 | 8 | 1,24x | Hojlund 84 |
-| 4 | 6 | 1,60x | Kolo Muani 100 |
-| 6 | 4 | 2,28x | Douvikas 129 |
-| 8 | 2 | 3,00x | Scamacca 147 |
-
-Scamacca a inizio asta sta a 52. Quando restano due bomber e due squadre senza, ne vale 147.
-
-Due limiti tengono il modello onesto:
-
-- la spinta e' limitata a **3x sulla fascia alta e 1,6x sul resto**;
-- nessun prezzo puo' superare l'**offerta massima sostenibile** dalla squadra piu' ricca che cerca
-  ancora quel reparto: se nessuno puo' pagarlo, non e' un prezzo.
-
-La colonna `Spinta` nella vista Piani mostra il livello attuale rispetto a inizio asta, reparto per
-reparto.
-
-#### Temperatura del mercato
-
-Le due fonti concordano sulla forma della curva ma non sul livello, quindi il livello lo scegli tu in
-Impostazioni. Su 500 crediti, prezzo del miglior giocatore per reparto:
-
-| Temperatura | P | D | C | A | Quando usarla |
+| | Top | 1a | 2a | 3a | 4a |
 | --- | --- | --- | --- | --- | --- |
-| Freddo | 21 | 30 | 35 | 63 | lega prudente, nessuno si scanna sui top |
-| **Normale** | 28 | 40 | 46 | 84 | prezzi medi delle aste concluse (default) |
-| Caldo | 55 | 78 | 90 | 164 | lega da guerra sui top |
+| inizio | 92,3 | 43,0 | 20,4 | 1 | 1 |
+| dopo Malen | **114,0** | 47,6 | 20,5 | 1 | 1 |
+| dopo Martinez L. | **122,4** | 50,3 | 21,2 | 1 | 1 |
 
-A "Normale" Lautaro sta a 79, Thuram 67, Hojlund 66 — i dati osservati dicono 84 e 71. A "Caldo"
-diventano 145 e 103, ed e' lì che prenderli entrambi diventa davvero impossibile.
+Sale sempre, e sale sempre meno (+21,7 poi +8,4). La 1a segue di poco, la 2a resta ferma, 3a e 4a
+non si muovono di un credito.
 
-La temperatura fissa il livello di partenza; da li' in poi lo muove la scarsita', come sopra.
+#### L'ampiezza non e' un parametro
 
-#### Massimo 2 centrocampisti e 1 attaccante di fascia alta
+Quanto una fascia **puo'** scaldarsi si legge dal listone: `quota di crediti / quota di giocatori`.
+Gli attaccanti Top sono il 10% dei giocatori del reparto e il 30% della spesa, quindi si scaldano;
+gli attaccanti di 2a fascia sono il 33% dei giocatori e il 23% della spesa, quindi non si scaldano
+mai. Il modello scopre da solo che per i portieri la pressione sta sulla 2a-3a e per i difensori
+sulla 3a, senza che glielo si dica.
 
-Un giocatore conta come fascia alta sopra l'8% del budget (40 crediti su 500). I piani ne prendono al
-massimo **2 a centrocampo e 1 in attacco**, che e' la media reale di una rosa.
+Il motivo strutturale e' dove l'offerta cumulata incrocia gli slot della lega:
 
-Non e' una questione di budget: sulla carta due attaccanti da 80 ci starebbero in 500 crediti. E' che
-all'asta sette avversari rilanciano su ognuno, e chi prende i due migliori attaccanti si ritrova il
-resto della rosa a 1 credito. "Due bomber" e' l'unica strategia che alza il tetto a 2 attaccanti, e
-nella sua scheda si vede il prezzo che paga.
+| Reparto | Slot | Si esauriscono di sicuro | Fascia marginale | Resta invenduto |
+| --- | --- | --- | --- | --- |
+| P | 30 | 2a, 3a, 4a (26) | Scommessa: 4 su 38 | — |
+| D | 80 | 1a, 2a, 3a (57) | 4a: 23 su 116 | Scommessa |
+| C | 80 | 1a, 2a (43) | 3a: 37 su 109 | 4a, Scommessa |
+| A | 60 | Top, 1a (33) | 2a: 27 su 29 | 3a, 4a |
+
+Una fascia si scalda solo se verra' consumata tutta. Le 3a e 4a fascia attaccanti restano a 1
+credito qualunque cosa succeda sopra, perche' ne avanzano.
+
+E le fasce basse che si svuotano **abbassano** leggermente quelle alte, non le alzano: la domanda
+non risale (chi doveva spendere 5 crediti non se ne ritrova 40), ma si brucia il tappabuchi da 1
+credito, quindi riempire gli slot rimasti costa di piu' e resta meno per i top. Non serve una regola
+dedicata, esce da lambda: vendendo 30 difensori di 4a fascia, la 1a passa da 46 a 41.
+
+#### Lambda: quanto la lega sta pagando davvero
+
+Due segnali che a inizio asta dicono cose opposte:
+
+- il **portafoglio** — quanti crediti restano per gli slot che restano;
+- la **temperatura osservata** — quanto la lega ha pagato finora rispetto ai prezzi consigliati.
+
+A inizio asta spendere tanto significa *"lega calda, continuera' a strapagare"*; a fine asta
+significa *"non ci sono piu' soldi"*. Il peso si sposta dall'una all'altro con l'avanzamento
+dell'asta, e ci si fida della temperatura osservata solo man mano che le assegnazioni la rendono
+credibile (dopo 12 la si crede a meta'). Il pannello Listino nei Piani mostra tutti e tre i numeri:
+attesa, osservata, usata adesso.
+
+Lambda e' limitata fra 0,5 e 2. Il tetto serve piu' del pavimento: in una lega che tiene i crediti
+per la fine restano molti soldi e pochi slot, e senza limite il listino esplodeva.
+
+#### Come e' stato tarato
+
+Su aste simulate contro tre curve di lega — top strapagati, lega disciplinata, tutti che tengono i
+crediti per la fine — misurando l'errore fra prezzo previsto e prezzo pagato. Sui primi 60 giocatori
+chiamati, quelli su cui si decide l'asta:
+
+| Lega | listino precedente | questo |
+| --- | --- | --- |
+| calda (top strapagati) | 32% | **17%** |
+| piatta (disciplinata) | 17% | 23% |
+| tardiva (tutti tengono) | 47% | **32%** |
+
+Perde solo nella lega disciplinata, dove il prezzo consigliato era gia' giusto e la correzione
+aggiunge rumore. In compenso ha **bias positivo ovunque**: sbaglia per eccesso, cioe' ti dice di
+preventivare qualcosa in piu'. All'asta e' l'errore che perdoni — quello per difetto ti fa fermare
+troppo presto e perdere il giocatore.
+
+Resta un punto cieco: **il primo quarto d'asta**. Prima di vedere assegnazioni non c'e' modo di
+sapere se la lega e' calda, e li' l'unica leva e' il selettore Freddo/Normale/Caldo in Impostazioni,
+che fissa l'attesa di partenza (0,85x / 1,00x / 1,35x).
 
 ### Correzioni a mano
 
@@ -351,8 +361,9 @@ E' il numero che serve davvero all'asta: dice fin dove un avversario puo' rilanc
 Tutto quello che la dashboard sa viene da **un solo file**:
 `data/Fantacalcio_Classic_202627_Listone_e_Asta.xlsx`. Non ci sono overlay curati a mano, file
 `extra.json`, chiamate di rete o seconde fonti da tenere allineate: il workbook e' la fonte di
-verita' e basta. L'unica cosa che gli sta accanto e' `data/ceduti.txt`, che non aggiunge dati: ne
-toglie (vedi sotto).
+verita' e basta. Accanto ci sono solo due correzioni, non fonti alternative: `data/ceduti.txt`, che
+non aggiunge dati ma ne toglie, e `data/formazioni-tipo.json`, che serve unicamente a contare quante
+probabili formazioni danno un giocatore titolare. Entrambe spiegate sotto.
 
 Dal workbook l'ingest legge:
 
@@ -381,6 +392,64 @@ produrre un JSON vuoto in silenzio, e stampa quanti giocatori, squadre e note ha
 cambiando workbook cambiano. Se sostituisci il file ad asta iniziata, esporta prima il backup JSON e
 ricontrolla le assegnazioni. Togliere un nome da `ceduti.txt` invece e' sicuro: gli id si assegnano
 prima dell'esclusione, quindi nessun altro giocatore viene rinumerato.
+
+### Chi gioca davvero: le formazioni tipo
+
+La `Gerarchia stimata` del workbook e' derivata dalle quotazioni dentro la stessa squadra e ruolo.
+Sui portieri funziona — il titolare costa sempre piu' della riserva — ma in mezzo al campo sbaglia:
+un titolare che il mercato non valuta sembra una riserva.
+
+**`data/formazioni-tipo.json`** contiene gli undici titolari probabili letti da due fonti, con URL e
+data. L'ingest li aggancia al listone e scrive su ogni giocatore `fonti`: 0, 1 o 2, cioe' quante
+delle due lo mettono in campo. Da li' viene la gerarchia usata in dashboard, in ordine di
+attendibilita': entrambe le fonti, poi la fonte singola, poi il workbook.
+
+Il caso che mostra perche' serve: **Yildiz** e' quotato 22 e il workbook lo mette in ballottaggio
+dietro Woltemade, che ne vale 23. Una delle due fonti pero' schiera Yildiz e non Woltemade — con il
+consenso delle fonti l'ordine si inverte, e la scheda dice correttamente che la riserva diretta di
+Yildiz e' Woltemade.
+
+L'aggancio dei nomi e' il punto fragile: il listone scrive `Martinez Jo.`, le fonti `Martínez Josep`
+o solo `Martinez`. Il matcher cerca il cognome fra i token della fonte e verifica l'iniziale sul
+resto (nel listone le iniziali hanno sempre il punto, cosi' `De Gea` e `Van Der Brempt` non vengono
+scambiati per iniziali). **Un nome che resta ambiguo non viene agganciato**: all'Inter la fonte che
+scrive solo `Martinez` potrebbe indicare il portiere o l'attaccante, e attribuirlo a caso sarebbe
+peggio del dato mancante. L'ingest stampa ogni nome non agganciato.
+
+### Ballottaggi: chi si gioca il posto con chi
+
+Il gruppo di confronto e' **squadra + ruolo Mantra**: due giocatori con lo stesso ruolo esteso
+("Difensore centrale", "Terzino sinistro / Esterno basso") nella stessa squadra si contendono lo
+stesso posto. Il ruolo Classic sarebbe troppo grosso — otto difensori non sono tutti alternative
+l'uno dell'altro.
+
+Nella scheda d'asta il blocco **Ballottaggio** dice, in una riga:
+
+- se il giocatore parte titolare, **chi e' la sua riserva diretta** — quella che ne raccoglie il voto
+  quando salta il turno;
+- se non parte, **quale titolare ha davanti** — il posto che deve prendersi;
+- **"Non in ballottaggio"** quando in squadra nessun altro ha il suo ruolo.
+
+Sotto c'e' il gruppo intero in ordine, con il pallino verde su chi parte, il consenso delle fonti
+(`n/2`) e il prezzo consigliato. **Ogni nome ha la sua stella**: si segna l'alternativa come
+obiettivo senza uscire dalla scheda e senza perdere il giocatore che e' in asta in quel momento —
+che e' esattamente il gesto che serve quando stai comprando il titolare e vuoi anche la sua riserva.
+
+### Infortuni successivi al workbook
+
+Il foglio `Infortunati` e' fermo al 1 settembre, il pronto soccorso no.
+**`data/infortuni.json`** aggiunge o sovrascrive lo stato fisico di un giocatore:
+
+```json
+{ "chiave": "Thuram K. (JUV)",
+  "stato": "Infortunato - lungo stop",
+  "dettaglio": "Operato al ginocchio: rientro previsto a febbraio 2027.",
+  "nota": "INFORTUNATO (lungo stop) - rientro a febbraio 2027" }
+```
+
+Lo `stato` deve usare il vocabolario del workbook, perche' e' quello che pesa nello Score:
+`Infortunato - lungo stop` (x0,60), `Infortunato - rientro entro settembre` (x0,85), `In dubbio per
+la prossima` (x0,95). Come per i ceduti, una chiave che non corrisponde a nessuno ferma l'ingest.
 
 ### Chi e' andato via dopo il workbook
 
@@ -440,8 +509,12 @@ barra di assegnazione **la scheda completa**, divisa in tre blocchi:
 
 - **Prezzi** – quotazione iniziale e attuale, FVM, consigliato e massimo, listino d'asta, FVM per
   credito, Score, e il massimo che la tua squadra puo' ancora offrire;
-- **Rendimento** – presenze, media voto, fantamedia, gol, assist, rigori, cartellini del 2025/26,
-  fantamedia ponderata, le giornate gia' giocate del 2026/27, gerarchia e bonus;
+- **Rendimento** – **presenze in Serie A 2025/26** in cima (verde da 25 in su, ambra sotto 10), poi
+  fantamedia, media voto, gol, assist, rigori e cartellini; fantamedia ponderata; le giornate gia'
+  giocate del 2026/27; gerarchia e bonus. Chi non era in Serie A lo dice esplicitamente, invece di
+  mostrare zeri che sembrano un rendimento pessimo;
+- **Ballottaggio** – la riserva diretta o il titolare davanti, il gruppo che si gioca il posto, e una
+  stella per ogni alternativa;
 - **Abbinamenti di calendario** – coppia e terzetto migliori fra i liberi, l'abbinamento fisso del
   listone, e le trasferte in comune con i giocatori dello stesso reparto che hai gia' in rosa.
 
@@ -510,13 +583,16 @@ avvia.cmd                    doppio clic su Windows: compila (se serve) e apre
 .github/workflows/pages.yml  deploy automatico su GitHub Pages
 data/                        il workbook .xlsx (il watcher guarda qui)
 data/ceduti.txt              chi ha lasciato la Serie A dopo la data del workbook
-scripts/ingest_xlsx.py       workbook - ceduti.txt -> src/data/listone.json
+data/formazioni-tipo.json    undici titolari probabili da due fonti, con URL e data
+data/infortuni.json          infortuni successivi alla data del workbook
+scripts/ingest_xlsx.py       workbook - ceduti + formazioni + infortuni -> listone.json
 scripts/serve.mjs            server statico senza dipendenze per dist/
 vite.config.ts               plugin autoIngest: rigenera il listone al volo
 src/lib/listone.ts           caricamento listone, ricerca, filtri, matrice calendario
 src/lib/abbinamenti.ts       coppie e terzetti migliori fra i giocatori liberi
+src/lib/ballottaggi.ts       chi si gioca il posto con chi, dentro squadra e ruolo
 src/lib/stats.ts             crediti, slot, offerta massima, statistiche di lega
-src/lib/market.ts            listino d'asta: curva di prezzo per reparto
+src/lib/market.ts            listino d'asta: spinta per fascia e lambda
 src/lib/advice.ts            prezzo atteso e Score dei consigli
 src/lib/utente.ts            splash di accesso (non e' sicurezza, vedi commento)
 src/lib/xlsxLite.ts          lettore .xlsx senza dipendenze (zip + XML del browser)

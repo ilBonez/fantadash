@@ -1,0 +1,12 @@
+{
+ "_nota": "Aggiornamenti sugli infortuni successivi alla data del workbook. Sovrascrivono quanto dice il foglio Infortunati per lo stesso giocatore. Lo stato deve usare il vocabolario del workbook, perche' e' quello che pesa nello Score: 'Infortunato - lungo stop' (rientro da ottobre in poi), 'Infortunato - rientro entro settembre', 'In dubbio per la prossima'.",
+ "_aggiornato": "2026-09-02",
+ "infortuni": [
+  {
+   "chiave": "Thuram K. (JUV)",
+   "stato": "Infortunato - lungo stop",
+   "dettaglio": "Operato al ginocchio: rientro previsto a febbraio 2027. Salta piu' di mezzo campionato, all'asta vale molto meno del prezzo consigliato.",
+   "nota": "INFORTUNATO (lungo stop) - rientro a febbraio 2027"
+  }
+ ]
+}

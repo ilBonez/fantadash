@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { giudizio, type Abbinamento } from '../lib/abbinamenti'
+import { ballottaggioDi, etichettaFonti, type Ballottaggio } from '../lib/ballottaggi'
 import type { Advice } from '../lib/advice'
 import { dec, int } from '../lib/format'
 import { trasferteComuni } from '../lib/listone'
@@ -14,6 +15,9 @@ interface Props {
   abbinamento?: Abbinamento
   /** La squadra di riferimento: serve per il confronto con chi hai gia in rosa. */
   myTeam?: TeamStats
+  /** Obiettivi gia marcati: la stella nel ballottaggio si accende da qui. */
+  targetIds: Set<number>
+  onToggleTarget: (playerId: number) => void
   onChiudi: () => void
 }
 
@@ -24,8 +28,17 @@ interface Props {
  * in asta si guarda un giocatore alla volta, e sono i trenta secondi in cui
  * serve avere davanti prezzi, stato fisico, rendimento e abbinamenti insieme.
  */
-export default function PlayerCard({ player: p, advice, abbinamento, myTeam, onChiudi }: Props) {
+export default function PlayerCard({
+  player: p,
+  advice,
+  abbinamento,
+  myTeam,
+  targetIds,
+  onToggleTarget,
+  onChiudi,
+}: Props) {
   const inf = tonoInfortunio(p)
+  const bal = ballottaggioDi(p)
 
   return (
     <div className="max-h-[46vh] shrink-0 overflow-auto border-t border-sky-500/40 bg-ink-900 shadow-[0_-12px_28px_-12px_rgba(0,0,0,0.8)]">
@@ -74,7 +87,7 @@ export default function PlayerCard({ player: p, advice, abbinamento, myTeam, onC
         </div>
       )}
 
-      <div className="grid gap-3 px-3 py-2.5 lg:grid-cols-3">
+      <div className="grid gap-3 px-3 py-2.5 md:grid-cols-2 2xl:grid-cols-4">
         <Blocco titolo="Prezzi">
           <Riga label="Quotazione" value={`${int(p.qtI)} → ${int(p.qtA)}`} hint="iniziale → attuale" />
           <Riga label="FVM" value={int(p.fvm)} hint="Fanta Valore di Mercato" />
@@ -134,12 +147,18 @@ export default function PlayerCard({ player: p, advice, abbinamento, myTeam, onC
           {p.s25 ? (
             <>
               <Riga
-                label="2025/26"
-                value={`${dec(p.s25.fm ?? 0)} FM`}
-                hint={`${int(p.s25.pg)} presenze, media voto ${dec(p.s25.mv ?? 0)}${
-                  p.s25.squadra && p.s25.squadra !== p.squadra ? ` · ${p.s25.squadra}` : ''
+                label="Presenze 25/26"
+                value={
+                  <span className={p.s25.pg >= 25 ? 'text-emerald-400' : p.s25.pg < 10 ? 'text-amber-400' : undefined}>
+                    {int(p.s25.pg)}
+                    <span className="text-[11px] font-normal text-ink-400">/38</span>
+                  </span>
+                }
+                hint={`In Serie A 2025/26 con ${p.s25.squadra || p.squadra}${
+                  p.s25.squadra && p.s25.squadra !== p.squadra ? ' — squadra diversa da quella attuale' : ''
                 }`}
               />
+              <Riga label="Fantamedia 25/26" value={dec(p.s25.fm ?? 0)} hint={`media voto ${dec(p.s25.mv ?? 0)}`} />
               <Riga label="Gol e assist 25/26" value={`${int(p.s25.gol)}G ${int(p.s25.ass)}A`} />
               <Riga
                 label="Rigori 25/26"
@@ -148,9 +167,10 @@ export default function PlayerCard({ player: p, advice, abbinamento, myTeam, onC
               />
             </>
           ) : (
-            <p className="text-[11px] text-ink-400">
-              Nessuno storico in Serie A 2025/26: pesa quasi solo il valore di mercato.
-            </p>
+            <div className="rounded border border-amber-500/25 bg-amber-500/5 px-2 py-1.5 text-[11px] text-amber-200/90">
+              <strong className="font-semibold">Non era in Serie A nel 2025/26.</strong> Nessuna presenza, nessuno
+              storico su cui basarsi: per lui pesa quasi solo il valore di mercato.
+            </div>
           )}
           <Riga
             label="FM ponderata"
@@ -177,6 +197,10 @@ export default function PlayerCard({ player: p, advice, abbinamento, myTeam, onC
           )}
         </Blocco>
 
+        <Blocco titolo="Ballottaggio">
+          <Ballottaggi p={p} bal={bal} targetIds={targetIds} onToggleTarget={onToggleTarget} />
+        </Blocco>
+
         <Blocco titolo="Abbinamenti di calendario">
           <Abbinamenti p={p} ab={abbinamento} myTeam={myTeam} />
         </Blocco>
@@ -187,6 +211,111 @@ export default function PlayerCard({ player: p, advice, abbinamento, myTeam, onC
           {advice.motivi.join(' · ')}
         </div>
       )}
+    </div>
+  )
+}
+
+/**
+ * Chi si gioca il posto con lui, e la stella per portarsi dietro l'alternativa.
+ *
+ * All'asta la coppia titolare-riserva della stessa squadra vale piu' della
+ * somma dei due: quando il titolare salta il turno il voto lo porta l'altro.
+ * Per questo ogni nome del gruppo ha la sua stella: si segna l'obiettivo senza
+ * uscire dalla scheda e senza perdere il giocatore che e' in asta adesso.
+ */
+function Ballottaggi({
+  p,
+  bal,
+  targetIds,
+  onToggleTarget,
+}: {
+  p: Player
+  bal: Ballottaggio | null
+  targetIds: Set<number>
+  onToggleTarget: (playerId: number) => void
+}) {
+  if (!bal) {
+    return (
+      <div className="space-y-1.5">
+        <p className="text-[11px] text-ink-400">
+          <strong className="font-semibold text-ink-300">Non in ballottaggio.</strong> Nessun altro{' '}
+          {p.squadra ? `nel ${p.squadra}` : 'in rosa'} ha il suo stesso ruolo ({p.rm.toLowerCase()}), quindi non c&apos;e&apos;
+          un&apos;alternanza da leggere.
+        </p>
+        <p className="text-[10px] text-ink-500">Fonti: {etichettaFonti(p)}.</p>
+      </div>
+    )
+  }
+
+  const altro = bal.parte ? bal.riserva : bal.titolare
+
+  return (
+    <div className="space-y-1.5">
+      {altro ? (
+        <div className="text-[11px] leading-snug text-ink-400">
+          {bal.parte ? 'La sua riserva diretta e ' : 'Davanti a lui parte '}
+          <span className="font-semibold text-ink-100">{altro.nome}</span>
+          {bal.parte ? '.' : '.'} {bal.parte ? 'Se salta il turno, gioca lui.' : 'E il posto che deve prendersi.'}
+        </div>
+      ) : (
+        <div className="text-[11px] leading-snug text-ink-400">
+          {bal.parte
+            ? 'Nessuna riserva nel listone per il suo ruolo: se salta, la squadra cambia assetto.'
+            : 'Nel gruppo non risulta un titolare designato.'}
+        </div>
+      )}
+
+      <ul className="divide-y divide-ink-800/70 rounded border border-ink-800">
+        {bal.gruppo.map((x) => {
+          const parte = bal.titolari.some((t) => t.id === x.id)
+          const isLui = x.id === p.id
+          const isTarget = targetIds.has(x.id)
+          return (
+            <li
+              key={x.id}
+              className={`flex items-center gap-1.5 px-1.5 py-1 text-[11px] ${isLui ? 'bg-sky-500/10' : ''}`}
+            >
+              <span
+                title={parte ? 'Parte titolare' : 'Parte dalla panchina'}
+                className={`size-1.5 shrink-0 rounded-full ${parte ? 'bg-emerald-400' : 'bg-ink-600'}`}
+              />
+              <span className={`min-w-0 flex-1 truncate ${isLui ? 'font-semibold text-ink-100' : 'text-ink-300'}`}>
+                {x.nome}
+                {isLui && <span className="ml-1 text-[10px] font-normal text-sky-300">in asta</span>}
+              </span>
+              <span
+                title={`${etichettaFonti(x)} · listone: ${x.gerarchia}`}
+                className="shrink-0 font-mono text-[10px] text-ink-500"
+              >
+                {x.fonti}/2
+              </span>
+              <span className="w-7 shrink-0 text-right text-[10px] text-ink-500">{int(x.cons)}</span>
+              {isLui ? (
+                <span className="w-5 shrink-0" />
+              ) : (
+                <button
+                  onClick={() => onToggleTarget(x.id)}
+                  title={
+                    isTarget
+                      ? `Togli ${x.nome} dagli obiettivi`
+                      : `Segna ${x.nome} come obiettivo, senza uscire da questa scheda`
+                  }
+                  className={`w-5 shrink-0 text-center text-sm leading-none ${
+                    isTarget ? 'text-amber-400' : 'text-ink-700 hover:text-ink-300'
+                  }`}
+                >
+                  &#9733;
+                </button>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+
+      <p className="text-[10px] leading-snug text-ink-500">
+        Il pallino verde e chi parte, <span className="font-mono">n/2</span> quante probabili formazioni lo mettono
+        nell&apos;undici, poi il prezzo consigliato.
+      </p>
     </div>
   )
 }

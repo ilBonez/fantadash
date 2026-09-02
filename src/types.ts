@@ -98,6 +98,12 @@ export interface Player {
   fmPond: number
   /** Cambia squadra rispetto al 2025/26 o arriva da fuori Serie A. */
   nuovo: boolean
+  /**
+   * Quante delle probabili formazioni raccolte in data/formazioni-tipo.json lo
+   * mettono nell'undici titolare: 0, 1 o 2. Corregge `gerarchia`, che il
+   * workbook deriva dalle sole quotazioni.
+   */
+  fonti: number
 
   /** Miglior abbinamento secondo il workbook: chiave e id, quando risolto. */
   abb: string
@@ -146,6 +152,12 @@ export interface Listone {
     /** Voci [etichetta, spiegazione] della legenda delle note. */
     legendaNota: [string, string][]
     metodo: [string, string][]
+  }
+  /** Da dove vengono le probabili formazioni usate per correggere la gerarchia. */
+  formazioni: {
+    aggiornato: string
+    fonti: Record<string, string>
+    totale: number
   }
   conteggi: Record<Role, number>
   fasce: Fascia[]
