@@ -1,0 +1,21 @@
+# Giocatori usciti dalla Serie A dopo la data del workbook.
+#
+# Il workbook e' fotografato al 1 settembre 2026 e non si aggiorna da solo: il
+# mercato invece continua. Chi finisce qui viene tolto dal listone dall'ingest,
+# quindi non compare in asta, nei piani e negli abbinamenti.
+#
+# Una chiave per riga, nel formato esatto del listone: "Cognome (SIG)".
+# Le sigle sono quelle del foglio DB (ROM, MIL, GEN, LAZ...).
+# Righe vuote e righe che iniziano con # vengono ignorate.
+#
+# Se una chiave non corrisponde a nessuno, l'ingest si ferma con un errore
+# invece di ignorarla in silenzio: un nome scritto male e' un giocatore che
+# resta comprabile per sbaglio.
+#
+# Dopo ogni modifica: npm run ingest (o salva il file con "npm run dev" attivo).
+
+# --- 2 settembre 2026: ceduti all'estero nella notte ---
+Vaz (ROM)
+Fofana Y. (MIL)
+Norton-Cuffy (GEN)
+Ratkov (LAZ)

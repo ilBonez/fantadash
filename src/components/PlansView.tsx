@@ -15,7 +15,6 @@ export default function PlansView() {
   const setMyTeam = useAuction((s) => s.setMyTeam)
   const setTargets = useAuction((s) => s.setTargets)
   const targetIds = useAuction((s) => s.targetIds)
-  const settings = useAuction((s) => s.settings)
 
   const [forTeamId, setForTeamId] = useState<string | null>(myTeamId)
   const team = league.teams.find((t) => t.team.id === (forTeamId ?? myTeamId)) ?? league.teams[0]
@@ -25,11 +24,10 @@ export default function PlansView() {
     return buildPlans({
       available: league.available,
       team,
-      mode: settings.mode,
       prezzo: league.prezzo,
       sogliaTop: league.sogliaTop,
     })
-  }, [league.available, league.prezzo, league.sogliaTop, settings.mode, team])
+  }, [league.available, league.prezzo, league.sogliaTop, team])
 
   if (!team) {
     return (
@@ -274,7 +272,7 @@ function Confronto({ plans, maxFvm }: { plans: Plan[]; maxFvm: number }) {
               >
                 Diverso
               </th>
-              <th className="px-3 py-1.5 text-left font-semibold">Coppia portieri</th>
+              <th className="px-3 py-1.5 text-left font-semibold" title="Blocco portieri e trasferte in comune">Blocco portieri</th>
             </tr>
           </thead>
           <tbody>
@@ -309,7 +307,7 @@ function Confronto({ plans, maxFvm }: { plans: Plan[]; maxFvm: number }) {
                   {diversi(p) === 0 ? 'identico' : `${diversi(p)} su ${p.picks.length}`}
                 </td>
                 <td className="px-3 py-1.5 text-xs text-ink-300">
-                  {p.coppiaPortieri ?? <span className="text-amber-400">non applicata</span>}
+                  {p.abbinamentoPortieri ?? <span className="text-amber-400">non applicato</span>}
                 </td>
               </tr>
             ))}
@@ -371,9 +369,9 @@ function PlanCard({
           <span>
             <span className="font-semibold text-ink-200">{plan.aPocoPrezzo}</span> slot da 1-2 cr
           </span>
-          {plan.coppiaPortieri && (
-            <span>
-              coppia P: <span className="font-semibold text-ink-200">{plan.coppiaPortieri}</span>
+          {plan.abbinamentoPortieri && (
+            <span title="Blocco portieri scelto per copertura di calendario: piu basso e il numero, meglio si alternano">
+              portieri: <span className="font-semibold text-ink-200">{plan.abbinamentoPortieri}</span>
             </span>
           )}
         </div>

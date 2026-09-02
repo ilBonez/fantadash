@@ -1,19 +1,25 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Mode, Pick, Role, Settings, Team } from '../types'
+import { listone } from '../lib/listone'
+import type { Pick, Role, Settings, Team } from '../types'
 
-export const STORAGE_KEY = 'fantadash.v1'
+// v2: il listone e' cambiato sorgente e gli id giocatore con lui, quindi un
+// salvataggio vecchio punterebbe a giocatori sbagliati.
+export const STORAGE_KEY = 'fantadash.v2'
 
+// I default vengono dalla taratura con cui e' costruito il listone: 500
+// crediti, 10 squadre, 3-8-8-6. Cambiandoli in Impostazioni i prezzi
+// consigliati del workbook restano quelli, il listino dinamico invece segue.
 const DEFAULT_SETTINGS: Settings = {
   lega: 'La mia lega',
-  mode: 'classic',
-  budget: 500,
-  slots: { P: 3, D: 8, C: 8, A: 6 },
+  budget: listone.parametri.budget,
+  slots: listone.parametri.slots,
   temperatura: 'normale',
 }
 
-// Dieci squadre e la taglia piu comune di lega: si aggiungono e togliono in Impostazioni.
-const DEFAULT_TEAMS: Team[] = Array.from({ length: 10 }, (_, i) => ({
+// Le squadre della lega su cui e' tarato il listone: si aggiungono e
+// togliono in Impostazioni.
+const DEFAULT_TEAMS: Team[] = Array.from({ length: listone.parametri.squadre }, (_, i) => ({
   id: `t${i + 1}`,
   nome: `Squadra ${i + 1}`,
 }))
@@ -35,7 +41,6 @@ interface AuctionState extends Snapshot {
 
   setSettings: (patch: Partial<Settings>) => void
   setSlots: (patch: Partial<Record<Role, number>>) => void
-  setMode: (mode: Mode) => void
 
   addTeam: (nome?: string) => void
   updateTeam: (id: string, patch: Partial<Omit<Team, 'id'>>) => void
@@ -89,7 +94,6 @@ export const useAuction = create<AuctionState>()(
 
         setSettings: (patch) => set((s) => ({ settings: { ...s.settings, ...patch } })),
         setSlots: (patch) => set((s) => ({ settings: { ...s.settings, slots: { ...s.settings.slots, ...patch } } })),
-        setMode: (mode) => set((s) => ({ settings: { ...s.settings, mode } })),
 
         addTeam: (nome) =>
           set((s) => {

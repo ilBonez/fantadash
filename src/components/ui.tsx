@@ -15,6 +15,14 @@ export const ROLE_BAR: Record<Role, string> = {
   A: 'bg-role-a',
 }
 
+/** Colore del giudizio sulle trasferte in comune, dalle soglie del workbook. */
+export const TONO_TRASFERTE = {
+  ottimo: 'text-emerald-400',
+  buono: 'text-sky-300',
+  medio: 'text-ink-400',
+  male: 'text-rose-400',
+} as const
+
 export function RoleBadge({ role, text }: { role: Role; text?: string }) {
   return (
     <span

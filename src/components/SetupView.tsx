@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { int } from '../lib/format'
-import { listone, noteSquadre } from '../lib/listone'
+import { listone } from '../lib/listone'
 import { TEMPERATURE, type Temperatura } from '../lib/market'
 import { useAuction, type Snapshot } from '../store/useAuction'
 import { ROLES, ROLE_LABEL } from '../types'
@@ -71,18 +71,6 @@ export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: 
 
             <div className="grid grid-cols-2 gap-3">
               <label className="block">
-                <span className="mb-1 block text-xs text-ink-400">Modalita</span>
-                <select
-                  value={settings.mode}
-                  onChange={(e) => setSettings({ mode: e.target.value as 'classic' | 'mantra' })}
-                  className="field w-full"
-                >
-                  <option value="classic">Classic (Qt.A, FVM)</option>
-                  <option value="mantra">Mantra (Qt.A M, FVM M)</option>
-                </select>
-              </label>
-
-              <label className="block">
                 <span className="mb-1 block text-xs text-ink-400">Crediti per squadra</span>
                 <input
                   type="number"
@@ -92,6 +80,12 @@ export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: 
                   className="field w-full"
                 />
               </label>
+
+              <div className="self-end pb-1.5 text-[11px] text-ink-500">
+                Il listone e tarato su {int(listone.parametri.budget)} crediti e{' '}
+                {int(listone.parametri.squadre)} squadre: cambiando questi valori il prezzo consigliato del
+                workbook resta quello, il listino d&apos;asta invece si adegua.
+              </div>
             </div>
 
             <div>
@@ -138,10 +132,10 @@ export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: 
                   </label>
                 ))}
               </div>
-              {slotsTotal * teams.length > listone.giocatori.length - listone.ceduti && (
+              {slotsTotal * teams.length > listone.giocatori.length && (
                 <p className="mt-2 text-xs text-amber-400">
                   {teams.length} squadre x {slotsTotal} slot = {int(teams.length * slotsTotal)} giocatori richiesti, ma
-                  la lista ne ha {int(listone.giocatori.length - listone.ceduti)}.
+                  la lista ne ha {int(listone.giocatori.length)}.
                 </p>
               )}
             </div>
@@ -291,52 +285,67 @@ export default function SetupView({ utente, onEsci }: { utente: Utente; onEsci: 
             <div className="flex justify-between">
               <span className="text-ink-400">Giocatori attivi</span>
               <span className="font-medium">
-                {int(listone.giocatori.length - listone.ceduti)}{' '}
+                {int(listone.giocatori.length)}{' '}
                 <span className="text-ink-500">
                   ({ROLES.map((r) => `${r} ${listone.conteggi[r]}`).join(' · ')})
                 </span>
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-ink-400">Ceduti / fuori lista</span>
-              <span className="font-medium">{int(listone.ceduti)}</span>
+              <span className="text-ink-400">Titolari e bonus</span>
+              <span className="font-medium">
+                {int(listone.giocatori.filter((p) => p.gerarchia === 'Titolare').length)} titolari ·{' '}
+                {int(listone.giocatori.filter((p) => p.rig != null).length)} rigoristi
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-ink-400">Dati curati</span>
+              <span className="text-ink-400">Note fisiche</span>
               <span className="font-medium">
-                {int(listone.giocatori.filter((p) => p.titolare).length)} titolari ·{' '}
-                {int(listone.giocatori.filter((p) => p.rigorista).length)} rigoristi
+                {int(listone.giocatori.filter((p) => p.inf).length)} fra infortunati e in dubbio
               </span>
             </div>
             <p className="border-t border-ink-800 pt-2 text-xs text-ink-400">
-              Per aggiornare le quotazioni copia il nuovo .xlsx ufficiale in{' '}
-              <code className="text-ink-200">data/</code>: con <code className="text-ink-200">npm run dev</code> attivo
-              il listone si rigenera da solo e la pagina si ricarica. A server spento serve{' '}
-              <code className="text-ink-200">npm run ingest</code>. Le assegnazioni non si perdono: sono legate
-              all&apos;Id ufficiale del giocatore.
+              {listone.descrizione}
             </p>
             <p className="text-xs text-ink-400">
-              Titolari, rigoristi, tiratori e prezzi di mercato stanno in{' '}
-              <code className="text-ink-200">data/extra.json</code>: modificalo a mano quando cambiano le gerarchie.
-              L&apos;ingest stampa ogni nome che non riesce ad agganciare al listone.
+              Il workbook e l&apos;unica fonte: listone, fasce, note, infortunati, statistiche e abbinamenti di
+              calendario vengono tutti da li. Per aggiornarlo copia il nuovo .xlsx in{' '}
+              <code className="text-ink-200">data/</code>: con <code className="text-ink-200">npm run dev</code>{' '}
+              attivo il listone si rigenera da solo e la pagina si ricarica. A server spento serve{' '}
+              <code className="text-ink-200">npm run ingest</code>. Cambiando file gli id dei giocatori cambiano:
+              esporta il backup prima di sostituirlo a asta iniziata.
             </p>
           </div>
         </Section>
-        {Object.keys(noteSquadre).length > 0 && (
-          <Section
-            title="Ballottaggi e gerarchie incerte"
-            right={<span className="text-[11px] text-ink-500">{Object.keys(noteSquadre).length} squadre</span>}
-          >
-            <ul className="divide-y divide-ink-800">
-              {Object.entries(noteSquadre).map(([squadra, nota]) => (
-                <li key={squadra} className="px-3 py-2 text-sm">
-                  <span className="font-medium">{squadra}</span>
-                  <p className="mt-0.5 text-xs text-ink-400">{nota}</p>
-                </li>
+        <Section
+          title="Come leggere il listone"
+          right={<span className="text-[11px] text-ink-500">dalla guida del workbook</span>}
+        >
+          <div className="px-3 py-2">
+            <h3 className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-ink-500">
+              La colonna nota
+            </h3>
+            <dl className="mb-3 space-y-1">
+              {listone.guida.legendaNota.map(([etichetta, spiegazione]) => (
+                <div key={etichetta} className="text-xs">
+                  <dt className="font-semibold text-ink-200">{etichetta}</dt>
+                  <dd className="text-ink-400">{spiegazione}</dd>
+                </div>
               ))}
-            </ul>
-          </Section>
-        )}
+            </dl>
+            <h3 className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-ink-500">
+              Note sul metodo
+            </h3>
+            <dl className="space-y-1">
+              {listone.guida.metodo.map(([etichetta, spiegazione]) => (
+                <div key={etichetta} className="text-xs">
+                  <dt className="font-semibold text-ink-200">{etichetta}</dt>
+                  <dd className="text-ink-400">{spiegazione}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </Section>
       </div>
     </div>
   )

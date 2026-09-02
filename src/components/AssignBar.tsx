@@ -1,16 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { fvm, quot, roleLabelOf } from '../lib/listone'
-import { dec, int, signed } from '../lib/format'
+import { int, signed } from '../lib/format'
 import type { Advice } from '../lib/advice'
 import type { TeamStats } from '../lib/stats'
 import { useNativeKeydown } from '../lib/useNativeKeydown'
-import type { Mode, Player } from '../types'
-import PlayerTags from './PlayerTags'
+import type { Player } from '../types'
 import { RoleBadge } from './ui'
 
 interface Props {
   player: Player | null
-  mode: Mode
   teams: TeamStats[]
   defaultTeamId: string | null
   onAssign: (teamId: string, price: number) => void
@@ -25,7 +22,6 @@ interface Props {
 
 export default function AssignBar({
   player,
-  mode,
   teams,
   defaultTeamId,
   onAssign,
@@ -58,8 +54,8 @@ export default function AssignBar({
     if (teams.length && !teams.some((t) => t.team.id === teamId)) setTeamId(teams[0].team.id)
   }, [teams, teamId])
 
-  const q = player ? quot(player, mode) : 0
-  const f = player ? fvm(player, mode) : 0
+  const q = player?.qtA ?? 0
+  const f = player?.fvm ?? 0
   const n = Number(price)
   const valid = player != null && teamId !== '' && price !== '' && Number.isFinite(n) && n >= 0
 
@@ -118,54 +114,33 @@ export default function AssignBar({
   return (
     <div className="border-t border-sky-500/30 bg-ink-850 px-3 py-2.5">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        {/* Il dettaglio del giocatore sta nella scheda qui sopra: nella barra
+            resta solo quel che serve a battere il prezzo senza staccare gli occhi. */}
         <div className="flex min-w-0 items-center gap-2">
-          <RoleBadge role={player.r} text={mode === 'mantra' ? roleLabelOf(player, mode) : player.r} />
+          <RoleBadge role={player.r} />
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="truncate font-semibold leading-tight">{player.nome}</span>
-              <PlayerTags p={player} />
-            </div>
+            <div className="truncate font-semibold leading-tight">{player.nome}</div>
             <div className="text-[11px] text-ink-400">
-              {player.squadra} · Qt.A <span className="text-ink-200">{int(q)}</span> · FVM{' '}
-              <span className="text-ink-200">{int(f)}</span>
+              Qt.A <span className="text-ink-200">{int(q)}</span> · consigliato{' '}
+              <span className="text-ink-200">{int(player.cons)}</span> · max{' '}
+              <span className="text-ink-200">{int(player.max)}</span>
               {advice && (
                 <>
-                  {' · atteso '}
+                  {' · asta '}
                   <span
                     className={
                       advice.fontePrezzo === 'override'
                         ? 'font-semibold text-sky-300'
-                        : advice.fontePrezzo === 'mercato'
+                        : advice.sopraMax
                           ? 'font-semibold text-amber-300'
                           : 'text-ink-200'
                     }
                   >
                     {int(advice.expPrice)}
                   </span>
-                  {advice.fontePrezzo !== 'listino' && (
-                    <span className="text-ink-500">
-                      {advice.fontePrezzo === 'override' ? ' (tuo)' : ' (mercato)'}
-                    </span>
-                  )}
                 </>
               )}
             </div>
-            {(player.fm2025 != null || player.gol2025 != null) && (
-              <div className="text-[11px] text-ink-500">
-                2025/26:
-                {player.fm2025 != null && (
-                  <>
-                    {' '}
-                    fantamedia <span className="text-ink-300">{dec(player.fm2025, 1)}</span>
-                  </>
-                )}
-                {player.gol2025 != null && (
-                  <>
-                    {player.fm2025 != null && ' ·'} <span className="text-ink-300">{player.gol2025}</span> gol
-                  </>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
@@ -206,7 +181,7 @@ export default function AssignBar({
               delta > 0 ? 'text-rose-400' : delta < 0 ? 'text-emerald-400' : 'text-ink-400'
             }`}
           >
-            {signed(delta)} vs Qt.A · {n > 0 ? (f / n).toFixed(1) : '-'} FVM/cr
+            {signed(delta)} vs Qt.A · {signed(n - player.max)} vs max · {n > 0 ? (f / n).toFixed(1) : '-'} FVM/cr
           </span>
         )}
 

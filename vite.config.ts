@@ -9,16 +9,28 @@ const ROOT = import.meta.dirname
 const DATA_DIR = resolve(ROOT, 'data')
 const INGEST = resolve(ROOT, 'scripts', 'ingest_xlsx.py')
 
+/** File di data/ che, cambiando, fanno rigenerare il listone. */
+const SORGENTI = /\.xlsx$|\/ceduti\.txt$/i
+
 /**
- * Rigenera src/data/listone.json quando un .xlsx in data/ viene aggiunto o
- * modificato: basta sostituire il file ufficiale e la dashboard si aggiorna
+ * Rigenera src/data/listone.json quando cambia una sorgente in data/: il .xlsx
+ * del listone o l'elenco dei ceduti. Basta salvare e la dashboard si aggiorna
  * da sola (l'HMR ricarica il JSON).
  */
 function autoIngest(): Plugin {
   let running = false
   let queued = false
 
-  const ingest = (file: string, log: (m: string) => void, warn: (m: string) => void) => {
+  /**
+   * `file` e' il .xlsx da passare allo script, o null per lasciargli scegliere
+   * il piu recente in data/. `etichetta` e' solo per il log.
+   */
+  const ingest = (
+    file: string | null,
+    etichetta: string,
+    log: (m: string) => void,
+    warn: (m: string) => void,
+  ) => {
     if (running) {
       queued = true
       return
@@ -32,20 +44,28 @@ function autoIngest(): Plugin {
         warn('listone: nessun interprete Python trovato. Lancia a mano "npm run ingest".')
         return
       }
-      const proc = spawn(cmd, [INGEST, file], { cwd: ROOT })
+      const proc = spawn(cmd, file ? [INGEST, file] : [INGEST], { cwd: ROOT })
       let stderr = ''
+      // Un interprete che non esiste emette sia "error" sia "close": senza
+      // questo flag ogni macchina senza il comando "python" vedrebbe un
+      // avviso di ingest fallito prima del tentativo con "python3".
+      let avviato = true
       proc.stderr.on('data', (d) => (stderr += String(d)))
-      proc.on('error', () => tryCommand(rest))
+      proc.on('error', () => {
+        avviato = false
+        tryCommand(rest)
+      })
       proc.on('close', (code) => {
+        if (!avviato) return
         running = false
         if (code === 0) {
-          log(`listone rigenerato da ${file.split(/[\\/]/).pop()}`)
+          log(`listone rigenerato da ${etichetta}`)
         } else {
           warn(`listone: ingest fallito (${code}). ${stderr.trim().split('\n').pop() ?? ''}`)
         }
         if (queued) {
           queued = false
-          ingest(file, log, warn)
+          ingest(file, etichetta, log, warn)
         }
       })
     }
@@ -67,12 +87,16 @@ function autoIngest(): Plugin {
 
       const onChange = (file: string) => {
         const f = posix(file)
-        if (!f.toLowerCase().endsWith('.xlsx')) return
+        if (!SORGENTI.test(f)) return
         if (!f.startsWith(`${dir}/`)) return
         // I file di lock di Excel (~$nome.xlsx) non sono listoni.
         if ((f.split('/').pop() ?? '').startsWith('~$')) return
+        // L'elenco dei ceduti non e' una sorgente da passare all'ingest: lo
+        // script sceglie da solo il .xlsx piu recente e legge ceduti.txt.
+        const xlsx = f.toLowerCase().endsWith('.xlsx')
         ingest(
-          file,
+          xlsx ? file : null,
+          f.split('/').pop() ?? 'data/',
           (m) => server.config.logger.info(`\x1b[36m[fantadash]\x1b[0m ${m}`),
           (m) => server.config.logger.warn(`\x1b[33m[fantadash]\x1b[0m ${m}`),
         )

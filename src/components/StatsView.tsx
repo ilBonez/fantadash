@@ -1,14 +1,11 @@
 import { dec, int, pct, pctSigned, signed } from '../lib/format'
-import { fvm, quot } from '../lib/listone'
 import type { EnrichedPick } from '../lib/stats'
 import { useLeague } from '../lib/useLeague'
-import { useAuction } from '../store/useAuction'
 import { ROLES, type Player } from '../types'
 import { Bar, Empty, ROLE_BAR, RoleBadge, Section, Stat } from './ui'
 
 export default function StatsView() {
   const league = useLeague()
-  const mode = useAuction((s) => s.settings.mode)
 
   const leaderFvm = [...league.teams].sort((a, b) => b.totalFvm - a.totalFvm)
   const maxFvm = leaderFvm[0]?.totalFvm ?? 0
@@ -129,7 +126,7 @@ export default function StatsView() {
           picks={league.miglioriValori}
           metric={(p) => ({ value: `${dec(p.valueIdx)} FVM/cr`, tone: 'good' })}
         />
-        <BigDisponibili players={league.bigDisponibili} mode={mode} />
+        <BigDisponibili players={league.bigDisponibili} />
       </div>
     </div>
   )
@@ -178,7 +175,7 @@ function PickTable({
   )
 }
 
-function BigDisponibili({ players, mode }: { players: Player[]; mode: 'classic' | 'mantra' }) {
+function BigDisponibili({ players }: { players: Player[] }) {
   return (
     <Section title="Big ancora liberi" right={<span className="text-[11px] text-ink-500">per quotazione</span>}>
       {players.length ? (
@@ -188,8 +185,8 @@ function BigDisponibili({ players, mode }: { players: Player[]; mode: 'classic' 
               <RoleBadge role={p.r} />
               <span className="min-w-0 flex-1 truncate font-medium">{p.nome}</span>
               <span className="shrink-0 text-[11px] text-ink-500">{p.squadra}</span>
-              <span className="w-8 shrink-0 text-right font-semibold">{int(quot(p, mode))}</span>
-              <span className="w-10 shrink-0 text-right text-[11px] text-ink-400">{int(fvm(p, mode))}</span>
+              <span className="w-8 shrink-0 text-right font-semibold">{int(p.qtA)}</span>
+              <span className="w-10 shrink-0 text-right text-[11px] text-ink-400">{int(p.fvm)}</span>
             </li>
           ))}
         </ul>
