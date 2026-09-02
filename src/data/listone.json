@@ -2,7 +2,7 @@
  "stagione": "FANTACALCIO CLASSIC - SERIE A 2026/27",
  "descrizione": "Listone, priorita, abbinamenti di calendario e foglio d'asta. Dati: Fantacalcio.it, aggiornati al 1 settembre 2026. Solo giocatori nelle rose ufficiali di Serie A.",
  "sorgente": "Fantacalcio_Classic_202627_Listone_e_Asta.xlsx",
- "generatoIl": "2026-09-02T05:17:42+00:00",
+ "generatoIl": "2026-09-02T07:11:23+00:00",
  "parametri": {
   "budget": 500,
   "squadre": 10,
@@ -89,6 +89,14 @@
     "Quotazioni ufficiali Classic e Mantra, rose delle 20 squadre, statistiche 2025/26 e 2026/27, rigoristi e tiratori da fermo, indisponibili, griglia portieri: Fantacalcio.it, consultati il 01/09/2026. Calendario Serie A 2026/27 (20 squadre, neopromosse Frosinone, Monza e Venezia)."
    ]
   ]
+ },
+ "formazioni": {
+  "aggiornato": "2026-09-02",
+  "fonti": {
+   "fantacalcio-online": "https://www.fantacalcio-online.com/it/consigli-fantacalcio/formazioni-tipo-serie-a-2026-2027",
+   "fantacalcio.it": "https://www.fantacalcio.it/news/calcio-italia/06_08_2026/asta-fantacalcio-le-probabili-formazioni-della-serie-a-enilive-2026-27-495558"
+  },
+  "totale": 2
  },
  "conteggi": {
   "P": 64,
@@ -1132,6 +1140,7 @@
    "cod": "ROM",
    "chiave": "Malen (ROM)",
    "fasciaIdx": 0,
+   "fonti": 2,
    "abbId": 3
   },
   {
@@ -1178,6 +1187,7 @@
    "cod": "INT",
    "chiave": "Martinez L. (INT)",
    "fasciaIdx": 0,
+   "fonti": 1,
    "abbId": 12
   },
   {
@@ -1224,6 +1234,7 @@
    "cod": "NAP",
    "chiave": "Hojlund (NAP)",
    "fasciaIdx": 0,
+   "fonti": 2,
    "abbId": 1
   },
   {
@@ -1270,6 +1281,7 @@
    "cod": "INT",
    "chiave": "Thuram (INT)",
    "fasciaIdx": 0,
+   "fonti": 2,
    "abbId": 12
   },
   {
@@ -1316,6 +1328,7 @@
    "cod": "COM",
    "chiave": "Douvikas (COM)",
    "fasciaIdx": 0,
+   "fonti": 1,
    "abbId": 3
   },
   {
@@ -1362,6 +1375,7 @@
    "cod": "SAS",
    "chiave": "Berardi (SAS)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 2
   },
   {
@@ -1408,6 +1422,7 @@
    "cod": "ATA",
    "chiave": "Scamacca (ATA)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 1
   },
   {
@@ -1454,6 +1469,7 @@
    "cod": "UDI",
    "chiave": "Davis K. (UDI)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 6
   },
   {
@@ -1504,6 +1520,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato il 31/8: frattura base V metatarso piede sinistro. Stop ~3 mesi, rientro fine novembre."
    },
+   "fonti": 1,
    "abbId": 15
   },
   {
@@ -1550,6 +1567,7 @@
    "cod": "COM",
    "chiave": "Kean (COM)",
    "fasciaIdx": 0,
+   "fonti": 1,
    "abbId": 3
   },
   {
@@ -1596,6 +1614,7 @@
    "cod": "ATA",
    "chiave": "Krstovic (ATA)",
    "fasciaIdx": 1,
+   "fonti": 0,
    "abbId": 1
   },
   {
@@ -1632,6 +1651,7 @@
    "cod": "MIL",
    "chiave": "Ramos G. (MIL)",
    "fasciaIdx": 0,
+   "fonti": 2,
    "abbId": 2
   },
   {
@@ -1678,6 +1698,7 @@
    "cod": "ROM",
    "chiave": "Dybala (ROM)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 23
   },
   {
@@ -1724,6 +1745,7 @@
    "cod": "SAS",
    "chiave": "Laurientè (SAS)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 2
   },
   {
@@ -1770,6 +1792,7 @@
    "cod": "TOR",
    "chiave": "Simeone (TOR)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 9
   },
   {
@@ -1816,6 +1839,7 @@
    "cod": "INT",
    "chiave": "Esposito F.P. (INT)",
    "fasciaIdx": 1,
+   "fonti": 0,
    "abbId": 12
   },
   {
@@ -1862,6 +1886,7 @@
    "cod": "ATA",
    "chiave": "De Ketelaere (ATA)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 31
   },
   {
@@ -1898,6 +1923,7 @@
    "cod": "JUV",
    "chiave": "Kolo Muani (JUV)",
    "fasciaIdx": 0,
+   "fonti": 2,
    "abbId": 15
   },
   {
@@ -1944,6 +1970,7 @@
    "cod": "GEN",
    "chiave": "Colombo (GEN)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 9
   },
   {
@@ -1990,6 +2017,7 @@
    "cod": "SAS",
    "chiave": "Esposito Se. (SAS)",
    "fasciaIdx": 1,
+   "fonti": 1,
    "abbId": 2
   },
   {
@@ -2036,6 +2064,7 @@
    "cod": "ROM",
    "chiave": "Castro S. (ROM)",
    "fasciaIdx": 1,
+   "fonti": 0,
    "abbId": 23
   },
   {
@@ -2082,6 +2111,7 @@
    "cod": "ROM",
    "chiave": "Soulè (ROM)",
    "fasciaIdx": 1,
+   "fonti": 0,
    "abbId": 23
   },
   {
@@ -2128,6 +2158,7 @@
    "cod": "LAZ",
    "chiave": "Pinamonti (LAZ)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 1
   },
   {
@@ -2174,6 +2205,7 @@
    "cod": "FIO",
    "chiave": "Pellegrino M. (FIO)",
    "fasciaIdx": 1,
+   "fonti": 1,
    "abbId": 5
   },
   {
@@ -2220,6 +2252,7 @@
    "cod": "INT",
    "chiave": "Bonny (INT)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 12
   },
   {
@@ -2266,6 +2299,7 @@
    "cod": "TOR",
    "chiave": "Adams C. (TOR)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 9
   },
   {
@@ -2312,6 +2346,7 @@
    "cod": "NAP",
    "chiave": "Santos A. (NAP)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 1
   },
   {
@@ -2348,6 +2383,7 @@
    "cod": "JUV",
    "chiave": "Woltemade (JUV)",
    "fasciaIdx": 0,
+   "fonti": 0,
    "abbId": 15
   },
   {
@@ -2394,6 +2430,7 @@
    "cod": "ATA",
    "chiave": "Raspadori (ATA)",
    "fasciaIdx": 1,
+   "fonti": 1,
    "abbId": 31
   },
   {
@@ -2440,6 +2477,7 @@
    "cod": "GEN",
    "chiave": "Vitinha O. (GEN)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 9
   },
   {
@@ -2486,6 +2524,7 @@
    "cod": "CAG",
    "chiave": "Maldini (CAG)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 7
   },
   {
@@ -2532,6 +2571,7 @@
    "cod": "BOL",
    "chiave": "Dovbyk (BOL)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 3
   },
   {
@@ -2578,6 +2618,7 @@
    "cod": "NAP",
    "chiave": "Neres (NAP)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 1
   },
   {
@@ -2624,6 +2665,7 @@
    "cod": "LEC",
    "chiave": "Stulic (LEC)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 47
   },
   {
@@ -2670,6 +2712,7 @@
    "cod": "JUV",
    "chiave": "Boga (JUV)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 15
   },
   {
@@ -2716,6 +2759,7 @@
    "cod": "CAG",
    "chiave": "Borrelli (CAG)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 7
   },
   {
@@ -2762,6 +2806,7 @@
    "cod": "NAP",
    "chiave": "Giovane (NAP)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 1
   },
   {
@@ -2808,6 +2853,7 @@
    "cod": "SAS",
    "chiave": "Bowie (SAS)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 2
   },
   {
@@ -2854,6 +2900,7 @@
    "cod": "COM",
    "chiave": "Diao (COM)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 24
   },
   {
@@ -2900,6 +2947,7 @@
    "cod": "LAZ",
    "chiave": "Noslin (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 1
   },
   {
@@ -2946,6 +2994,7 @@
    "cod": "BOL",
    "chiave": "Piccoli (BOL)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 3
   },
   {
@@ -2982,6 +3031,7 @@
    "cod": "CAG",
    "chiave": "Kevin Carlos (CAG)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 7
   },
   {
@@ -3032,6 +3082,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Lesione di medio grado del semitendinoso. Possibile rientro da fine ottobre."
    },
+   "fonti": 0,
    "abbId": 15
   },
   {
@@ -3078,6 +3129,7 @@
    "cod": "CAG",
    "chiave": "Nzola (CAG)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 7
   },
   {
@@ -3118,6 +3170,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Distorsione alla caviglia (31/8). Salta la trasferta di Cagliari, tempi da valutare."
    },
+   "fonti": 2,
    "abbId": 47
   },
   {
@@ -3164,6 +3217,7 @@
    "cod": "MON",
    "chiave": "Cutrone (MON)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 34
   },
   {
@@ -3200,6 +3254,7 @@
    "cod": "PAR",
    "chiave": "Tourè E. (PAR)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 14
   },
   {
@@ -3250,6 +3305,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Lesione collaterale mediale ginocchio sinistro (8/8). Rientro da inizio ottobre."
    },
+   "fonti": 0,
    "abbId": 56
   },
   {
@@ -3286,6 +3342,7 @@
    "cod": "VEN",
    "chiave": "Adams A. (VEN)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 31
   },
   {
@@ -3332,6 +3389,7 @@
    "cod": "TOR",
    "chiave": "Zapata D. (TOR)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 18
   },
   {
@@ -3378,6 +3436,7 @@
    "cod": "NAP",
    "chiave": "Lang (NAP)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 13
   },
   {
@@ -3418,6 +3477,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Fastidio all'adduttore (30/8). Salta la trasferta di Parma, tempi da valutare."
    },
+   "fonti": 2,
    "abbId": 34
   },
   {
@@ -3464,6 +3524,7 @@
    "cod": "TOR",
    "chiave": "Kulenovic (TOR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 18
   },
   {
@@ -3510,6 +3571,7 @@
    "cod": "PAR",
    "chiave": "Elphege (PAR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 14
   },
   {
@@ -3556,6 +3618,7 @@
    "cod": "LEC",
    "chiave": "N'Dri (LEC)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 47
   },
   {
@@ -3592,6 +3655,7 @@
    "cod": "FRO",
    "chiave": "Bobcek (FRO)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 17
   },
   {
@@ -3638,6 +3702,7 @@
    "cod": "CAG",
    "chiave": "Mendy P. (CAG)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 17
   },
   {
@@ -3684,6 +3749,7 @@
    "cod": "MON",
    "chiave": "Ngonge (MON)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 34
   },
   {
@@ -3720,6 +3786,7 @@
    "cod": "FIO",
    "chiave": "Beto (FIO)",
    "fasciaIdx": 1,
+   "fonti": 1,
    "abbId": 23
   },
   {
@@ -3756,6 +3823,7 @@
    "cod": "VEN",
    "chiave": "Yeboah J. (VEN)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 31
   },
   {
@@ -3792,6 +3860,7 @@
    "cod": "PAR",
    "chiave": "Romero D. (PAR)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 34
   },
   {
@@ -3828,6 +3897,7 @@
    "cod": "FRO",
    "chiave": "Ghedjemis (FRO)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 29
   },
   {
@@ -3868,6 +3938,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato alla schiena a fine luglio. Fuori per buona parte dell'andata, rientro da ottobre."
    },
+   "fonti": 0,
    "abbId": 31
   },
   {
@@ -3914,6 +3985,7 @@
    "cod": "NAP",
    "chiave": "Lucca (NAP)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 32
   },
   {
@@ -3960,6 +4032,7 @@
    "cod": "UDI",
    "chiave": "Gueye (UDI)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 30
   },
   {
@@ -4006,6 +4079,7 @@
    "cod": "MIL",
    "chiave": "Camarda (MIL)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 47
   },
   {
@@ -4042,6 +4116,7 @@
    "cod": "GEN",
    "chiave": "Osmajic (GEN)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 28
   },
   {
@@ -4078,6 +4153,7 @@
    "cod": "FRO",
    "chiave": "Raimondo (FRO)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 29
   },
   {
@@ -4114,6 +4190,7 @@
    "cod": "FIO",
    "chiave": "Gnonto (FIO)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 31
   },
   {
@@ -4150,6 +4227,7 @@
    "cod": "FRO",
    "chiave": "Kvernadze (FRO)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 48
   },
   {
@@ -4196,6 +4274,7 @@
    "cod": "UDI",
    "chiave": "Bayo V. (UDI)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 34
   },
   {
@@ -4232,6 +4311,7 @@
    "cod": "MON",
    "chiave": "Mota (MON)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 34
   },
   {
@@ -4268,6 +4348,7 @@
    "cod": "MON",
    "chiave": "Zeballos (MON)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 45
   },
   {
@@ -4314,6 +4395,7 @@
    "cod": "JUV",
    "chiave": "Milik (JUV)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 50
   },
   {
@@ -4350,6 +4432,7 @@
    "cod": "LEC",
    "chiave": "Fatah (LEC)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 47
   },
   {
@@ -4386,6 +4469,7 @@
    "cod": "VEN",
    "chiave": "Rrahmani Al. (VEN)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 42
   },
   {
@@ -4422,6 +4506,7 @@
    "cod": "FRO",
    "chiave": "Birligea (FRO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 48
   },
   {
@@ -4458,6 +4543,7 @@
    "cod": "PAR",
    "chiave": "Lontani (PAR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 45
   },
   {
@@ -4494,6 +4580,7 @@
    "cod": "CAG",
    "chiave": "Mutandwa (CAG)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 48
   },
   {
@@ -4530,6 +4617,7 @@
    "cod": "PAR",
    "chiave": "Frigan (PAR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 45
   },
   {
@@ -4566,6 +4654,7 @@
    "cod": "GEN",
    "chiave": "Havel (GEN)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 43
   },
   {
@@ -4602,6 +4691,7 @@
    "cod": "MON",
    "chiave": "Robinson J. (MON)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 45
   },
   {
@@ -4652,6 +4742,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Ricoverato il 16/8, dimesso il 28/8. Condizioni monitorate, out nel prossimo turno."
    },
+   "fonti": 0,
    "abbId": 48
   },
   {
@@ -4688,6 +4779,7 @@
    "cod": "GEN",
    "chiave": "Robinho Junior (GEN)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 46
   },
   {
@@ -4724,6 +4816,7 @@
    "cod": "PAR",
    "chiave": "De Martis (PAR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 55
   },
   {
@@ -4760,6 +4853,7 @@
    "cod": "VEN",
    "chiave": "Lauberbach (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 52
   },
   {
@@ -4796,6 +4890,7 @@
    "cod": "VEN",
    "chiave": "Lisman (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 52
   },
   {
@@ -4842,6 +4937,7 @@
    "cod": "INT",
    "chiave": "Calhanoglu (INT)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 94
   },
   {
@@ -4888,6 +4984,7 @@
    "cod": "COM",
    "chiave": "Paz N. (COM)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 93
   },
   {
@@ -4938,6 +5035,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Risentimento ai flessori della coscia sinistra (31/8). Esami in corso, salta il Sassuolo."
    },
+   "fonti": 2,
    "abbId": 93
   },
   {
@@ -4988,6 +5086,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Ablazione per una lieve aritmia benigna (1/9). Rientro da inizio ottobre."
    },
+   "fonti": 2,
    "abbId": 92
   },
   {
@@ -5034,6 +5133,7 @@
    "cod": "MIL",
    "chiave": "Pulisic (MIL)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 90
   },
   {
@@ -5080,6 +5180,7 @@
    "cod": "NAP",
    "chiave": "De Bruyne (NAP)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 92
   },
   {
@@ -5126,6 +5227,7 @@
    "cod": "MIL",
    "chiave": "Rabiot (MIL)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 90
   },
   {
@@ -5172,6 +5274,7 @@
    "cod": "COM",
    "chiave": "Da Cunha (COM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 101
   },
   {
@@ -5218,6 +5321,7 @@
    "cod": "COM",
    "chiave": "Baturina (COM)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 101
   },
   {
@@ -5264,6 +5368,7 @@
    "cod": "TOR",
    "chiave": "Vlasic (TOR)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 106
   },
   {
@@ -5314,6 +5419,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Lesione al bicipite femorale destro (1a giornata). Stop ~25 giorni, rientro seconda meta di settembre."
    },
+   "fonti": 2,
    "abbId": 94
   },
   {
@@ -5360,6 +5466,7 @@
    "cod": "FIO",
    "chiave": "Atta (FIO)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 91
   },
   {
@@ -5406,6 +5513,7 @@
    "cod": "LAZ",
    "chiave": "Zaccagni (LAZ)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -5452,6 +5560,7 @@
    "cod": "INT",
    "chiave": "Zielinski (INT)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -5498,6 +5607,7 @@
    "cod": "INT",
    "chiave": "Barella (INT)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 94
   },
   {
@@ -5544,6 +5654,7 @@
    "cod": "MIL",
    "chiave": "Modric (MIL)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 90
   },
   {
@@ -5594,6 +5705,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Affaticamento muscolare dal 27/8. Gia assente col Parma, convocazione a rischio."
    },
+   "fonti": 2,
    "abbId": 99
   },
   {
@@ -5640,6 +5752,7 @@
    "cod": "JUV",
    "chiave": "Conceicao (JUV)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 99
   },
   {
@@ -5686,6 +5799,7 @@
    "cod": "UDI",
    "chiave": "Ekkelenkamp (UDI)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 94
   },
   {
@@ -5732,6 +5846,7 @@
    "cod": "BOL",
    "chiave": "Bernardeschi (BOL)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 93
   },
   {
@@ -5778,6 +5893,7 @@
    "cod": "PAR",
    "chiave": "Bernabè (PAR)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 120
   },
   {
@@ -5824,6 +5940,7 @@
    "cod": "NAP",
    "chiave": "Politano (NAP)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -5870,6 +5987,7 @@
    "cod": "ATA",
    "chiave": "Samardzic (ATA)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 132
   },
   {
@@ -5916,6 +6034,7 @@
    "cod": "ATA",
    "chiave": "Rowe (ATA)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 132
   },
   {
@@ -5962,6 +6081,7 @@
    "cod": "ROM",
    "chiave": "Konè M. (ROM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 102
   },
   {
@@ -6008,6 +6128,7 @@
    "cod": "ATA",
    "chiave": "Ederson D.S. (ATA)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 132
   },
   {
@@ -6054,6 +6175,7 @@
    "cod": "COM",
    "chiave": "Rodriguez Je. (COM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -6100,6 +6222,7 @@
    "cod": "JUV",
    "chiave": "Locatelli (JUV)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 99
   },
   {
@@ -6146,6 +6269,7 @@
    "cod": "NAP",
    "chiave": "Zambo Anguissa (NAP)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -6196,6 +6320,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Ernia bilaterale, saltata la preparazione. Recuperabile da meta settembre."
    },
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -6242,6 +6367,7 @@
    "cod": "SAS",
    "chiave": "Thorstvedt (SAS)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 90
   },
   {
@@ -6278,6 +6404,7 @@
    "cod": "ROM",
    "chiave": "Mora (ROM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 102
   },
   {
@@ -6324,6 +6451,7 @@
    "cod": "MIL",
    "chiave": "Saelemaekers (MIL)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 90
   },
   {
@@ -6370,6 +6498,7 @@
    "cod": "LAZ",
    "chiave": "Taylor K. (LAZ)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -6416,6 +6545,7 @@
    "cod": "COM",
    "chiave": "Perrone (COM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 101
   },
   {
@@ -6462,6 +6592,7 @@
    "cod": "TOR",
    "chiave": "Mandragora (TOR)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 106
   },
   {
@@ -6508,6 +6639,7 @@
    "cod": "LAZ",
    "chiave": "Isaksen (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -6554,6 +6686,7 @@
    "cod": "LAZ",
    "chiave": "Gudmundsson A. (LAZ)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -6600,6 +6733,7 @@
    "cod": "ROM",
    "chiave": "Pellegrini Lo. (ROM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 102
   },
   {
@@ -6650,6 +6784,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Rottura di tibia e perone ai Mondiali di giugno. Punta a rientrare a dicembre."
    },
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -6696,6 +6831,7 @@
    "cod": "LAZ",
    "chiave": "Frattesi (LAZ)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -6742,6 +6878,7 @@
    "cod": "ATA",
    "chiave": "Gaetano (ATA)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 132
   },
   {
@@ -6778,6 +6915,7 @@
    "cod": "FRO",
    "chiave": "Calò (FRO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 112
   },
   {
@@ -6828,6 +6966,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Affaticamento muscolare: fuori col Sassuolo, a rischio anche a Firenze."
    },
+   "fonti": 2,
    "abbId": 106
   },
   {
@@ -6874,6 +7013,7 @@
    "cod": "GEN",
    "chiave": "Baldanzi (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 106
   },
   {
@@ -6924,6 +7064,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Sindrome femoro-rotulea, non convocato col Parma. Da valutare per il Milan."
    },
+   "fonti": 0,
    "abbId": 99
   },
   {
@@ -6970,6 +7111,7 @@
    "cod": "LEC",
    "chiave": "Berisha M. (LEC)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 110
   },
   {
@@ -7016,6 +7158,7 @@
    "cod": "BOL",
    "chiave": "Cambiaghi (BOL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 111
   },
   {
@@ -7062,6 +7205,7 @@
    "cod": "SAS",
    "chiave": "Volpato (SAS)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 103
   },
   {
@@ -7108,6 +7252,7 @@
    "cod": "BOL",
    "chiave": "Odgaard (BOL)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 111
   },
   {
@@ -7154,6 +7299,7 @@
    "cod": "INT",
    "chiave": "Mkhitaryan (INT)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 105
   },
   {
@@ -7194,6 +7340,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Lussazione della rotula del ginocchio destro. Prova a rientrare da inizio novembre."
    },
+   "fonti": 1,
    "abbId": 136
   },
   {
@@ -7230,6 +7377,7 @@
    "cod": "VEN",
    "chiave": "Busio (VEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 141
   },
   {
@@ -7276,6 +7424,7 @@
    "cod": "LAZ",
    "chiave": "Cancellieri (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -7322,6 +7471,7 @@
    "cod": "ATA",
    "chiave": "Zalewski (ATA)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 132
   },
   {
@@ -7368,6 +7518,7 @@
    "cod": "COM",
    "chiave": "Caqueret (COM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 132
   },
   {
@@ -7414,6 +7565,7 @@
    "cod": "ROM",
    "chiave": "Cristante (ROM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 119
   },
   {
@@ -7460,6 +7612,7 @@
    "cod": "VEN",
    "chiave": "Basic (VEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 141
   },
   {
@@ -7506,6 +7659,7 @@
    "cod": "ROM",
    "chiave": "Pisilli (ROM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 119
   },
   {
@@ -7552,6 +7706,7 @@
    "cod": "ATA",
    "chiave": "Pasalic (ATA)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 132
   },
   {
@@ -7598,6 +7753,7 @@
    "cod": "MIL",
    "chiave": "Loftus-Cheek (MIL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 140
   },
   {
@@ -7644,6 +7800,7 @@
    "cod": "INT",
    "chiave": "Sucic P. (INT)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 122
   },
   {
@@ -7690,6 +7847,7 @@
    "cod": "LEC",
    "chiave": "Coulibaly L. (LEC)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -7736,6 +7894,7 @@
    "cod": "INT",
    "chiave": "Diouf (INT)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 122
   },
   {
@@ -7782,6 +7941,7 @@
    "cod": "FIO",
    "chiave": "Fagioli (FIO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 116
   },
   {
@@ -7828,6 +7988,7 @@
    "cod": "GEN",
    "chiave": "Messias (GEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 117
   },
   {
@@ -7874,6 +8035,7 @@
    "cod": "MON",
    "chiave": "Folorunsho (MON)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 136
   },
   {
@@ -7910,6 +8072,7 @@
    "cod": "FIO",
    "chiave": "Mastantuono (FIO)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 116
   },
   {
@@ -7956,6 +8119,7 @@
    "cod": "LEC",
    "chiave": "Pierotti (LEC)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 121
   },
   {
@@ -7992,6 +8156,7 @@
    "cod": "FRO",
    "chiave": "Schmid (FRO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 131
   },
   {
@@ -8038,6 +8203,7 @@
    "cod": "NAP",
    "chiave": "Lobotka (NAP)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 121
   },
   {
@@ -8088,6 +8254,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato a fine agosto alla coscia destra. Ipotesi rientro da novembre."
    },
+   "fonti": 0,
    "abbId": 129
   },
   {
@@ -8134,6 +8301,7 @@
    "cod": "FIO",
    "chiave": "Ndour (FIO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 123
   },
   {
@@ -8180,6 +8348,7 @@
    "cod": "COM",
    "chiave": "Ricci S. (COM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 132
   },
   {
@@ -8226,6 +8395,7 @@
    "cod": "NAP",
    "chiave": "Vergara (NAP)",
    "fasciaIdx": 2,
+   "fonti": 0,
    "abbId": 128
   },
   {
@@ -8272,6 +8442,7 @@
    "cod": "LEC",
    "chiave": "Gandelman (LEC)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 128
   },
   {
@@ -8318,6 +8489,7 @@
    "cod": "CAG",
    "chiave": "Fazzini (CAG)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 131
   },
   {
@@ -8364,6 +8536,7 @@
    "cod": "BOL",
    "chiave": "Moro N. (BOL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 129
   },
   {
@@ -8410,6 +8583,7 @@
    "cod": "CAG",
    "chiave": "Fadera (CAG)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 131
   },
   {
@@ -8456,6 +8630,7 @@
    "cod": "BOL",
    "chiave": "Pobega (BOL)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 129
   },
   {
@@ -8502,6 +8677,7 @@
    "cod": "ATA",
    "chiave": "Elmas (ATA)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 132
   },
   {
@@ -8548,6 +8724,7 @@
    "cod": "PAR",
    "chiave": "Keita M. (PAR)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 136
   },
   {
@@ -8584,6 +8761,7 @@
    "cod": "FIO",
    "chiave": "Goncalves P. (FIO)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 136
   },
   {
@@ -8630,6 +8808,7 @@
    "cod": "GEN",
    "chiave": "Frendrup (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 135
   },
   {
@@ -8676,6 +8855,7 @@
    "cod": "UDI",
    "chiave": "Karlstrom (UDI)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 134
   },
   {
@@ -8722,6 +8902,7 @@
    "cod": "FIO",
    "chiave": "Brescianini (FIO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 136
   },
   {
@@ -8768,6 +8949,7 @@
    "cod": "INT",
    "chiave": "Luis Henrique (INT)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 138
   },
   {
@@ -8804,6 +8986,7 @@
    "cod": "INT",
    "chiave": "Jones C. (INT)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 138
   },
   {
@@ -8840,6 +9023,7 @@
    "cod": "ATA",
    "chiave": "Kessiè (ATA)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 139
   },
   {
@@ -8876,6 +9060,7 @@
    "cod": "JUV",
    "chiave": "Gonzalez N. (JUV)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 146
   },
   {
@@ -8912,6 +9097,7 @@
    "cod": "MIL",
    "chiave": "Moreira (MIL)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 146
   },
   {
@@ -8958,6 +9144,7 @@
    "cod": "FIO",
    "chiave": "Njie (FIO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 143
   },
   {
@@ -9004,6 +9191,7 @@
    "cod": "SAS",
    "chiave": "Matic (SAS)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 146
   },
   {
@@ -9050,6 +9238,7 @@
    "cod": "UDI",
    "chiave": "Piotrowski (UDI)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 142
   },
   {
@@ -9096,6 +9285,7 @@
    "cod": "TOR",
    "chiave": "Oristanio (TOR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 149
   },
   {
@@ -9142,6 +9332,7 @@
    "cod": "GEN",
    "chiave": "Ellertsson (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 145
   },
   {
@@ -9192,6 +9383,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Rottura del tendine d'Achille. Prova a rientrare dalla seconda meta di settembre."
    },
+   "fonti": 0,
    "abbId": 148
   },
   {
@@ -9228,6 +9420,7 @@
    "cod": "JUV",
    "chiave": "Alajbegovic (JUV)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 148
   },
   {
@@ -9274,6 +9467,7 @@
    "cod": "ROM",
    "chiave": "De Roon (ROM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 149
   },
   {
@@ -9324,6 +9518,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Guaio muscolare al polpaccio (30/8). Assente nel prossimo turno."
    },
+   "fonti": 2,
    "abbId": 114
   },
   {
@@ -9370,6 +9565,7 @@
    "cod": "BOL",
    "chiave": "Ferguson (BOL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 93
   },
   {
@@ -9416,6 +9612,7 @@
    "cod": "MIL",
    "chiave": "Musah (MIL)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 90
   },
   {
@@ -9462,6 +9659,7 @@
    "cod": "TOR",
    "chiave": "Gineitis (TOR)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 106
   },
   {
@@ -9508,6 +9706,7 @@
    "cod": "PAR",
    "chiave": "Fabbian (PAR)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 120
   },
   {
@@ -9554,6 +9753,7 @@
    "cod": "CAG",
    "chiave": "Adopo (CAG)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 101
   },
   {
@@ -9600,6 +9800,7 @@
    "cod": "SAS",
    "chiave": "Adzic (SAS)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 90
   },
   {
@@ -9636,6 +9837,7 @@
    "cod": "COM",
    "chiave": "Milla (COM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -9682,6 +9884,7 @@
    "cod": "CAG",
    "chiave": "Felici (CAG)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -9728,6 +9931,7 @@
    "cod": "NAP",
    "chiave": "Gilmour (NAP)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -9774,6 +9978,7 @@
    "cod": "MON",
    "chiave": "Tourè I. (MON)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 136
   },
   {
@@ -9820,6 +10025,7 @@
    "cod": "UDI",
    "chiave": "Miller L. (UDI)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -9866,6 +10072,7 @@
    "cod": "JUV",
    "chiave": "Zhegrova (JUV)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 99
   },
   {
@@ -9912,6 +10119,7 @@
    "cod": "CAG",
    "chiave": "Deiola (CAG)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -9962,6 +10170,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Guaio muscolare alla gamba (24/8). Si confida di riaverlo da meta settembre."
    },
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -10008,6 +10217,7 @@
    "cod": "FRO",
    "chiave": "Zerbin (FRO)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 112
   },
   {
@@ -10054,6 +10264,7 @@
    "cod": "CAG",
    "chiave": "Gagliardini (CAG)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -10100,6 +10311,7 @@
    "cod": "TOR",
    "chiave": "Ilkhan (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -10146,6 +10358,7 @@
    "cod": "FRO",
    "chiave": "Masini (FRO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -10192,6 +10405,7 @@
    "cod": "MON",
    "chiave": "Akinsanmiro (MON)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 136
   },
   {
@@ -10238,6 +10452,7 @@
    "cod": "SAS",
    "chiave": "Dominguez B. (SAS)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -10274,6 +10489,7 @@
    "cod": "CAG",
    "chiave": "Romano (CAG)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 101
   },
   {
@@ -10310,6 +10526,7 @@
    "cod": "BOL",
    "chiave": "Mbangula (BOL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 93
   },
   {
@@ -10346,6 +10563,7 @@
    "cod": "MON",
    "chiave": "Colpani (MON)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 136
   },
   {
@@ -10392,6 +10610,7 @@
    "cod": "SAS",
    "chiave": "Lipani (SAS)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -10438,6 +10657,7 @@
    "cod": "PAR",
    "chiave": "Ordonez C. (PAR)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 120
   },
   {
@@ -10474,6 +10694,7 @@
    "cod": "MIL",
    "chiave": "Hutchinson (MIL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -10510,6 +10731,7 @@
    "cod": "JUV",
    "chiave": "Sarr P. (JUV)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 99
   },
   {
@@ -10556,6 +10778,7 @@
    "cod": "PAR",
    "chiave": "Almqvist (PAR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 120
   },
   {
@@ -10592,6 +10815,7 @@
    "cod": "TOR",
    "chiave": "Cacciamani (TOR)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 106
   },
   {
@@ -10628,6 +10852,7 @@
    "cod": "MIL",
    "chiave": "Cissè A. (MIL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -10664,6 +10889,7 @@
    "cod": "LEC",
    "chiave": "Monteiro J. (LEC)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 110
   },
   {
@@ -10700,6 +10926,7 @@
    "cod": "UDI",
    "chiave": "Unai Gomez (UDI)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -10746,6 +10973,7 @@
    "cod": "MIL",
    "chiave": "Chukwueze (MIL)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 90
   },
   {
@@ -10782,6 +11010,7 @@
    "cod": "JUV",
    "chiave": "Douglas Luiz (JUV)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 99
   },
   {
@@ -10818,6 +11047,7 @@
    "cod": "VEN",
    "chiave": "Perez K. (VEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 141
   },
   {
@@ -10864,6 +11094,7 @@
    "cod": "MIL",
    "chiave": "Jashari (MIL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -10900,6 +11131,7 @@
    "cod": "COM",
    "chiave": "Liberali (COM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -10936,6 +11168,7 @@
    "cod": "TOR",
    "chiave": "Braganca (TOR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -10982,6 +11215,7 @@
    "cod": "SAS",
    "chiave": "Sulemana I. (SAS)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -11028,6 +11262,7 @@
    "cod": "SAS",
    "chiave": "Bakola (SAS)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -11074,6 +11309,7 @@
    "cod": "LEC",
    "chiave": "Maleh (LEC)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 110
   },
   {
@@ -11120,6 +11356,7 @@
    "cod": "VEN",
    "chiave": "Sohm (VEN)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 141
   },
   {
@@ -11156,6 +11393,7 @@
    "cod": "TOR",
    "chiave": "Fitz-Jim (TOR)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 106
   },
   {
@@ -11202,6 +11440,7 @@
    "cod": "JUV",
    "chiave": "Koopmeiners (JUV)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 99
   },
   {
@@ -11238,6 +11477,7 @@
    "cod": "FIO",
    "chiave": "Oulai (FIO)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 91
   },
   {
@@ -11284,6 +11524,7 @@
    "cod": "LEC",
    "chiave": "Ilic (LEC)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 110
   },
   {
@@ -11330,6 +11571,7 @@
    "cod": "LEC",
    "chiave": "Ngom (LEC)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 110
   },
   {
@@ -11376,6 +11618,7 @@
    "cod": "GEN",
    "chiave": "Amorim (GEN)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -11412,6 +11655,7 @@
    "cod": "GEN",
    "chiave": "Sow (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 106
   },
   {
@@ -11448,6 +11692,7 @@
    "cod": "CAG",
    "chiave": "Winks (CAG)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 101
   },
   {
@@ -11494,6 +11739,7 @@
    "cod": "FRO",
    "chiave": "Fini (FRO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -11540,6 +11786,7 @@
    "cod": "LAZ",
    "chiave": "Belahyane (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -11576,6 +11823,7 @@
    "cod": "FRO",
    "chiave": "Cichella (FRO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -11612,6 +11860,7 @@
    "cod": "PAR",
    "chiave": "Diallo O. (PAR)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 120
   },
   {
@@ -11658,6 +11907,7 @@
    "cod": "LEC",
    "chiave": "Gorter (LEC)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 110
   },
   {
@@ -11694,6 +11944,7 @@
    "cod": "CAG",
    "chiave": "Massolin (CAG)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -11730,6 +11981,7 @@
    "cod": "MON",
    "chiave": "Mout (MON)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 136
   },
   {
@@ -11766,6 +12018,7 @@
    "cod": "FRO",
    "chiave": "Koutsoupias (FRO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -11802,6 +12055,7 @@
    "cod": "GEN",
    "chiave": "Meichtry (GEN)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -11838,6 +12092,7 @@
    "cod": "GEN",
    "chiave": "Traorè Hj. (GEN)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -11884,6 +12139,7 @@
    "cod": "GEN",
    "chiave": "Venturino (GEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -11920,6 +12176,7 @@
    "cod": "BOL",
    "chiave": "Amondarain (BOL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 93
   },
   {
@@ -11960,6 +12217,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Lesione al bicipite femorale sinistro. Rientro dalla seconda meta di settembre."
    },
+   "fonti": 0,
    "abbId": 93
   },
   {
@@ -11996,6 +12254,7 @@
    "cod": "FRO",
    "chiave": "Grillitsch (FRO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 112
   },
   {
@@ -12042,6 +12301,7 @@
    "cod": "TOR",
    "chiave": "Anjorin (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -12088,6 +12348,7 @@
    "cod": "UDI",
    "chiave": "Zarraga (UDI)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -12134,6 +12395,7 @@
    "cod": "TOR",
    "chiave": "Aboukhlal (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 106
   },
   {
@@ -12180,6 +12442,7 @@
    "cod": "LEC",
    "chiave": "Kaba (LEC)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 110
   },
   {
@@ -12216,6 +12479,7 @@
    "cod": "VEN",
    "chiave": "Fernandez T. (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 141
   },
   {
@@ -12252,6 +12516,7 @@
    "cod": "INT",
    "chiave": "Stankovic A. (INT)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -12302,6 +12567,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Problema al ginocchio, fuori causa a inizio campionato. Rientro da fine settembre."
    },
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -12342,6 +12608,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Frattura del terzo metatarso del piede destro. Arruolabile dalla prima meta di settembre."
    },
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -12382,6 +12649,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Noie fisiche: forfait contro il Parma. Da valutare."
    },
+   "fonti": 0,
    "abbId": 136
   },
   {
@@ -12418,6 +12686,7 @@
    "cod": "FRO",
    "chiave": "Gelli F. (FRO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -12454,6 +12723,7 @@
    "cod": "FRO",
    "chiave": "Hasa (FRO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -12490,6 +12760,7 @@
    "cod": "UDI",
    "chiave": "Jovanovic (UDI)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 94
   },
   {
@@ -12526,6 +12797,7 @@
    "cod": "LAZ",
    "chiave": "Przyborek (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 114
   },
   {
@@ -12572,6 +12844,7 @@
    "cod": "PAR",
    "chiave": "Cremaschi (PAR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 120
   },
   {
@@ -12618,6 +12891,7 @@
    "cod": "VEN",
    "chiave": "Helgason (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 141
   },
   {
@@ -12654,6 +12928,7 @@
    "cod": "MON",
    "chiave": "Colombo L. (MON)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 136
   },
   {
@@ -12690,6 +12965,7 @@
    "cod": "VEN",
    "chiave": "Duncan (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 141
   },
   {
@@ -12736,6 +13012,7 @@
    "cod": "CAG",
    "chiave": "Liteta (CAG)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -12772,6 +13049,7 @@
    "cod": "FRO",
    "chiave": "Kone B. (FRO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -12808,6 +13086,7 @@
    "cod": "MON",
    "chiave": "Foe Ondoa (MON)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 136
   },
   {
@@ -12844,6 +13123,7 @@
    "cod": "CAG",
    "chiave": "Ciervo (CAG)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -12880,6 +13160,7 @@
    "cod": "MIL",
    "chiave": "Comotto (MIL)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 90
   },
   {
@@ -12916,6 +13197,7 @@
    "cod": "VEN",
    "chiave": "Dagasso (VEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 141
   },
   {
@@ -12952,6 +13234,7 @@
    "cod": "FRO",
    "chiave": "El Azzouzi A. (FRO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 112
   },
   {
@@ -12998,6 +13281,7 @@
    "cod": "LEC",
    "chiave": "Fofana Sa. (LEC)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 110
   },
   {
@@ -13034,6 +13318,7 @@
    "cod": "MON",
    "chiave": "Forson O. (MON)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 136
   },
   {
@@ -13070,6 +13355,7 @@
    "cod": "LEC",
    "chiave": "Laerke (LEC)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 110
   },
   {
@@ -13106,6 +13392,7 @@
    "cod": "COM",
    "chiave": "Lahdo (COM)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 101
   },
   {
@@ -13152,6 +13439,7 @@
    "cod": "INT",
    "chiave": "Dimarco (INT)",
    "fasciaIdx": 1,
+   "fonti": 2,
    "abbId": 288
   },
   {
@@ -13198,6 +13486,7 @@
    "cod": "ROM",
    "chiave": "Wesley (ROM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 292
   },
   {
@@ -13244,6 +13533,7 @@
    "cod": "JUV",
    "chiave": "Bremer (JUV)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 286
   },
   {
@@ -13290,6 +13580,7 @@
    "cod": "GEN",
    "chiave": "Ostigard (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 285
   },
   {
@@ -13336,6 +13627,7 @@
    "cod": "UDI",
    "chiave": "Solet (UDI)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 286
   },
   {
@@ -13382,6 +13674,7 @@
    "cod": "MIL",
    "chiave": "Pavlovic (MIL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 283
   },
   {
@@ -13428,6 +13721,7 @@
    "cod": "ROM",
    "chiave": "Mancini (ROM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 292
   },
   {
@@ -13474,6 +13768,7 @@
    "cod": "INT",
    "chiave": "Akanji (INT)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 288
   },
   {
@@ -13520,6 +13815,7 @@
    "cod": "INT",
    "chiave": "Bisseck (INT)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 288
   },
   {
@@ -13566,6 +13862,7 @@
    "cod": "NAP",
    "chiave": "Rrahmani (NAP)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 284
   },
   {
@@ -13612,6 +13909,7 @@
    "cod": "JUV",
    "chiave": "Kalulu (JUV)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 311
   },
   {
@@ -13658,6 +13956,7 @@
    "cod": "INT",
    "chiave": "Bastoni (INT)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 288
   },
   {
@@ -13708,6 +14007,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Fastidio all'adduttore nel riscaldamento a Lecce (31/8). A rischio con l'Atalanta."
    },
+   "fonti": 2,
    "abbId": 325
   },
   {
@@ -13754,6 +14054,7 @@
    "cod": "NAP",
    "chiave": "Di Lorenzo (NAP)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 284
   },
   {
@@ -13800,6 +14101,7 @@
    "cod": "NAP",
    "chiave": "Spinazzola (NAP)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 284
   },
   {
@@ -13846,6 +14148,7 @@
    "cod": "ATA",
    "chiave": "Scalvini (ATA)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 303
   },
   {
@@ -13892,6 +14195,7 @@
    "cod": "ROM",
    "chiave": "Hermoso (ROM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 325
   },
   {
@@ -13938,6 +14242,7 @@
    "cod": "PAR",
    "chiave": "Valeri (PAR)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 323
   },
   {
@@ -13974,6 +14279,7 @@
    "cod": "ROM",
    "chiave": "Molina N. (ROM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 325
   },
   {
@@ -14020,6 +14326,7 @@
    "cod": "COM",
    "chiave": "Kempf (COM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 321
   },
   {
@@ -14070,6 +14377,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Affaticamento al polpaccio (29/8). Out con l'Inter, a rischio anche col Lecce."
    },
+   "fonti": 2,
    "abbId": 298
   },
   {
@@ -14116,6 +14424,7 @@
    "cod": "COM",
    "chiave": "Ramon (COM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 321
   },
   {
@@ -14162,6 +14471,7 @@
    "cod": "GEN",
    "chiave": "Vasquez (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 285
   },
   {
@@ -14208,6 +14518,7 @@
    "cod": "ATA",
    "chiave": "Zappacosta (ATA)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 303
   },
   {
@@ -14254,6 +14565,7 @@
    "cod": "BOL",
    "chiave": "Miranda J. (BOL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 292
   },
   {
@@ -14300,6 +14612,7 @@
    "cod": "COM",
    "chiave": "Valle (COM)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 321
   },
   {
@@ -14350,6 +14663,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Problema alla caviglia: saltate Sassuolo e Bologna, a rischio anche con la Roma."
    },
+   "fonti": 2,
    "abbId": 303
   },
   {
@@ -14396,6 +14710,7 @@
    "cod": "UDI",
    "chiave": "Vojvoda (UDI)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 286
   },
   {
@@ -14442,6 +14757,7 @@
    "cod": "TOR",
    "chiave": "Belghali (TOR)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 285
   },
   {
@@ -14488,6 +14804,7 @@
    "cod": "JUV",
    "chiave": "Celik (JUV)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 311
   },
   {
@@ -14534,6 +14851,7 @@
    "cod": "PAR",
    "chiave": "Diego Carlos (PAR)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 323
   },
   {
@@ -14580,6 +14898,7 @@
    "cod": "INT",
    "chiave": "Carlos Augusto (INT)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 288
   },
   {
@@ -14630,6 +14949,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Risentimento al flessore sinistro: fuori con Fiorentina e Lecce. Da valutare."
    },
+   "fonti": 0,
    "abbId": 325
   },
   {
@@ -14676,6 +14996,7 @@
    "cod": "MIL",
    "chiave": "Gila (MIL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 283
   },
   {
@@ -14722,6 +15043,7 @@
    "cod": "MIL",
    "chiave": "Bartesaghi (MIL)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 283
   },
   {
@@ -14768,6 +15090,7 @@
    "cod": "UDI",
    "chiave": "Kabasele (UDI)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 286
   },
   {
@@ -14814,6 +15137,7 @@
    "cod": "ATA",
    "chiave": "Bernasconi (ATA)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 303
   },
   {
@@ -14860,6 +15184,7 @@
    "cod": "PAR",
    "chiave": "Delprato (PAR)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 323
   },
   {
@@ -14906,6 +15231,7 @@
    "cod": "FIO",
    "chiave": "Dodò (FIO)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 302
   },
   {
@@ -14952,6 +15278,7 @@
    "cod": "LEC",
    "chiave": "Tiago Gabriel (LEC)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 300
   },
   {
@@ -14998,6 +15325,7 @@
    "cod": "BOL",
    "chiave": "Holm (BOL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 292
   },
   {
@@ -15048,6 +15376,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Lesione muscolare alla coscia (24/8). Ipotesi rientro da inizio ottobre."
    },
+   "fonti": 2,
    "abbId": 289
   },
   {
@@ -15094,6 +15423,7 @@
    "cod": "SAS",
    "chiave": "Obrador (SAS)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 290
   },
   {
@@ -15140,6 +15470,7 @@
    "cod": "JUV",
    "chiave": "Cambiaso (JUV)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 311
   },
   {
@@ -15186,6 +15517,7 @@
    "cod": "NAP",
    "chiave": "Beukema (NAP)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 289
   },
   {
@@ -15232,6 +15564,7 @@
    "cod": "JUV",
    "chiave": "Kelly L. (JUV)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 311
   },
   {
@@ -15282,6 +15615,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato al crociato a gennaio. Puo tornare in campo da ottobre."
    },
+   "fonti": 0,
    "abbId": 305
   },
   {
@@ -15328,6 +15662,7 @@
    "cod": "LAZ",
    "chiave": "Romagnoli (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 295
   },
   {
@@ -15374,6 +15709,7 @@
    "cod": "SAS",
    "chiave": "Idzes (SAS)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 294
   },
   {
@@ -15420,6 +15756,7 @@
    "cod": "MIL",
    "chiave": "De Winter (MIL)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 294
   },
   {
@@ -15466,6 +15803,7 @@
    "cod": "BOL",
    "chiave": "Zortea (BOL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 296
   },
   {
@@ -15512,6 +15850,7 @@
    "cod": "LEC",
    "chiave": "Gallo (LEC)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 300
   },
   {
@@ -15558,6 +15897,7 @@
    "cod": "JUV",
    "chiave": "Lucumì (JUV)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 311
   },
   {
@@ -15604,6 +15944,7 @@
    "cod": "LAZ",
    "chiave": "Tavares N. (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 299
   },
   {
@@ -15650,6 +15991,7 @@
    "cod": "TOR",
    "chiave": "Coco (TOR)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 312
   },
   {
@@ -15700,6 +16042,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato al menisco del ginocchio destro a luglio. Rientro ipotizzato a meta novembre."
    },
+   "fonti": 0,
    "abbId": 299
   },
   {
@@ -15746,6 +16089,7 @@
    "cod": "JUV",
    "chiave": "Gatti (JUV)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 311
   },
   {
@@ -15796,6 +16140,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Recupero dalla lesione del crociato: punta a tornare convocabile da novembre."
    },
+   "fonti": 0,
    "abbId": 302
   },
   {
@@ -15842,6 +16187,7 @@
    "cod": "TOR",
    "chiave": "Ismajli (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 312
   },
   {
@@ -15878,6 +16224,7 @@
    "cod": "INT",
    "chiave": "Spence (INT)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 316
   },
   {
@@ -15924,6 +16271,7 @@
    "cod": "MIL",
    "chiave": "Gabbia (MIL)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 314
   },
   {
@@ -15970,6 +16318,7 @@
    "cod": "ATA",
    "chiave": "Kossounou (ATA)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 307
   },
   {
@@ -16016,6 +16365,7 @@
    "cod": "GEN",
    "chiave": "Marcandalli (GEN)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 312
   },
   {
@@ -16062,6 +16412,7 @@
    "cod": "UDI",
    "chiave": "Kamara H. (UDI)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 316
   },
   {
@@ -16108,6 +16459,7 @@
    "cod": "CAG",
    "chiave": "Obert (CAG)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 309
   },
   {
@@ -16154,6 +16506,7 @@
    "cod": "ATA",
    "chiave": "Bellanova (ATA)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 324
   },
   {
@@ -16200,6 +16553,7 @@
    "cod": "ROM",
    "chiave": "Ghilardi (ROM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 325
   },
   {
@@ -16246,6 +16600,7 @@
    "cod": "BOL",
    "chiave": "Heggem (BOL)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 319
   },
   {
@@ -16296,6 +16651,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato a fine giugno al semimembranoso della coscia sinistra. Rientro da inizio ottobre."
    },
+   "fonti": 0,
    "abbId": 324
   },
   {
@@ -16342,6 +16698,7 @@
    "cod": "LAZ",
    "chiave": "Provstgaard (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 315
   },
   {
@@ -16378,6 +16735,7 @@
    "cod": "COM",
    "chiave": "Chalobah T. (COM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 321
   },
   {
@@ -16424,6 +16782,7 @@
    "cod": "MIL",
    "chiave": "Tomori (MIL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 343
   },
   {
@@ -16470,6 +16829,7 @@
    "cod": "UDI",
    "chiave": "Bertola (UDI)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 316
   },
   {
@@ -16516,6 +16876,7 @@
    "cod": "COM",
    "chiave": "Smolcic I. (COM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 321
   },
   {
@@ -16562,6 +16923,7 @@
    "cod": "PAR",
    "chiave": "Valenti (PAR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -16608,6 +16970,7 @@
    "cod": "FIO",
    "chiave": "Joao Mario (FIO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -16654,6 +17017,7 @@
    "cod": "TOR",
    "chiave": "Comuzzo (TOR)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 327
   },
   {
@@ -16704,6 +17068,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "In ripresa dalla rottura del crociato. Arruolabile da fine ottobre."
    },
+   "fonti": 0,
    "abbId": 341
   },
   {
@@ -16750,6 +17115,7 @@
    "cod": "FIO",
    "chiave": "Ranieri L. (FIO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -16796,6 +17162,7 @@
    "cod": "JUV",
    "chiave": "Cabal (JUV)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 338
   },
   {
@@ -16842,6 +17209,7 @@
    "cod": "SAS",
    "chiave": "Van Der Brempt (SAS)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 343
   },
   {
@@ -16888,6 +17256,7 @@
    "cod": "ATA",
    "chiave": "Kolasinac (ATA)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 334
   },
   {
@@ -16934,6 +17303,7 @@
    "cod": "SAS",
    "chiave": "Doig (SAS)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 343
   },
   {
@@ -16980,6 +17350,7 @@
    "cod": "BOL",
    "chiave": "Vitik (BOL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 328
   },
   {
@@ -17026,6 +17397,7 @@
    "cod": "TOR",
    "chiave": "Fortini (TOR)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 329
   },
   {
@@ -17072,6 +17444,7 @@
    "cod": "LAZ",
    "chiave": "Pellegrini Lu. (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 338
   },
   {
@@ -17118,6 +17491,7 @@
    "cod": "PAR",
    "chiave": "Troilo (PAR)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 332
   },
   {
@@ -17154,6 +17528,7 @@
    "cod": "COM",
    "chiave": "Couto (COM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 341
   },
   {
@@ -17190,6 +17565,7 @@
    "cod": "INT",
    "chiave": "Stones (INT)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 333
   },
   {
@@ -17240,6 +17616,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Forte trauma contusivo alla gamba destra. Rientro da valutare a meta settembre."
    },
+   "fonti": 0,
    "abbId": 343
   },
   {
@@ -17286,6 +17663,7 @@
    "cod": "LEC",
    "chiave": "Siebert (LEC)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 334
   },
   {
@@ -17332,6 +17710,7 @@
    "cod": "MIL",
    "chiave": "Terracciano F. (MIL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 343
   },
   {
@@ -17378,6 +17757,7 @@
    "cod": "VEN",
    "chiave": "Bella-Kotchap (VEN)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 339
   },
   {
@@ -17424,6 +17804,7 @@
    "cod": "LEC",
    "chiave": "Veiga D. (LEC)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 341
   },
   {
@@ -17470,6 +17851,7 @@
    "cod": "NAP",
    "chiave": "Olivera (NAP)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 338
   },
   {
@@ -17516,6 +17898,7 @@
    "cod": "CAG",
    "chiave": "Zè Pedro (CAG)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 341
   },
   {
@@ -17562,6 +17945,7 @@
    "cod": "PAR",
    "chiave": "Britschgi (PAR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 341
   },
   {
@@ -17608,6 +17992,7 @@
    "cod": "LAZ",
    "chiave": "Floriani Mussolini (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 343
   },
   {
@@ -17654,6 +18039,7 @@
    "cod": "CAG",
    "chiave": "Rodriguez Ju. (CAG)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 341
   },
   {
@@ -17700,6 +18086,7 @@
    "cod": "MIL",
    "chiave": "Estupinan (MIL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -17736,6 +18123,7 @@
    "cod": "FIO",
    "chiave": "Dragusin (FIO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 302
   },
   {
@@ -17782,6 +18170,7 @@
    "cod": "VEN",
    "chiave": "Mazzocchi (VEN)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 303
   },
   {
@@ -17818,6 +18207,7 @@
    "cod": "BOL",
    "chiave": "Theate (BOL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 292
   },
   {
@@ -17864,6 +18254,7 @@
    "cod": "LEC",
    "chiave": "Gaspar K. (LEC)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 300
   },
   {
@@ -17900,6 +18291,7 @@
    "cod": "LAZ",
    "chiave": "Sutalo J. (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 284
   },
   {
@@ -17946,6 +18338,7 @@
    "cod": "FIO",
    "chiave": "Pongracic (FIO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 302
   },
   {
@@ -17982,6 +18375,7 @@
    "cod": "NAP",
    "chiave": "Badiashile (NAP)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 284
   },
   {
@@ -18028,6 +18422,7 @@
    "cod": "FIO",
    "chiave": "Jimenez A. (FIO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 302
   },
   {
@@ -18074,6 +18469,7 @@
    "cod": "INT",
    "chiave": "Pavard (INT)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 288
   },
   {
@@ -18110,6 +18506,7 @@
    "cod": "LAZ",
    "chiave": "Doekhi (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 1,
    "abbId": 284
   },
   {
@@ -18156,6 +18553,7 @@
    "cod": "VEN",
    "chiave": "Juan Jesus (VEN)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 303
   },
   {
@@ -18192,6 +18590,7 @@
    "cod": "FIO",
    "chiave": "Valdepenas (FIO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 302
   },
   {
@@ -18238,6 +18637,7 @@
    "cod": "BOL",
    "chiave": "De Silvestri (BOL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 292
   },
   {
@@ -18284,6 +18684,7 @@
    "cod": "MON",
    "chiave": "Kouadio (MON)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 323
   },
   {
@@ -18320,6 +18721,7 @@
    "cod": "FRO",
    "chiave": "Bracaglia (FRO)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 298
   },
   {
@@ -18356,6 +18758,7 @@
    "cod": "SAS",
    "chiave": "Caleta-Car (SAS)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 283
   },
   {
@@ -18392,6 +18795,7 @@
    "cod": "ROM",
    "chiave": "Koulierakis (ROM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 325
   },
   {
@@ -18438,6 +18842,7 @@
    "cod": "LAZ",
    "chiave": "Lazzari (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 284
   },
   {
@@ -18474,6 +18879,7 @@
    "cod": "MON",
    "chiave": "Mangas (MON)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 323
   },
   {
@@ -18510,6 +18916,7 @@
    "cod": "CAG",
    "chiave": "Sugawara (CAG)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -18546,6 +18953,7 @@
    "cod": "LAZ",
    "chiave": "Pedraza (LAZ)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 284
   },
   {
@@ -18592,6 +19000,7 @@
    "cod": "MON",
    "chiave": "Ziolkowski (MON)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 323
   },
   {
@@ -18638,6 +19047,7 @@
    "cod": "UDI",
    "chiave": "Ebosse (UDI)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 286
   },
   {
@@ -18674,6 +19084,7 @@
    "cod": "FRO",
    "chiave": "Calvani (FRO)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 298
   },
   {
@@ -18710,6 +19121,7 @@
    "cod": "COM",
    "chiave": "Kaiki (COM)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 321
   },
   {
@@ -18746,6 +19158,7 @@
    "cod": "FRO",
    "chiave": "Monterisi (FRO)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 298
   },
   {
@@ -18782,6 +19195,7 @@
    "cod": "MON",
    "chiave": "Birindelli (MON)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 323
   },
   {
@@ -18818,6 +19232,7 @@
    "cod": "TOR",
    "chiave": "Comert (TOR)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 285
   },
   {
@@ -18854,6 +19269,7 @@
    "cod": "VEN",
    "chiave": "Correia T. (VEN)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 303
   },
   {
@@ -18890,6 +19306,7 @@
    "cod": "VEN",
    "chiave": "Hainaut (VEN)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 303
   },
   {
@@ -18926,6 +19343,7 @@
    "cod": "SAS",
    "chiave": "Leysen F. (SAS)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -18962,6 +19380,7 @@
    "cod": "TOR",
    "chiave": "Patterson (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 285
   },
   {
@@ -18998,6 +19417,7 @@
    "cod": "FIO",
    "chiave": "Viery (FIO)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 302
   },
   {
@@ -19044,6 +19464,7 @@
    "cod": "UDI",
    "chiave": "Arizala (UDI)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 286
   },
   {
@@ -19080,6 +19501,7 @@
    "cod": "ROM",
    "chiave": "Balerdi (ROM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 325
   },
   {
@@ -19116,6 +19538,7 @@
    "cod": "NAP",
    "chiave": "Favasuli (NAP)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 284
   },
   {
@@ -19152,6 +19575,7 @@
    "cod": "MON",
    "chiave": "Lucchesi (MON)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -19202,6 +19626,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Problema all'adduttore destro (1a giornata). Ai box fino a meta settembre."
    },
+   "fonti": 1,
    "abbId": 286
   },
   {
@@ -19238,6 +19663,7 @@
    "cod": "UDI",
    "chiave": "Abankwah (UDI)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 286
   },
   {
@@ -19274,6 +19700,7 @@
    "cod": "GEN",
    "chiave": "Drameh (GEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 285
   },
   {
@@ -19310,6 +19737,7 @@
    "cod": "VEN",
    "chiave": "Halhal (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 303
   },
   {
@@ -19346,6 +19774,7 @@
    "cod": "VEN",
    "chiave": "Haps (VEN)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 303
   },
   {
@@ -19382,6 +19811,7 @@
    "cod": "ROM",
    "chiave": "Lulli (ROM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 325
   },
   {
@@ -19418,6 +19848,7 @@
    "cod": "GEN",
    "chiave": "Mitaj (GEN)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 285
   },
   {
@@ -19454,6 +19885,7 @@
    "cod": "FRO",
    "chiave": "Oyono A. (FRO)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 298
   },
   {
@@ -19500,6 +19932,7 @@
    "cod": "GEN",
    "chiave": "Sabelli (GEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 285
   },
   {
@@ -19536,6 +19969,7 @@
    "cod": "VEN",
    "chiave": "Schingtienne (VEN)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 303
   },
   {
@@ -19582,6 +20016,7 @@
    "cod": "BOL",
    "chiave": "Helland (BOL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 292
   },
   {
@@ -19632,6 +20067,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Lesione di alto grado del collaterale mediale (8/8). Stop di almeno due mesi."
    },
+   "fonti": 0,
    "abbId": 284
   },
   {
@@ -19668,6 +20104,7 @@
    "cod": "MON",
    "chiave": "Carboni A. (MON)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 323
   },
   {
@@ -19714,6 +20151,7 @@
    "cod": "BOL",
    "chiave": "Casale (BOL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 292
   },
   {
@@ -19764,6 +20202,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Rottura del crociato a gennaio: punta a tornare convocabile da meta settembre."
    },
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -19800,6 +20239,7 @@
    "cod": "FRO",
    "chiave": "Cittadini (FRO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -19836,6 +20276,7 @@
    "cod": "COM",
    "chiave": "Kambwala (COM)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 321
   },
   {
@@ -19872,6 +20313,7 @@
    "cod": "CAG",
    "chiave": "Kofler (CAG)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -19908,6 +20350,7 @@
    "cod": "NAP",
    "chiave": "Marin R. (NAP)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 284
   },
   {
@@ -19944,6 +20387,7 @@
    "cod": "SAS",
    "chiave": "Odenthal (SAS)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -19980,6 +20424,7 @@
    "cod": "FRO",
    "chiave": "Tchato (FRO)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 298
   },
   {
@@ -20016,6 +20461,7 @@
    "cod": "FRO",
    "chiave": "Terzic (FRO)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 298
   },
   {
@@ -20062,6 +20508,7 @@
    "cod": "TOR",
    "chiave": "Biraghi (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 285
   },
   {
@@ -20112,6 +20559,7 @@
     "stato": "Infortunato - rientro entro settembre",
     "dettaglio": "Problema fisico, out nella 3a giornata. Tempi di recupero da valutare."
    },
+   "fonti": 0,
    "abbId": 284
   },
   {
@@ -20152,6 +20600,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Costretto al cambio a Milano per un guaio fisico. Forfait a Frosinone."
    },
+   "fonti": 0,
    "abbId": 303
   },
   {
@@ -20192,6 +20641,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Operato in estate all'anca. Recuperabile da fine ottobre."
    },
+   "fonti": 0,
    "abbId": 303
   },
   {
@@ -20238,6 +20688,7 @@
    "cod": "LEC",
    "chiave": "Jean (LEC)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 300
   },
   {
@@ -20274,6 +20725,7 @@
    "cod": "FRO",
    "chiave": "Akpoguma (FRO)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -20310,6 +20762,7 @@
    "cod": "BOL",
    "chiave": "Alhassane (BOL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 292
   },
   {
@@ -20356,6 +20809,7 @@
    "cod": "MON",
    "chiave": "Goglichidze (MON)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -20396,6 +20850,7 @@
     "stato": "In dubbio per la prossima",
     "dettaglio": "Noie fisiche: forfait con Lecce e Milan. Punta a rientrare a inizio settembre."
    },
+   "fonti": 0,
    "abbId": 303
   },
   {
@@ -20442,6 +20897,7 @@
    "cod": "PAR",
    "chiave": "Carboni F. (PAR)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -20478,6 +20934,7 @@
    "cod": "CAG",
    "chiave": "Aurelio (CAG)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -20524,6 +20981,7 @@
    "cod": "LEC",
    "chiave": "Ndaba (LEC)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 300
   },
   {
@@ -20560,6 +21018,7 @@
    "cod": "MON",
    "chiave": "Bakoune (MON)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -20596,6 +21055,7 @@
    "cod": "SAS",
    "chiave": "Cinquegrano (SAS)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -20632,6 +21092,7 @@
    "cod": "MIL",
    "chiave": "Diawara S. (MIL)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -20678,6 +21139,7 @@
    "cod": "PAR",
    "chiave": "Ndiaye (PAR)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 323
   },
   {
@@ -20724,6 +21186,7 @@
    "cod": "JUV",
    "chiave": "Rugani (JUV)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 311
   },
   {
@@ -20760,6 +21223,7 @@
    "cod": "VEN",
    "chiave": "Sagrado (VEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 303
   },
   {
@@ -20796,6 +21260,7 @@
    "cod": "GEN",
    "chiave": "Puczka (GEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 285
   },
   {
@@ -20832,6 +21297,7 @@
    "cod": "MON",
    "chiave": "Antov (MON)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -20878,6 +21344,7 @@
    "cod": "GEN",
    "chiave": "Otoa (GEN)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 285
   },
   {
@@ -20914,6 +21381,7 @@
    "cod": "FRO",
    "chiave": "Amey (FRO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -20960,6 +21428,7 @@
    "cod": "LEC",
    "chiave": "Dembelè A. (LEC)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 300
   },
   {
@@ -20996,6 +21465,7 @@
    "cod": "PAR",
    "chiave": "Drobnic (PAR)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -21032,6 +21502,7 @@
    "cod": "COM",
    "chiave": "Goldaniga (COM)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 321
   },
   {
@@ -21068,6 +21539,7 @@
    "cod": "VEN",
    "chiave": "Gomes (VEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 303
   },
   {
@@ -21104,6 +21576,7 @@
    "cod": "MON",
    "chiave": "Maye (MON)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 323
   },
   {
@@ -21140,6 +21613,7 @@
    "cod": "FRO",
    "chiave": "Omar Fayed (FRO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 298
   },
   {
@@ -21180,6 +21654,7 @@
     "stato": "Infortunato - lungo stop",
     "dettaglio": "Recupero dalla lesione del crociato anteriore. Convocabile da ottobre."
    },
+   "fonti": 0,
    "abbId": 283
   },
   {
@@ -21226,6 +21701,7 @@
    "cod": "ROM",
    "chiave": "Svilar (ROM)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 478
   },
   {
@@ -21262,6 +21738,7 @@
    "cod": "JUV",
    "chiave": "Vicario (JUV)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 472
   },
   {
@@ -21308,6 +21785,7 @@
    "cod": "INT",
    "chiave": "Martinez Jo. (INT)",
    "fasciaIdx": 2,
+   "fonti": 1,
    "abbId": 476
   },
   {
@@ -21354,6 +21832,7 @@
    "cod": "ATA",
    "chiave": "Carnesecchi (ATA)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 472
   },
   {
@@ -21400,6 +21879,7 @@
    "cod": "MIL",
    "chiave": "Maignan (MIL)",
    "fasciaIdx": 2,
+   "fonti": 2,
    "abbId": 474
   },
   {
@@ -21446,6 +21926,7 @@
    "cod": "COM",
    "chiave": "Butez (COM)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 481
   },
   {
@@ -21492,6 +21973,7 @@
    "cod": "NAP",
    "chiave": "Meret (NAP)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 472
   },
   {
@@ -21528,6 +22010,7 @@
    "cod": "LAZ",
    "chiave": "Mandas (LAZ)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 472
   },
   {
@@ -21574,6 +22057,7 @@
    "cod": "BOL",
    "chiave": "Skorupski (BOL)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 475
   },
   {
@@ -21620,6 +22104,7 @@
    "cod": "FIO",
    "chiave": "De Gea (FIO)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 477
   },
   {
@@ -21656,6 +22141,7 @@
    "cod": "TOR",
    "chiave": "Perri (TOR)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 473
   },
   {
@@ -21702,6 +22188,7 @@
    "cod": "UDI",
    "chiave": "Okoye (UDI)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 476
   },
   {
@@ -21738,6 +22225,7 @@
    "cod": "COM",
    "chiave": "Sanchez Ro. (COM)",
    "fasciaIdx": 3,
+   "fonti": 0,
    "abbId": 481
   },
   {
@@ -21784,6 +22272,7 @@
    "cod": "LEC",
    "chiave": "Falcone (LEC)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 480
   },
   {
@@ -21830,6 +22319,7 @@
    "cod": "CAG",
    "chiave": "Caprile (CAG)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 475
   },
   {
@@ -21876,6 +22366,7 @@
    "cod": "GEN",
    "chiave": "Bijlow (GEN)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 476
   },
   {
@@ -21922,6 +22413,7 @@
    "cod": "SAS",
    "chiave": "Muric (SAS)",
    "fasciaIdx": 3,
+   "fonti": 2,
    "abbId": 493
   },
   {
@@ -21958,6 +22450,7 @@
    "cod": "FRO",
    "chiave": "Palmisani (FRO)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 477
   },
   {
@@ -21994,6 +22487,7 @@
    "cod": "VEN",
    "chiave": "Stankovic F. (VEN)",
    "fasciaIdx": 4,
+   "fonti": 2,
    "abbId": 486
   },
   {
@@ -22030,6 +22524,7 @@
    "cod": "MON",
    "chiave": "Tornqvist (MON)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 485
   },
   {
@@ -22076,6 +22571,7 @@
    "cod": "NAP",
    "chiave": "Milinkovic-Savic V. (NAP)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 480
   },
   {
@@ -22122,6 +22618,7 @@
    "cod": "PAR",
    "chiave": "Corvi (PAR)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 485
   },
   {
@@ -22158,6 +22655,7 @@
    "cod": "PAR",
    "chiave": "Daffara (PAR)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 485
   },
   {
@@ -22194,6 +22692,7 @@
    "cod": "TOR",
    "chiave": "Mascardi (TOR)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 485
   },
   {
@@ -22230,6 +22729,7 @@
    "cod": "MON",
    "chiave": "Thiam (MON)",
    "fasciaIdx": 4,
+   "fonti": 1,
    "abbId": 485
   },
   {
@@ -22276,6 +22776,7 @@
    "cod": "INT",
    "chiave": "Provedel (INT)",
    "fasciaIdx": 4,
+   "fonti": 0,
    "abbId": 488
   },
   {
@@ -22322,6 +22823,7 @@
    "cod": "FIO",
    "chiave": "Christensen O. (FIO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 486
   },
   {
@@ -22368,6 +22870,7 @@
    "cod": "MIL",
    "chiave": "Terracciano (MIL)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 493
   },
   {
@@ -22414,6 +22917,7 @@
    "cod": "BOL",
    "chiave": "Pessina Mas. (BOL)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 488
   },
   {
@@ -22450,6 +22954,7 @@
    "cod": "LEC",
    "chiave": "Bleve (LEC)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 493
   },
   {
@@ -22486,6 +22991,7 @@
    "cod": "NAP",
    "chiave": "Contini (NAP)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 490
   },
   {
@@ -22522,6 +23028,7 @@
    "cod": "ROM",
    "chiave": "De Marzi (ROM)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 492
   },
   {
@@ -22558,6 +23065,7 @@
    "cod": "FRO",
    "chiave": "Desplanches (FRO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 492
   },
   {
@@ -22594,6 +23102,7 @@
    "cod": "PAR",
    "chiave": "Ghidotti (PAR)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 495
   },
   {
@@ -22630,6 +23139,7 @@
    "cod": "ROM",
    "chiave": "Gollini (ROM)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 494
   },
   {
@@ -22666,6 +23176,7 @@
    "cod": "JUV",
    "chiave": "Grabara (JUV)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 495
   },
   {
@@ -22702,6 +23213,7 @@
    "cod": "VEN",
    "chiave": "Grandi (VEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 486
   },
   {
@@ -22738,6 +23250,7 @@
    "cod": "BOL",
    "chiave": "Happonen (BOL)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 475
   },
   {
@@ -22774,6 +23287,7 @@
    "cod": "FIO",
    "chiave": "Lezzerini (FIO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 477
   },
   {
@@ -22810,6 +23324,7 @@
    "cod": "FRO",
    "chiave": "Lolic (FRO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 475
   },
   {
@@ -22846,6 +23361,7 @@
    "cod": "UDI",
    "chiave": "Mrozek (UDI)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 476
   },
   {
@@ -22882,6 +23398,7 @@
    "cod": "LEC",
    "chiave": "Penev (LEC)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 493
   },
   {
@@ -22918,6 +23435,7 @@
    "cod": "UDI",
    "chiave": "Piana (UDI)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 476
   },
   {
@@ -22954,6 +23472,7 @@
    "cod": "JUV",
    "chiave": "Pinsoglio (JUV)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 482
   },
   {
@@ -22990,6 +23509,7 @@
    "cod": "FRO",
    "chiave": "Pisseri (FRO)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 475
   },
   {
@@ -23026,6 +23546,7 @@
    "cod": "VEN",
    "chiave": "Pozzi (VEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 486
   },
   {
@@ -23062,6 +23583,7 @@
    "cod": "CAG",
    "chiave": "Radunovic (CAG)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 475
   },
   {
@@ -23098,6 +23620,7 @@
    "cod": "LAZ",
    "chiave": "Renzetti (LAZ)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 472
   },
   {
@@ -23134,6 +23657,7 @@
    "cod": "SAS",
    "chiave": "Russo A. (SAS)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 474
   },
   {
@@ -23170,6 +23694,7 @@
    "cod": "SAS",
    "chiave": "Satalino (SAS)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 474
   },
   {
@@ -23206,6 +23731,7 @@
    "cod": "CAG",
    "chiave": "Sherri (CAG)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 475
   },
   {
@@ -23242,6 +23768,7 @@
    "cod": "TOR",
    "chiave": "Siviero (TOR)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 473
   },
   {
@@ -23278,6 +23805,7 @@
    "cod": "GEN",
    "chiave": "Stolz (GEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 473
   },
   {
@@ -23314,6 +23842,7 @@
    "cod": "MON",
    "chiave": "Strajnar (MON)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 485
   },
   {
@@ -23350,6 +23879,7 @@
    "cod": "MIL",
    "chiave": "Torriani (MIL)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 474
   },
   {
@@ -23386,6 +23916,7 @@
    "cod": "COM",
    "chiave": "Vigorito (COM)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 481
   },
   {
@@ -23432,6 +23963,7 @@
    "cod": "INT",
    "chiave": "Di Gennaro (INT)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 476
   },
   {
@@ -23478,6 +24010,7 @@
    "cod": "UDI",
    "chiave": "Padelli (UDI)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 476
   },
   {
@@ -23524,6 +24057,7 @@
    "cod": "ATA",
    "chiave": "Sportiello (ATA)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 489
   },
   {
@@ -23570,6 +24104,7 @@
    "cod": "VEN",
    "chiave": "Montipò (VEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 486
   },
   {
@@ -23616,6 +24151,7 @@
    "cod": "LAZ",
    "chiave": "Motta (LAZ)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 472
   },
   {
@@ -23662,6 +24198,7 @@
    "cod": "TOR",
    "chiave": "Paleari (TOR)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 473
   },
   {
@@ -23708,6 +24245,7 @@
    "cod": "GEN",
    "chiave": "Sommariva (GEN)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 473
   },
   {
@@ -23754,6 +24292,7 @@
    "cod": "SAS",
    "chiave": "Turati (SAS)",
    "fasciaIdx": 5,
+   "fonti": 0,
    "abbId": 474
   }
  ]

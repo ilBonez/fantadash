@@ -250,6 +250,8 @@ export default function AstaView() {
             advice={league.advice.get(selected.id)}
             abbinamento={league.abbinamenti.get(selected.id)}
             myTeam={league.myTeam}
+            targetIds={league.targetIds}
+            onToggleTarget={toggleTarget}
             onChiudi={() => {
               setSelected(null)
               searchRef.current?.focus()

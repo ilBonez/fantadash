@@ -351,8 +351,9 @@ E' il numero che serve davvero all'asta: dice fin dove un avversario puo' rilanc
 Tutto quello che la dashboard sa viene da **un solo file**:
 `data/Fantacalcio_Classic_202627_Listone_e_Asta.xlsx`. Non ci sono overlay curati a mano, file
 `extra.json`, chiamate di rete o seconde fonti da tenere allineate: il workbook e' la fonte di
-verita' e basta. L'unica cosa che gli sta accanto e' `data/ceduti.txt`, che non aggiunge dati: ne
-toglie (vedi sotto).
+verita' e basta. Accanto ci sono solo due correzioni, non fonti alternative: `data/ceduti.txt`, che
+non aggiunge dati ma ne toglie, e `data/formazioni-tipo.json`, che serve unicamente a contare quante
+probabili formazioni danno un giocatore titolare. Entrambe spiegate sotto.
 
 Dal workbook l'ingest legge:
 
@@ -381,6 +382,48 @@ produrre un JSON vuoto in silenzio, e stampa quanti giocatori, squadre e note ha
 cambiando workbook cambiano. Se sostituisci il file ad asta iniziata, esporta prima il backup JSON e
 ricontrolla le assegnazioni. Togliere un nome da `ceduti.txt` invece e' sicuro: gli id si assegnano
 prima dell'esclusione, quindi nessun altro giocatore viene rinumerato.
+
+### Chi gioca davvero: le formazioni tipo
+
+La `Gerarchia stimata` del workbook e' derivata dalle quotazioni dentro la stessa squadra e ruolo.
+Sui portieri funziona — il titolare costa sempre piu' della riserva — ma in mezzo al campo sbaglia:
+un titolare che il mercato non valuta sembra una riserva.
+
+**`data/formazioni-tipo.json`** contiene gli undici titolari probabili letti da due fonti, con URL e
+data. L'ingest li aggancia al listone e scrive su ogni giocatore `fonti`: 0, 1 o 2, cioe' quante
+delle due lo mettono in campo. Da li' viene la gerarchia usata in dashboard, in ordine di
+attendibilita': entrambe le fonti, poi la fonte singola, poi il workbook.
+
+Il caso che mostra perche' serve: **Yildiz** e' quotato 22 e il workbook lo mette in ballottaggio
+dietro Woltemade, che ne vale 23. Una delle due fonti pero' schiera Yildiz e non Woltemade — con il
+consenso delle fonti l'ordine si inverte, e la scheda dice correttamente che la riserva diretta di
+Yildiz e' Woltemade.
+
+L'aggancio dei nomi e' il punto fragile: il listone scrive `Martinez Jo.`, le fonti `Martínez Josep`
+o solo `Martinez`. Il matcher cerca il cognome fra i token della fonte e verifica l'iniziale sul
+resto (nel listone le iniziali hanno sempre il punto, cosi' `De Gea` e `Van Der Brempt` non vengono
+scambiati per iniziali). **Un nome che resta ambiguo non viene agganciato**: all'Inter la fonte che
+scrive solo `Martinez` potrebbe indicare il portiere o l'attaccante, e attribuirlo a caso sarebbe
+peggio del dato mancante. L'ingest stampa ogni nome non agganciato.
+
+### Ballottaggi: chi si gioca il posto con chi
+
+Il gruppo di confronto e' **squadra + ruolo Mantra**: due giocatori con lo stesso ruolo esteso
+("Difensore centrale", "Terzino sinistro / Esterno basso") nella stessa squadra si contendono lo
+stesso posto. Il ruolo Classic sarebbe troppo grosso — otto difensori non sono tutti alternative
+l'uno dell'altro.
+
+Nella scheda d'asta il blocco **Ballottaggio** dice, in una riga:
+
+- se il giocatore parte titolare, **chi e' la sua riserva diretta** — quella che ne raccoglie il voto
+  quando salta il turno;
+- se non parte, **quale titolare ha davanti** — il posto che deve prendersi;
+- **"Non in ballottaggio"** quando in squadra nessun altro ha il suo ruolo.
+
+Sotto c'e' il gruppo intero in ordine, con il pallino verde su chi parte, il consenso delle fonti
+(`n/2`) e il prezzo consigliato. **Ogni nome ha la sua stella**: si segna l'alternativa come
+obiettivo senza uscire dalla scheda e senza perdere il giocatore che e' in asta in quel momento —
+che e' esattamente il gesto che serve quando stai comprando il titolare e vuoi anche la sua riserva.
 
 ### Chi e' andato via dopo il workbook
 
@@ -440,8 +483,12 @@ barra di assegnazione **la scheda completa**, divisa in tre blocchi:
 
 - **Prezzi** – quotazione iniziale e attuale, FVM, consigliato e massimo, listino d'asta, FVM per
   credito, Score, e il massimo che la tua squadra puo' ancora offrire;
-- **Rendimento** – presenze, media voto, fantamedia, gol, assist, rigori, cartellini del 2025/26,
-  fantamedia ponderata, le giornate gia' giocate del 2026/27, gerarchia e bonus;
+- **Rendimento** – **presenze in Serie A 2025/26** in cima (verde da 25 in su, ambra sotto 10), poi
+  fantamedia, media voto, gol, assist, rigori e cartellini; fantamedia ponderata; le giornate gia'
+  giocate del 2026/27; gerarchia e bonus. Chi non era in Serie A lo dice esplicitamente, invece di
+  mostrare zeri che sembrano un rendimento pessimo;
+- **Ballottaggio** – la riserva diretta o il titolare davanti, il gruppo che si gioca il posto, e una
+  stella per ogni alternativa;
 - **Abbinamenti di calendario** – coppia e terzetto migliori fra i liberi, l'abbinamento fisso del
   listone, e le trasferte in comune con i giocatori dello stesso reparto che hai gia' in rosa.
 
@@ -510,11 +557,13 @@ avvia.cmd                    doppio clic su Windows: compila (se serve) e apre
 .github/workflows/pages.yml  deploy automatico su GitHub Pages
 data/                        il workbook .xlsx (il watcher guarda qui)
 data/ceduti.txt              chi ha lasciato la Serie A dopo la data del workbook
-scripts/ingest_xlsx.py       workbook - ceduti.txt -> src/data/listone.json
+data/formazioni-tipo.json    undici titolari probabili da due fonti, con URL e data
+scripts/ingest_xlsx.py       workbook - ceduti.txt + formazioni -> src/data/listone.json
 scripts/serve.mjs            server statico senza dipendenze per dist/
 vite.config.ts               plugin autoIngest: rigenera il listone al volo
 src/lib/listone.ts           caricamento listone, ricerca, filtri, matrice calendario
 src/lib/abbinamenti.ts       coppie e terzetti migliori fra i giocatori liberi
+src/lib/ballottaggi.ts       chi si gioca il posto con chi, dentro squadra e ruolo
 src/lib/stats.ts             crediti, slot, offerta massima, statistiche di lega
 src/lib/market.ts            listino d'asta: curva di prezzo per reparto
 src/lib/advice.ts            prezzo atteso e Score dei consigli

@@ -5,6 +5,10 @@ Questo branch sostituisce le fonti dati della dashboard con un solo file — il 
 quel file porta e che prima non c'erano: fasce, note di titolarita' e infortuni, statistiche
 2025/26 e 2026/27, e gli abbinamenti di calendario.
 
+Sopra al workbook stanno due sole correzioni, entrambe versionate e spiegate: chi ha lasciato la
+Serie A dopo la sua data, e le probabili formazioni lette da due siti per rivedere la gerarchia
+titolare/riserva, che il workbook deduce dalle sole quotazioni.
+
 Tutto verificato con `npm run build` (typecheck + bundle) e provato in browser su tutte le viste.
 
 ---
@@ -87,8 +91,9 @@ Nuovo file: `src/components/PlayerCard.tsx`.
   (lungo stop) o ambra (rientro a breve, in dubbio), altrimenti la nota di titolarita'.
 - **Prezzi** — quotazione iniziale e attuale, FVM, consigliato e massimo del listone, listino d'asta,
   FVM per credito, Score, e il massimo che la tua squadra puo' ancora offrire.
-- **Rendimento** — presenze, media voto, fantamedia, gol, assist, rigori e cartellini del 2025/26;
-  fantamedia ponderata; le giornate gia' giocate del 2026/27; gerarchia e bonus.
+- **Rendimento** — presenze in Serie A 2025/26, media voto, fantamedia, gol, assist, rigori e
+  cartellini; fantamedia ponderata; le giornate gia' giocate del 2026/27; gerarchia e bonus.
+- **Ballottaggio** — chi si gioca il posto con lui, con la stella per segnare l'alternativa.
 - **Abbinamenti di calendario** — coppia e terzetto migliori fra i liberi, l'abbinamento fisso del
   listone, e le trasferte in comune con i giocatori dello stesso reparto **che hai gia' in rosa**.
 - In fondo, i motivi che compongono lo Score.
@@ -187,7 +192,70 @@ mostra le sigle e il totale.
 
 ---
 
-## 5. I quattro ceduti del 2 settembre
+## 5. Titolare o riserva: revisione sulle fonti
+
+La `Gerarchia stimata` del workbook e' derivata dalle quotazioni dentro la stessa squadra e ruolo.
+Sui portieri funziona; in mezzo al campo no, perche' un titolare che il mercato non valuta sembra
+una riserva.
+
+Ho letto le probabili formazioni da due fonti — [fantacalcio-online.com](https://www.fantacalcio-online.com/it/consigli-fantacalcio/formazioni-tipo-serie-a-2026-2027)
+e [fantacalcio.it](https://www.fantacalcio.it/news/calcio-italia/06_08_2026/asta-fantacalcio-le-probabili-formazioni-della-serie-a-enilive-2026-27-495558) —
+e le ho messe in `data/formazioni-tipo.json` con URL e data. L'ingest le aggancia al listone e
+scrive su ogni giocatore `fonti`: quante delle due lo mettono nell'undici.
+
+### Cosa e' venuto fuori dal confronto
+
+- **Portieri: 18 su 20 combaciano** col workbook. Solo Monza (Thiam / Tornqvist) e Parma (Daffara /
+  Corvi) sono contesi, con le due fonti che dicono cose diverse. Il dato ora lo riflette invece di
+  scegliere per conto suo.
+- **33 giocatori che entrambe le fonti schierano titolari, ma il workbook classifica Ballottaggio o
+  Riserva.** I piu' cari: De Ketelaere (52 crediti consigliati), Diao (36), Ghedjemis (22), Maldini
+  (21), Politano e Vitinha (16), Locatelli e Perrone (15).
+- **29 dati Titolare dal workbook e assenti da entrambe le formazioni tipo**, in testa Woltemade
+  (72 crediti) e Krstovic (53).
+
+### Come viene usata la revisione
+
+La gerarchia in dashboard segue l'attendibilita' della prova: entrambe le fonti, poi la fonte
+singola, poi il workbook, e in ultimo il primo per quotazione. Il caso che mostra perche' serve il
+secondo gradino: **Yildiz** e' quotato 22 e il workbook lo mette dietro Woltemade (23); una fonte
+pero' schiera Yildiz e non Woltemade, e l'ordine si inverte correttamente.
+
+Il matcher dei nomi e' il punto fragile — il listone scrive `Martinez Jo.`, le fonti `Martínez
+Josep` o solo `Martinez`. Cerca il cognome fra i token della fonte e verifica l'iniziale sul resto,
+sfruttando il fatto che nel listone le iniziali hanno **sempre** il punto (cosi' `De Gea` e `Van Der
+Brempt` non vengono scambiati per iniziali). **Un nome ambiguo non viene agganciato**: all'Inter la
+fonte che scrive solo `Martinez` potrebbe essere il portiere o l'attaccante. Restano 3 nomi non
+agganciati su 439, tutti stampati dall'ingest: Norton-Cuffy (ceduto) e i due Martinez dell'Inter.
+
+## 6. Il blocco Ballottaggio nella scheda
+
+Nuovo file: `src/lib/ballottaggi.ts`. Il gruppo di confronto e' **squadra + ruolo Mantra** — due
+giocatori con lo stesso ruolo esteso nella stessa squadra si contendono lo stesso posto. Il ruolo
+Classic sarebbe troppo grosso: otto difensori non sono tutti alternative l'uno dell'altro.
+
+Nella scheda d'asta il blocco dice in una riga:
+
+- se parte titolare, **chi e' la sua riserva diretta**, quella che ne raccoglie il voto quando salta;
+- se non parte, **quale titolare ha davanti**;
+- **"Non in ballottaggio"** quando nessun altro in squadra ha il suo ruolo (97 giocatori su 531).
+
+Sotto c'e' il gruppo intero in ordine, col pallino verde su chi parte, il consenso delle fonti
+(`n/2`) e il prezzo consigliato. **Ogni nome ha la sua stella**: si segna l'alternativa come
+obiettivo senza uscire dalla scheda e senza perdere il giocatore in asta in quel momento.
+
+Verificato in browser: da Yildiz la scheda indica Woltemade come riserva diretta e la stella lo
+aggiunge agli obiettivi mentre Yildiz resta in asta; da Woltemade indica Yildiz come titolare
+davanti; Pinamonti risulta "non in ballottaggio".
+
+## 7. Presenze 2025/26 nella scheda
+
+Prima le presenze stavano solo nel tooltip. Ora sono la **prima riga** del blocco Rendimento, con il
+colore che fa il lavoro: verde da 25 presenze in su, ambra sotto 10. Chi non era in Serie A nel
+2025/26 lo legge scritto — "Non era in Serie A nel 2025/26. Nessuna presenza, nessuno storico su cui
+basarsi" — invece di vedere degli zeri che sembrano un rendimento pessimo.
+
+## 8. I quattro ceduti del 2 settembre
 
 Vaz (Roma), Fofana Y. (Milan), Norton-Cuffy (Genoa) e Ratkov (Lazio) hanno lasciato la Serie A dopo
 la data del workbook. Il listone passa da 535 a **531**.
@@ -218,7 +286,7 @@ Tre dettagli:
 
 ---
 
-## 6. Cose minori
+## 9. Cose minori
 
 - Il plugin `autoIngest` non stampa piu' un falso `ingest fallito (-2)` su macOS: il comando `python`
   non esiste, e l'avviso usciva prima che scattasse il fallback su `python3`.
@@ -234,7 +302,9 @@ Tre dettagli:
 nuovi
   data/Fantacalcio_Classic_202627_Listone_e_Asta.xlsx   la fonte
   data/ceduti.txt                                       chi e' uscito dopo il workbook
+  data/formazioni-tipo.json                              undici probabili da due fonti
   src/lib/abbinamenti.ts                                 coppie e terzetti fra i liberi
+  src/lib/ballottaggi.ts                                 chi si gioca il posto con chi
   src/components/PlayerCard.tsx                          la scheda che si apre in asta
   src/components/GriglieView.tsx                         matrice, coppie, terzetti
   MODIFICHE.md                                           questo file
