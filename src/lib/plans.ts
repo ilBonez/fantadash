@@ -1,8 +1,8 @@
-import type { Mode, Player, Role } from '../types'
+import type { Player, Role } from '../types'
 import { ROLES } from '../types'
 import type { PrezzoAtteso } from './advice'
+import { fvm, trasferteComuni } from './listone'
 import { CERCATI_PER_SQUADRA } from './market'
-import { fvm } from './listone'
 import type { TeamStats } from './stats'
 
 export interface Strategy {
@@ -158,17 +158,17 @@ export interface Plan {
   sogliaTop: number
   /** Quanti slot vanno a 1-2 crediti: sono quelli che liberano budget. */
   aPocoPrezzo: number
-  /** Squadra della coppia di portieri, quando trovata. */
-  coppiaPortieri?: string
+    /** Sigle del blocco portieri e trasferte in comune, quando applicato. */
+  abbinamentoPortieri?: string
 }
 
 /** Quanti giocatori di fascia alta ci sono in una lista. */
 const contaTop = (picks: PlanPick[], soglia: number) => picks.filter((c) => c.expPrice >= soglia).length
 
 const FILTRI = {
-  titolari: (p: Player) => p.titolare === true,
-  bonus: (p: Player) => p.rigorista != null || p.punizioni === true || p.angoli === true,
-  rigoristi: (p: Player) => p.rigorista != null,
+  titolari: (p: Player) => p.gerarchia === 'Titolare',
+  bonus: (p: Player) => p.rig != null || p.piaz != null,
+  rigoristi: (p: Player) => p.rig != null,
 }
 
 /**
@@ -233,78 +233,97 @@ function fillRole(
 }
 
 /**
- * Portieri: primo e secondo della STESSA squadra di Serie A.
+ * Portieri: il blocco che si copre meglio sul calendario.
  *
- * Regola d'asta, non ottimizzazione: prendendo il titolare e la sua riserva,
- * quando il titolare non gioca il voto lo porta l'altro e non resti mai senza
- * portiere. Il terzo slot, se c'e, va al piu economico.
+ * Regola d'asta, non ottimizzazione. Due squadre che non giocano quasi mai in
+ * trasferta nella stessa giornata si alternano bene: quando uno e' fuori casa
+ * l'altro e' in casa, e in formazione ci va sempre quello favorito. Il caso
+ * limite sono i derby di citta (Inter-Milan, Roma-Lazio, Juventus-Torino), che
+ * non vanno MAI fuori insieme.
+ *
+ * Si cerca quindi la combinazione di `need` portieri liberi che massimizza
+ * qualita e copertura insieme, dentro il budget del reparto.
  */
 function fillPortieri(
   pool: PlanPick[],
   need: number,
   budget: number,
-): { picks: PlanPick[]; coppia?: string; nota?: string } {
+): { picks: PlanPick[]; abbinamento?: string; nota?: string } {
   if (need <= 0) return { picks: [] }
   if (need === 1) {
-    return { picks: fillRole(pool, 1, budget), nota: 'Un solo slot libero: la coppia non si puo applicare.' }
-  }
-
-  const perSquadra = new Map<string, PlanPick[]>()
-  for (const c of pool) {
-    const lista = perSquadra.get(c.player.squadra) ?? []
-    lista.push(c)
-    perSquadra.set(c.player.squadra, lista)
-  }
-
-  const coppie = [...perSquadra.entries()]
-    .filter(([, lista]) => lista.length >= 2)
-    .map(([squadra, lista]) => {
-      // Il titolare designato viene prima, poi si ordina per valore.
-      const ordinati = [...lista].sort(
-        (a, b) => Number(b.player.titolare ?? false) - Number(a.player.titolare ?? false) || b.fvm - a.fvm,
-      )
-      const picks = ordinati.slice(0, 2)
-      return {
-        squadra,
-        picks,
-        cost: picks[0].expPrice + picks[1].expPrice,
-        // Conta soprattutto il primo: e lui che prende i voti.
-        punteggio: picks[0].fvm + 0.3 * picks[1].fvm + (picks[0].player.titolare ? 15 : 0),
-      }
-    })
-
-  const completa = (picks: PlanPick[]) => {
-    const presi = new Set(picks.map((c) => c.player.id))
-    return [
-      ...picks,
-      ...pool
-        .filter((c) => !presi.has(c.player.id))
-        .sort((a, b) => a.expPrice - b.expPrice)
-        .slice(0, need - 2),
-    ]
-  }
-
-  // Deve restare il minimo per ogni slot portiere oltre i due della coppia.
-  const minimo = pool.length ? Math.min(...pool.map((c) => c.expPrice)) : 1
-  const tetto = budget - (need - 2) * minimo
-  const ammesse = coppie.filter((c) => c.cost <= tetto).sort((a, b) => b.punteggio - a.punteggio)
-
-  if (ammesse.length) {
-    return { picks: completa(ammesse[0].picks), coppia: ammesse[0].squadra }
-  }
-
-  const piuEconomica = [...coppie].sort((a, b) => a.cost - b.cost)[0]
-  if (!piuEconomica) {
     return {
-      picks: fillRole(pool, need, budget),
-      nota: 'Nessuna squadra ha due portieri liberi: coppia non applicata.',
+      picks: fillRole(pool, 1, budget),
+      nota: 'Un solo slot libero: l abbinamento di calendario non si puo applicare.',
     }
   }
-  // Meglio sforare la quota che restare senza portiere: la coppia e la regola.
+
+  // Solo i migliori liberi: oltre non c'e un portiere che valga la maglia, e
+  // la ricerca resta di poche centinaia di combinazioni.
+  const bacino = [...pool].sort((a, b) => b.fvm - a.fvm).slice(0, 16)
+  if (bacino.length < 2) return { picks: fillRole(pool, need, budget) }
+
+  const quanti = Math.min(need, 3, bacino.length)
+  const fvmMax = Math.max(1, ...bacino.map((c) => c.fvm))
+
+  /** Trasferte in comune di tutte le coppie del blocco: piu basso, meglio ruota. */
+  const totTrasferte = (blocco: PlanPick[]) => {
+    let tot = 0
+    for (let i = 0; i < blocco.length; i++) {
+      for (let j = i + 1; j < blocco.length; j++) {
+        tot += trasferteComuni(blocco[i].player.squadra, blocco[j].player.squadra)
+      }
+    }
+    return tot
+  }
+
+  // Il massimo teorico e' 19 per ogni coppia del blocco: normalizza la copertura.
+  const coppieNel = (quanti * (quanti - 1)) / 2
+  const punteggio = (blocco: PlanPick[]) => {
+    const qualita = blocco.reduce((n, c) => n + c.fvm / fvmMax, 0) / blocco.length
+    const copertura = 1 - totTrasferte(blocco) / (19 * coppieNel)
+    return 0.6 * qualita + 0.4 * copertura
+  }
+
+  // Il resto degli slot va ai piu economici: va lasciato il minimo per coprirli.
+  const minimo = pool.length ? Math.min(...pool.map((c) => c.expPrice)) : 1
+  const tetto = budget - (need - quanti) * minimo
+
+  // C(16,3) = 560 combinazioni al massimo: si enumerano tutte.
+  const blocchi: { blocco: PlanPick[]; costo: number; punteggio: number }[] = []
+  const combina = (da: number, blocco: PlanPick[]) => {
+    if (blocco.length === quanti) {
+      blocchi.push({
+        blocco,
+        costo: blocco.reduce((n, c) => n + c.expPrice, 0),
+        punteggio: punteggio(blocco),
+      })
+      return
+    }
+    for (let i = da; i < bacino.length; i++) combina(i + 1, [...blocco, bacino[i]])
+  }
+  combina(0, [])
+
+  const dentroTetto = blocchi.filter((b) => b.costo <= tetto).sort((a, b) => b.punteggio - a.punteggio)
+  const piuEconomico = [...blocchi].sort((a, b) => a.costo - b.costo)[0]
+  const migliore = dentroTetto[0] ?? piuEconomico
+  if (!migliore) return { picks: fillRole(pool, need, budget) }
+  const scelto = migliore.blocco
+
+  const presi = new Set(scelto.map((c) => c.player.id))
+  const picks = [
+    ...scelto,
+    ...pool
+      .filter((c) => !presi.has(c.player.id))
+      .sort((a, b) => a.expPrice - b.expPrice)
+      .slice(0, need - scelto.length),
+  ]
+
   return {
-    picks: completa(piuEconomica.picks),
-    coppia: piuEconomica.squadra,
-    nota: `Coppia piu economica disponibile (${piuEconomica.squadra}, ${piuEconomica.cost} cr): sfora la quota del reparto.`,
+    picks,
+    abbinamento: `${scelto.map((c) => c.player.cod).join(' + ')} · ${totTrasferte(scelto)} tras. in comune`,
+    nota: dentroTetto.length
+      ? undefined
+      : `Nessun blocco di portieri entra nella quota: preso il piu economico (${migliore.costo} cr).`,
   }
 }
 
@@ -475,7 +494,6 @@ export interface PlanInput {
   /** Giocatori ancora liberi. */
   available: Player[]
   team: TeamStats
-  mode: Mode
   prezzo: PrezzoAtteso
   /** Prezzo oltre il quale un giocatore e di fascia alta, calcolato sul budget di lega. */
   sogliaTop: number
@@ -489,7 +507,6 @@ export interface PlanInput {
 function buildPool(
   available: Player[],
   role: Role,
-  mode: Mode,
   prezzo: PrezzoAtteso,
   need: number,
   strategy: Strategy,
@@ -498,7 +515,7 @@ function buildPool(
 ): PlanPick[] {
   let base = available
     .filter((p) => p.r === role)
-    .map((p) => ({ player: p, expPrice: prezzo(p), fvm: fvm(p, mode) }))
+    .map((p) => ({ player: p, expPrice: prezzo(p), fvm: fvm(p) }))
 
   // I portieri hanno la regola della coppia: nessun vincolo di prezzo ne filtro,
   // altrimenti la riserva da 1 credito verrebbe esclusa.
@@ -527,7 +544,7 @@ function buildPool(
   return [...base.filter((c) => test(c.player)), ...base.filter((c) => !test(c.player))]
 }
 
-export function buildPlan(strategy: Strategy, { available, team, mode, prezzo, sogliaTop }: PlanInput): Plan {
+export function buildPlan(strategy: Strategy, { available, team, prezzo, sogliaTop }: PlanInput): Plan {
   const need = {} as Record<Role, number>
   for (const r of ROLES) need[r] = team.byRole[r].left
 
@@ -538,7 +555,7 @@ export function buildPlan(strategy: Strategy, { available, team, mode, prezzo, s
 
   const pools = {} as Record<Role, PlanPick[]>
   for (const r of ROLES) {
-    pools[r] = buildPool(available, r, mode, prezzo, need[r], strategy, tettoGiocatore)
+    pools[r] = buildPool(available, r, prezzo, need[r], strategy, tettoGiocatore)
   }
   const proteggi = strategy.filtro ? FILTRI[strategy.filtro] : undefined
 
@@ -685,8 +702,8 @@ export function buildPlan(strategy: Strategy, { available, team, mode, prezzo, s
     totalFvm,
     copertura: slotsMancanti > 0 ? picks.length / slotsMancanti : 1,
     totalFvmRosa: totalFvm + team.totalFvm,
-    rigoristi: picks.filter((c) => c.player.rigorista != null).length,
-    titolari: picks.filter((c) => c.player.titolare).length,
+    rigoristi: picks.filter((c) => c.player.rig != null).length,
+    titolari: picks.filter((c) => c.player.gerarchia === 'Titolare').length,
     top: ROLES.reduce(
       (acc, r) => {
         acc[r] = contaTop(perRole[r], soglia)
@@ -696,7 +713,7 @@ export function buildPlan(strategy: Strategy, { available, team, mode, prezzo, s
     ),
     sogliaTop: soglia,
     aPocoPrezzo: picks.filter((c) => c.expPrice <= 2).length,
-    coppiaPortieri: portieri.coppia,
+    abbinamentoPortieri: portieri.abbinamento,
   }
 }
 

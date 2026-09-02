@@ -1,30 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { mantraRoles, searchPlayers, teamsSerieA, type SearchFilters } from '../lib/listone'
+import { EMPTY_FILTERS, searchPlayers, teamsSerieA, type SearchFilters } from '../lib/listone'
 import { int } from '../lib/format'
 import { useLeague } from '../lib/useLeague'
 import { useNativeKeydown } from '../lib/useNativeKeydown'
 import { useAuction } from '../store/useAuction'
-import type { Player, Role } from '../types'
-import { ROLES } from '../types'
+import type { Fascia, Player, Role } from '../types'
+import { FASCE, ROLES } from '../types'
 import AssignBar from './AssignBar'
 import MovesLog from './MovesLog'
+import PlayerCard from './PlayerCard'
 import PlayerTable, { type SortKey } from './PlayerTable'
-import { TagsLegend } from './PlayerTags'
+import { FASCIA_COLOR, TagsLegend } from './PlayerTags'
 import TeamsRail from './TeamsRail'
 import { ROLE_COLOR } from './ui'
 
-const EMPTY_FILTERS: SearchFilters = {
-  q: '',
-  role: 'ALL',
-  squadra: 'ALL',
-  mantraRole: 'ALL',
-  soloDisponibili: true,
-  soloObiettivi: false,
-  soloUtili: false,
-}
 
 export default function AstaView() {
-  const settings = useAuction((s) => s.settings)
   const myTeamId = useAuction((s) => s.myTeamId)
   const setMyTeam = useAuction((s) => s.setMyTeam)
   const assign = useAuction((s) => s.assign)
@@ -177,20 +168,24 @@ export default function AstaView() {
             ))}
           </select>
 
-          {settings.mode === 'mantra' && (
-            <select
-              value={filters.mantraRole}
-              onChange={(e) => setFilters((f) => ({ ...f, mantraRole: e.target.value }))}
-              className="field"
-            >
-              <option value="ALL">Ruolo Mantra</option>
-              {mantraRoles.map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))}
-            </select>
-          )}
+          <div className="flex items-center gap-1">
+            {(['ALL', ...FASCE] as (Fascia | 'ALL')[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilters((x) => ({ ...x, fascia: f }))}
+                title={f === 'ALL' ? 'Tutte le fasce' : `Solo ${f}`}
+                className={`rounded-lg border px-1.5 py-1 text-[11px] font-semibold transition-colors ${
+                  filters.fascia === f
+                    ? f === 'ALL'
+                      ? 'border-sky-500 bg-sky-500/20 text-sky-100'
+                      : FASCIA_COLOR[f]
+                    : 'border-ink-700 bg-ink-850 text-ink-400 hover:text-ink-100'
+                }`}
+              >
+                {f === 'ALL' ? 'Fasce' : f === 'Scommessa' ? 'Scom' : f.replace(' fascia', '')}
+              </button>
+            ))}
+          </div>
 
           <div className="flex items-center gap-2.5">
             <Toggle
@@ -204,6 +199,18 @@ export default function AstaView() {
               onChange={(v) => setFilters((f) => ({ ...f, soloUtili: v }))}
               label="mi serve"
               title="Solo i reparti in cui hai ancora slot liberi"
+            />
+            <Toggle
+              checked={filters.soloTitolari}
+              onChange={(v) => setFilters((f) => ({ ...f, soloTitolari: v }))}
+              label="titolari"
+              title="Solo chi il listone da titolare nella sua squadra"
+            />
+            <Toggle
+              checked={filters.senzaInfortunati}
+              onChange={(v) => setFilters((f) => ({ ...f, senzaInfortunati: v }))}
+              label="sani"
+              title="Nascondi chi ha una nota di infortunio o e in dubbio"
             />
             <Toggle
               checked={filters.soloObiettivi}
@@ -222,9 +229,9 @@ export default function AstaView() {
         <div ref={tableWrapRef} className="flex min-h-0 flex-1 flex-col">
           <PlayerTable
             rows={rows}
-            mode={settings.mode}
             pickByPlayer={league.pickByPlayer}
             advice={league.advice}
+            abbinamenti={league.abbinamenti}
             targetIds={league.targetIds}
             selectedId={selected?.id ?? null}
             highlightIndex={searching ? hi : -1}
@@ -237,9 +244,21 @@ export default function AstaView() {
           />
         </div>
 
+        {selected && (
+          <PlayerCard
+            player={selected}
+            advice={league.advice.get(selected.id)}
+            abbinamento={league.abbinamenti.get(selected.id)}
+            myTeam={league.myTeam}
+            onChiudi={() => {
+              setSelected(null)
+              searchRef.current?.focus()
+            }}
+          />
+        )}
+
         <AssignBar
           player={selected}
-          mode={settings.mode}
           teams={league.teams}
           defaultTeamId={myTeamId}
           advice={selected ? league.advice.get(selected.id) : undefined}

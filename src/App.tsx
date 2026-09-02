@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import AstaView from './components/AstaView'
+import GriglieView from './components/GriglieView'
 import Header, { type Tab } from './components/Header'
 import PlansView from './components/PlansView'
 import SetupView from './components/SetupView'
@@ -46,6 +47,7 @@ export default function App() {
         </div>
       )}
       {tab === 'asta' && <AstaView />}
+      {tab === 'griglie' && <GriglieView />}
       {tab === 'piani' && <PlansView />}
       {tab === 'squadre' && <TeamsView />}
       {tab === 'stats' && <StatsView />}

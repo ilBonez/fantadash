@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 import { useAuction } from '../store/useAuction'
+import { abbinamentiPerRuolo, type Abbinamento } from './abbinamenti'
 import { adviceMap, makePrezzoAtteso, type Advice, type PrezzoAtteso } from './advice'
-import { hasTitolari, players } from './listone'
+import { players } from './listone'
 import {
   buildMarket,
   calibra,
@@ -26,10 +27,12 @@ export interface League extends LeagueStats {
   market: Market
   /** Prezzo oltre il quale un giocatore e di fascia alta. */
   sogliaTop: number
-  /** Prezzo atteso: override a mano, poi prezzo curato, poi listino dinamico. */
+  /** Prezzo atteso: override a mano, poi listino dinamico. */
   prezzo: PrezzoAtteso
   /** Punteggio consigliato per ogni giocatore libero. */
   advice: Map<number, Advice>
+  /** Coppia e terzetto migliori fra i liberi, per ogni giocatore libero. */
+  abbinamenti: Map<number, Abbinamento>
 }
 
 /** Tutti i dati derivati dell'asta, ricalcolati solo quando cambia lo stato rilevante. */
@@ -42,7 +45,7 @@ export function useLeague(): League {
   const overrides = useAuction((s) => s.priceOverrides)
 
   return useMemo(() => {
-    const enriched = enrich(picks, teams, settings.mode)
+    const enriched = enrich(picks, teams)
     const stats = leagueStats(settings, teams, picks, players)
     const takenIds = new Set(enriched.map((p) => p.playerId))
     const available = players.filter((p) => !takenIds.has(p.id))
@@ -82,8 +85,8 @@ export function useLeague(): League {
       tettoFascia,
     }
 
-    const cal = calibra(players, settings.mode, cfg)
-    const market = buildMarket(available, settings.mode, cfg, cal)
+    const cal = calibra(players, cfg)
+    const market = buildMarket(available, cfg, cal)
     const prezzo = makePrezzoAtteso(market, overrides)
 
     return {
@@ -97,7 +100,8 @@ export function useLeague(): League {
       market,
       sogliaTop,
       prezzo,
-      advice: adviceMap(available, settings.mode, prezzo, myTeam, hasTitolari),
+      advice: adviceMap(available, prezzo, myTeam),
+      abbinamenti: abbinamentiPerRuolo(available),
     }
   }, [settings, teams, picks, myTeamId, targets, overrides])
 }

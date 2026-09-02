@@ -1,11 +1,11 @@
-import type { Mode, Pick, Player, Role, Settings, Team } from '../types'
+import type { Pick, Player, Role, Settings, Team } from '../types'
 import { ROLES } from '../types'
 import { fvm, playersById, quot } from './listone'
 
 export interface EnrichedPick extends Pick {
   player: Player
   team: Team
-  /** Quotazione nella modalita corrente. */
+  /** Quotazione attuale dal listone. */
   quot: number
   fvm: number
   /** prezzo - quotazione. */
@@ -71,15 +71,15 @@ export interface LeagueStats {
 
 const budgetOf = (t: Team, s: Settings) => t.budgetOverride ?? s.budget
 
-export function enrich(picks: Pick[], teams: Team[], mode: Mode): EnrichedPick[] {
+export function enrich(picks: Pick[], teams: Team[]): EnrichedPick[] {
   const teamById = new Map(teams.map((t) => [t.id, t]))
   const out: EnrichedPick[] = []
   for (const pick of picks) {
     const player = playersById.get(pick.playerId)
     const team = teamById.get(pick.teamId)
     if (!player || !team) continue
-    const q = quot(player, mode)
-    const f = fvm(player, mode)
+    const q = quot(player)
+    const f = fvm(player)
     const delta = pick.price - q
     out.push({
       ...pick,
@@ -143,7 +143,7 @@ export function leagueStats(
   picks: Pick[],
   availablePlayers: Player[],
 ): LeagueStats {
-  const all = enrich(picks, teams, settings.mode)
+  const all = enrich(picks, teams)
   const stats = teams.map((t) => teamStats(t, all, settings))
 
   const creditiTotali = teams.reduce((n, t) => n + budgetOf(t, settings), 0)
@@ -188,7 +188,7 @@ export function leagueStats(
       .slice(0, 12),
     bigDisponibili: availablePlayers
       .filter((p) => !all.some((a) => a.playerId === p.id))
-      .sort((a, b) => quot(b, settings.mode) - quot(a, settings.mode))
+      .sort((a, b) => quot(b) - quot(a))
       .slice(0, 20),
   }
 }

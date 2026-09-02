@@ -9,61 +9,156 @@ export const ROLE_LABEL: Record<Role, string> = {
   A: 'Attaccanti',
 }
 
+/** Le sei fasce del listone, dalla piu alta alla piu bassa. */
+export type Fascia = 'Top' | '1a fascia' | '2a fascia' | '3a fascia' | '4a fascia' | 'Scommessa'
+
+export const FASCE: Fascia[] = ['Top', '1a fascia', '2a fascia', '3a fascia', '4a fascia', 'Scommessa']
+
+/** Etichetta corta per i chip dei filtri e i badge di riga. */
+export const FASCIA_SHORT: Record<Fascia, string> = {
+  Top: 'Top',
+  '1a fascia': '1a',
+  '2a fascia': '2a',
+  '3a fascia': '3a',
+  '4a fascia': '4a',
+  Scommessa: 'Scom',
+}
+
+export type Gerarchia = 'Titolare' | 'Ballottaggio' | 'Riserva'
+
+/** Statistiche 2025/26, assenti per chi non era in Serie A. */
+export interface Stagione25 {
+  pg: number
+  mv: number | null
+  fm: number | null
+  gol: number
+  ass: number
+  /** Rigori "segnati/calciati". */
+  rig: string
+  amm: number
+  esp: number
+  /** Squadra in cui giocava: '-' nel workbook diventa stringa vuota. */
+  squadra: string
+}
+
+/** Le prime giornate della stagione in corso. */
+export interface Stagione26 {
+  pg: number
+  mv: number | null
+  fm: number | null
+  gol: number
+  ass: number
+}
+
+export interface Infortunio {
+  /** Categoria dal foglio Infortunati, vuota se si conosce solo il dettaglio. */
+  stato: string
+  dettaglio: string
+}
+
 export interface Player {
   id: number
+  /** Chiave del workbook: "Svilar (ROM)". */
+  chiave: string
   r: Role
-  /** Ruoli Mantra (Por, Dc, E, M, C, T, W, A, Pc). */
-  rm: string[]
   nome: string
   squadra: string
-  /** Quotazione attuale / iniziale classic. */
-  qtA: number
-  qtI: number
-  diff: number
-  /** Quotazione attuale / iniziale Mantra. */
-  qtAM: number
-  qtIM: number
-  diffM: number
-  /** Fanta Valore di Mercato. */
-  fvm: number
-  fvmM: number
-  /** Presente nel foglio "Ceduti": non piu in Serie A. */
-  ceduto: boolean
+  /** Sigla a tre lettere della squadra. */
+  cod: string
+  /** Ruolo Mantra per esteso, es. "Esterno basso / Esterno alto". */
+  rm: string
 
-  // --- dati curati da data/extra.json (tutti opzionali) ---
-  /** Nella formazione tipo della sua squadra. */
-  titolare?: boolean
-  /** 1 = primo rigorista, 2 = alternativa dal dischetto. */
-  rigorista?: 1 | 2
-  /** Tra i tiratori di punizioni. */
-  punizioni?: boolean
-  /** Tra i tiratori di calci d'angolo. */
-  angoli?: boolean
-  /** Gol segnati finora in campionato. */
-  gol?: number
-  /** Prezzo di mercato atteso all'asta, quando si sa che sfonda la quotazione. */
-  atteso?: number
-  /** Nota libera mostrata come tooltip. */
-  nota?: string
-  /** Fantamedia della stagione 2025/26, dove disponibile. */
-  fm2025?: number
-  /** Gol segnati nella stagione 2025/26. */
-  gol2025?: number
+  /** Priorita nel reparto: 1 e il primo della lista. */
+  prio: number
+  /** Indice di priorita 0-100 calcolato nel workbook. */
+  indice: number
+  /** Posizione per FVM dentro il reparto. */
+  rankFvm: number
+
+  qtI: number
+  qtA: number
+  fvm: number
+  /** Prezzo consigliato dal workbook per la lega da 500 crediti. */
+  cons: number
+  /** Oltre questo prezzo stai pagando troppo, secondo il listone. */
+  max: number
+
+  fascia: Fascia
+  /** Indice della fascia: 0 = Top. Serve per ordinare. */
+  fasciaIdx: number
+  gerarchia: Gerarchia
+  /** Nota di stato: titolarita, infortunio, ballottaggio. */
+  nota: string
+
+  /** 1 = primo rigorista, 2 = seconda scelta, e cosi via. */
+  rig: number | null
+  /** Ordine tra i tiratori da fermo. */
+  piaz: number | null
+  /** Fantamedia 2025/26 ponderata sulle presenze. */
+  fmPond: number
+  /** Cambia squadra rispetto al 2025/26 o arriva da fuori Serie A. */
+  nuovo: boolean
+
+  /** Miglior abbinamento secondo il workbook: chiave e id, quando risolto. */
+  abb: string
+  abbId: number | null
+  /** Trasferte in comune con l'abbinamento del workbook. */
+  abbTras: number
+
+  s25: Stagione25 | null
+  s26: Stagione26
+  inf?: Infortunio
+}
+
+/** Coppia di squadre dalle classifiche del workbook. */
+export interface CoppiaSquadre {
+  a: string
+  b: string
+  /** Giornate su 38 in cui giocano entrambe in trasferta. */
+  t: number
+  giudizio: string
+}
+
+/** Terzetto di portieri consigliato dal workbook. */
+export interface TerzettoListone {
+  /** Le tre chiavi giocatore. */
+  p: [string, string, string]
+  /** Trasferte in comune delle tre coppie: 1+2, 1+3, 2+3. */
+  t: [number, number, number]
+  tot: number
+  costo: number
+  indice: number
 }
 
 export interface Listone {
   stagione: string
+  descrizione: string
   sorgente: string
-  /** ISO 8601 UTC scritto dallo script di ingest. */
-  generatoIl?: string
+  generatoIl: string
+  parametri: {
+    budget: number
+    squadre: number
+    slots: Record<Role, number>
+    quotaReparto: Record<Role, number>
+    compressione: number | null
+  }
+  guida: {
+    /** Voci [etichetta, spiegazione] della legenda delle note. */
+    legendaNota: [string, string][]
+    metodo: [string, string][]
+  }
   conteggi: Record<Role, number>
-  ceduti: number
-  /** Note per squadra dall'overlay curato: ballottaggi, gerarchie incerte. */
-  noteSquadre?: Record<string, string>
+  fasce: Fascia[]
+  squadre: string[]
+  sigle: Record<string, string>
+  /** Trasferte in comune: matrice[squadraA][squadraB], giornate su 38. */
+  matrice: Record<string, Record<string, number>>
+  coppieMigliori: CoppiaSquadre[]
+  coppiePeggiori: CoppiaSquadre[]
+  terzettiPortieri: TerzettoListone[]
+  comeSiLegge: string
   giocatori: Player[]
 }
-
-export type Mode = 'classic' | 'mantra'
 
 export interface Team {
   id: string
@@ -81,7 +176,6 @@ export interface Pick {
 
 export interface Settings {
   lega: string
-  mode: Mode
   budget: number
   slots: Record<Role, number>
   /** Quanto e aggressiva la lega sui top: scala il listino d'asta. */

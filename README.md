@@ -2,7 +2,9 @@
 
 Dashboard locale per l'asta del fantacalcio di Serie A: segna i giocatori acquistati, traccia i
 crediti tuoi e degli avversari, vedi in tempo reale chi manca a chi e le statistiche su affari,
-scommesse e top acquisti.
+scommesse e top acquisti. Ogni giocatore ha la sua fascia, le sue statistiche, le note su
+titolarita' e infortuni, e gli abbinamenti di calendario — coppie e terzetti che si coprono a
+vicenda — calcolati sui giocatori ancora liberi.
 
 Online su **https://ilbonez.github.io/fantadash/** — si apre da qualunque PC, tablet
 o telefono, senza installare niente.
@@ -24,7 +26,9 @@ Poi, per lavorare al progetto (ricarica automatica a ogni modifica):
 npm run dev
 ```
 
-Apre `http://localhost:5180`. Il listone ufficiale 2026/27 e' gia' incluso.
+Apre `http://localhost:5180`. Il listone Fantacalcio Classic 2026/27 e' gia' incluso: 535 giocatori
+con prezzi consigliati, fasce, note, infortunati e abbinamenti di calendario, meno quelli elencati in
+`data/ceduti.txt`.
 
 Per **usare** la dashboard all'asta, senza il server di sviluppo:
 
@@ -123,16 +127,18 @@ possibile: il sito privato richiede GitHub Enterprise.
 
 ## Come si usa durante l'asta
 
-1. **Impostazioni** – nome lega, modalita' (Classic o Mantra), crediti per squadra, slot per
-   reparto, elenco squadre. La stella marca la tua.
+1. **Impostazioni** – nome lega, crediti per squadra, slot per reparto, elenco squadre. La stella
+   marca la tua. In fondo, la guida del listone: legenda delle note e note sul metodo.
 2. **Piani** – dodici rose candidate costruite sui crediti che ti restano e sui giocatori ancora
    liberi. "Usa come obiettivi" mette la stella a quei giocatori.
 3. **Asta** – la lista e' ordinata per `Score`: in cima le scelte migliori per te in questo
    momento. Digita il nome, `Enter` mette il giocatore all'asta, digita il prezzo, scegli la
    squadra, `Enter` assegna. Il focus torna sulla ricerca: si va avanti senza mouse.
-4. **Squadre** – matrice "chi manca" (slot mancanti per reparto, crediti residui, offerta massima
+4. **Griglie** – la matrice del calendario, le coppie di squadre migliori e peggiori, e le coppie
+   e i terzetti consigliati fra i giocatori ancora liberi, reparto per reparto.
+5. **Squadre** – matrice "chi manca" (slot mancanti per reparto, crediti residui, offerta massima
    sostenibile) e rose complete.
-5. **Statistiche** – inflazione della lega, spesa per reparto, top acquisti, affari, sovrapagati,
+6. **Statistiche** – inflazione della lega, spesa per reparto, top acquisti, affari, sovrapagati,
    scommesse, miglior valore per credito, big ancora liberi.
 
 ### Scorciatoie
@@ -160,14 +166,18 @@ La colonna `Score` (0-100) e' l'ordinamento di default della lista. Combina:
 
 - **qualita' nel reparto** – FVM rispetto al miglior FVM ancora libero nello stesso ruolo (peso 55%);
 - **resa per credito** – FVM diviso prezzo atteso, rapportato al miglior rapporto del reparto (45%);
-- **rigorista** – x1,15 se e' il primo rigorista designato, x1,05 se e' l'alternativa;
-- **titolare** – x1,10 se e' nella formazione tipo, x0,85 se ne e' fuori;
+- **rigorista** – da x1,15 per il primo designato a x1,01 per il quarto;
+- **calci piazzati** – da x1,05 per il primo tiratore a x1,01 per il terzo;
+- **gerarchia** – x1,10 titolare, x0,95 in ballottaggio, x0,80 riserva;
+- **stato fisico** – x0,60 lungo stop, x0,85 rientro entro settembre, x0,95 in dubbio;
 - **ti serve?** – se hai gia' riempito gli slot di quel ruolo il punteggio scende al 15%;
 - **te lo puoi permettere?** – se il prezzo atteso supera la tua offerta massima sostenibile scende
   al 35%.
 
-Rigori e titolarita' pesano perche' le quotazioni sono pubblicate prima che il campionato inizi:
-sono l'unica cosa che il listino non sa ancora.
+Rigori, gerarchia e infortuni pesano perche' le quotazioni sono pubblicate prima che il campionato
+inizi: sono l'unica cosa che il listino non sa ancora. Un lungo stop vale piu' di qualunque altra
+correzione — Yildiz e' quotato 22 e ha FVM 100, ma con il piede rotto fino a fine novembre lo Score
+crolla a 13.
 
 I giocatori penalizzati scendono in fondo ma non spariscono: in asta servono anche per far rilanciare
 gli altri. Il colore aiuta: verde conviene, azzurro buono, grigio non ti serve, ambra fuori budget.
@@ -261,13 +271,17 @@ nella sua scheda si vede il prezzo che paga.
 Il prezzo `Asta` segue questa precedenza:
 
 1. **la tua correzione** – campo `Atteso` nella barra di assegnazione, in azzurro nella lista;
-2. **il prezzo curato** in `data/extra.json`, in ambra;
-3. **il listino modellato**, ricalibrato sull'asta in corso.
+2. **il listino modellato**, ricalibrato sull'asta in corso.
 
-Serve quando il modello non puo' sapere. Malen e' quotato 36 e il listino lo mette a 79, ma dopo 5
-gol in 2 giornate va a 300: con quel prezzo il suo `FVM/cr` crolla da 4,6 a 1,4 e lo `Score` scende
-da primo a nono. Non e' diventato scarso — a 300 crediti non conviene, ed e' esattamente quello che
-devi sapere mentre gli altri rilanciano.
+Accanto, sempre visibili, ci sono il **prezzo consigliato** e il **prezzo massimo** del listone
+(colonna `Cons`, nel formato `consigliato/max`): sono la taratura fissa del workbook su 500 crediti
+e 10 squadre. Quando il listino d'asta supera il prezzo massimo il numero diventa ambra: la lega lo
+sta pagando piu' di quanto valga per la tua rosa.
+
+La correzione a mano serve quando nessun modello puo' sapere. Malen e' quotato 38, il listone lo
+consiglia a 133 e il listino d'asta lo mette a 84: se in asta parte una guerra e arriva a 300, scrivi
+300 nel campo `Atteso` e il suo `FVM/cr` crolla insieme allo `Score`. Non e' diventato scarso — a
+quel prezzo non conviene, ed e' esattamente quello che devi sapere mentre gli altri rilanciano.
 
 ### Piani rosa
 
@@ -282,8 +296,8 @@ Dodici rose candidate, tutte costruite sui crediti che ti restano e sui giocator
 | Centrocampo top | i centrocampisti da bonus costano meno degli attaccanti pari resa |
 | Difesa e modificatore | reparto arretrato di qualita' |
 | Massimo valore | sempre il miglior FVM per credito, nessuna quota |
-| Solo titolari | prima le maglie della formazione tipo |
-| Rigori e piazzati | rigoristi e tiratori di punizioni e angoli |
+| Solo titolari | prima chi il listone da titolare nella sua squadra |
+| Rigori e piazzati | rigoristi e tiratori da calcio piazzato |
 | Caccia ai rigoristi | un rigorista designato in ogni slot possibile |
 | Nessun buco | almeno 6 crediti per slot, tetto del 15% |
 | Tieni crediti | spende il 75% e conserva il resto per la riparazione |
@@ -302,10 +316,11 @@ Come vengono costruiti:
 Ogni piano contiene per forza molti slot da 1-2 crediti (la colonna `1-2 cr` nel confronto dice
 quanti): sono quelli che liberano il budget per i due centrocampisti e l'attaccante che contano.
 
-**I portieri hanno una regola a parte, valida per tutte le strategie: primo e secondo della stessa
-squadra di Serie A.** Se il titolare non gioca il voto lo porta la riserva e non resti mai senza
-portiere. Il terzo slot, se c'e', va al piu' economico. I portieri sono anche esclusi da filtri,
-tetti e minimi: la coppia viene prima dell'ottimizzazione.
+**I portieri hanno una regola a parte, valida per tutte le strategie: si sceglie il blocco che si
+copre meglio sul calendario.** Fra i portieri liberi si enumerano tutte le terne che stanno nel
+budget del reparto e si prende quella con il miglior compromesso fra qualita' e trasferte in comune,
+cosi' ruotandoli si schiera quasi sempre quello che gioca in casa. I portieri sono esclusi da filtri,
+tetti e minimi: il blocco viene prima dell'ottimizzazione.
 
 #### La colonna Diverso
 
@@ -331,9 +346,23 @@ max = residui - (slot_rimanenti - 1)
 
 E' il numero che serve davvero all'asta: dice fin dove un avversario puo' rilanciare.
 
-## Aggiornare le quotazioni
+## La fonte dei dati
 
-Il listone e' generato dall'Excel ufficiale di Fantacalcio.it.
+Tutto quello che la dashboard sa viene da **un solo file**:
+`data/Fantacalcio_Classic_202627_Listone_e_Asta.xlsx`. Non ci sono overlay curati a mano, file
+`extra.json`, chiamate di rete o seconde fonti da tenere allineate: il workbook e' la fonte di
+verita' e basta. L'unica cosa che gli sta accanto e' `data/ceduti.txt`, che non aggiunge dati: ne
+toglie (vedi sotto).
+
+Dal workbook l'ingest legge:
+
+| Foglio | Cosa ne esce |
+| --- | --- |
+| `Portieri` / `Difensori` / `Centrocampisti` / `Attaccanti` | il listone: 535 giocatori con prezzi, fascia, gerarchia, nota, rigoristi, piazzati, statistiche 25/26 e 26/27, abbinamento di calendario |
+| `Abbinamenti` | matrice 20x20 delle trasferte in comune, migliori e peggiori coppie di squadre, top 20 terzetti di portieri |
+| `Infortunati` | categoria e tempi di recupero, agganciati al giocatore |
+| `DB` | la sigla a tre lettere di ogni squadra, che da' la chiave `Nome (SIG)` |
+| `Guida` | parametri di lega (budget, squadre, slot, quote per reparto) e i testi di legenda e metodo |
 
 **Con `npm run dev` attivo basta copiare il nuovo .xlsx in `data/`**: un plugin Vite se ne accorge,
 rilancia l'ingest e la pagina si ricarica da sola. Funziona sia sovrascrivendo il file esistente sia
@@ -345,73 +374,115 @@ A server spento, o per rigenerare a mano:
 npm run ingest
 ```
 
-Lo script legge il foglio `Tutti` (e `Ceduti`, marcati e nascosti dalla lista) e riscrive
-`src/data/listone.json`.
+Lo script si ferma con un errore se un foglio ha intestazioni diverse da quelle attese, invece di
+produrre un JSON vuoto in silenzio, e stampa quanti giocatori, squadre e note ha letto.
 
-**Le assegnazioni non si perdono** quando aggiorni il listone: sono legate all'`Id` ufficiale del
-giocatore, non alla posizione in lista. Cambiano le quotazioni, quindi cambiano i delta e le
-statistiche — che e' esattamente il punto. Se un giocatore assegnato scompare dal nuovo listone
-(finisce tra i ceduti), la sua assegnazione resta ma non compare piu' nella lista.
+**Attenzione ai backup**: gli id dei giocatori sono assegnati dall'ingest, non dal file, quindi
+cambiando workbook cambiano. Se sostituisci il file ad asta iniziata, esporta prima il backup JSON e
+ricontrolla le assegnazioni. Togliere un nome da `ceduti.txt` invece e' sicuro: gli id si assegnano
+prima dell'esclusione, quindi nessun altro giocatore viene rinumerato.
 
-Colonne usate: `Id, R, RM, Nome, Squadra, Qt.A, Qt.I, Diff., Qt.A M, Qt.I M, Diff.M, FVM, FVM M`.
-In modalita' Classic la dashboard usa `Qt.A`/`FVM`, in Mantra `Qt.A M`/`FVM M` e i ruoli `RM`.
+### Chi e' andato via dopo il workbook
 
-## Titolari, rigoristi e info d'asta
+Il workbook e' una fotografia al 1 settembre 2026, il mercato no. Chi lascia la Serie A dopo quella
+data va in **`data/ceduti.txt`**, una chiave per riga nel formato del listone:
 
-L'Excel ufficiale non dice chi gioca ne' chi tira i rigori. Quei dati stanno in
-**`data/extra.json`**, un file curato a mano che l'ingest aggancia al listone per nome e squadra.
+```
+# --- 2 settembre 2026: ceduti all'estero nella notte ---
+Vaz (ROM)
+Fofana Y. (MIL)
+Norton-Cuffy (GEN)
+Ratkov (LAZ)
+```
 
-Per giocatore la dashboard mostra sigle compatte accanto al nome (il testo completo e' nel tooltip):
+L'ingest li toglie dal listone: spariscono dalla lista d'asta, dai piani, dalle griglie e dai
+suggerimenti di abbinamento, e se erano l'abbinamento consigliato di qualcun altro quel consiglio
+viene azzerato invece di puntare a un giocatore che non esiste piu'.
+
+Non si cancellano le righe dentro l'`.xlsx`: il foglio `DB` indicizza i giocatori per numero di riga
+e alimenta i menu a tendina del foglio `Asta`, quindi cancellare righe romperebbe il workbook come
+strumento a se'.
+
+Una chiave che non corrisponde a nessuno **ferma l'ingest con un errore**: un cognome scritto male e'
+un giocatore che resta comprabile per sbaglio, e il silenzio sarebbe il modo peggiore di scoprirlo.
+Il file e' guardato dal watcher come il .xlsx: con `npm run dev` attivo basta salvarlo.
+
+## Cosa si vede di ogni giocatore
+
+Le colonne della lista d'asta, da sinistra: ruolo, obiettivo, nome con le sigle, sigla squadra,
+fascia, priorita' nel reparto, `Qt.A`, `Cons` (consigliato/max), `Asta` (listino dinamico), `FVM`,
+`Score`, `Abbinamento`, prezzo pagato e squadra che lo ha preso.
+
+### Le sigle accanto al nome
 
 | Sigla | Significato |
 | --- | --- |
-| **R** | primo rigorista designato |
-| **r** | alternativa dal dischetto |
-| **T** | titolare nella formazione tipo |
-| **P** | tira le punizioni |
-| **C** | tira i calci d'angolo |
-| **n** (rosso) | gol segnati finora |
+| **!** | nota di infortunio: rosso lungo stop, ambra rientro a breve o in dubbio |
+| **R1**, **R2**… | ordine fra i rigoristi della squadra |
+| **P1**, **P2**… | ordine fra i tiratori da calcio piazzato |
+| **T** | titolare stimato |
+| **B** | in ballottaggio |
+| **N** | nuovo: cambia squadra o arriva da fuori Serie A, nessuno storico italiano |
+| **n** (rosso) | gol nelle giornate gia' giocate del 2026/27 |
 
-Per i giocatori di cui ho la fantamedia 2025/26 (Malen 9,1 · Lautaro 8,2 · Thuram 7,9 · Calhanoglu
-7,5 · Hojlund 7,4 · McTominay 7,2 · Paz 7,2 · Dimarco 8,4) il dato compare nel tooltip della riga e
-nella barra d'asta. Copertura parziale di proposito: sono i giocatori su cui ho una fonte, quindi
-il dato **non entra** nel calcolo dello `Score` — sarebbe ingiusto verso tutti gli altri.
+### Le fasce
 
-Un `*` accanto alla squadra segnala una nota: ballottaggi e gerarchie contese, elencate anche in
-Impostazioni sotto "Ballottaggi e gerarchie incerte".
+Il workbook divide ogni reparto in sei fasce — `Top`, `1a`, `2a`, `3a`, `4a`, `Scommessa` — e la
+dashboard le usa in tre punti: un badge colorato su ogni riga, una fila di chip per filtrare la
+lista, e una colonna ordinabile. Le fasce sono relative al reparto e la distribuzione lo dice bene:
+i nove `Top` sono tutti attaccanti, i difensori arrivano al massimo a un `1a fascia`, i portieri
+partono dalla `2a`. E' la scorciatoia per capire subito in che mercato ti stai muovendo.
 
-### Aggiornare i dati curati
+### La scheda che si apre in asta
 
-`data/extra.json` e' strutturato per squadra (`titolari`, `rigoristi`, `punizioni`, `angoli`,
-`nota`) piu' un elenco `giocatori` per le schede singole (`gol`, `atteso`, `nota`). Modificalo e
-rilancia `npm run ingest`.
+Cliccare una riga (o premere `Enter` dalla ricerca) mette il giocatore all'asta e apre sopra la
+barra di assegnazione **la scheda completa**, divisa in tre blocchi:
 
-L'aggancio dei nomi non e' banale — il listone scrive `Martinez L.`, le fonti scrivono
-`Lautaro Martinez` — quindi il matcher cerca il cognome come sequenza di token e verifica l'iniziale
-sul resto, ignorando accenti, punti e apostrofi (`N'Dicka` = `Ndicka`). Un nome ambiguo (due Martinez
-nella stessa squadra senza iniziale) non viene agganciato di proposito.
+- **Prezzi** – quotazione iniziale e attuale, FVM, consigliato e massimo, listino d'asta, FVM per
+  credito, Score, e il massimo che la tua squadra puo' ancora offrire;
+- **Rendimento** – presenze, media voto, fantamedia, gol, assist, rigori, cartellini del 2025/26,
+  fantamedia ponderata, le giornate gia' giocate del 2026/27, gerarchia e bonus;
+- **Abbinamenti di calendario** – coppia e terzetto migliori fra i liberi, l'abbinamento fisso del
+  listone, e le trasferte in comune con i giocatori dello stesso reparto che hai gia' in rosa.
 
-**L'ingest stampa ogni nome che non riesce ad agganciare.** Non fidarti del silenzio: se non stampa
-nulla, tutto e' agganciato. E' cosi' che sono emersi Leao, Nkunku, Missori e Pedersen — indicati
-titolari dalle fonti ma marcati **ceduti** nel listone ufficiale, quindi non acquistabili.
+Sopra i tre blocchi, a tutta larghezza, la nota di stato: infortunio con tempi di recupero su fondo
+rosso o ambra, altrimenti la nota di titolarita'. Sotto, i motivi che compongono lo `Score`.
 
-### Fonti e stato dei dati
+E' tutto li' perche' in asta si guarda un giocatore alla volta, e sono i trenta secondi in cui serve
+avere prezzi, stato fisico, rendimento e abbinamenti insieme. La lista resta leggibile, la scheda
+porta il resto.
 
-Dati al **1 settembre 2026**, dopo 2 giornate. Le gerarchie cambiano ogni settimana: riverificale
-prima dell'asta.
+## Abbinamenti di calendario: coppie e terzetti
 
-- Formazioni tipo: [fantacalcio-online.com](https://www.fantacalcio-online.com/it/consigli-fantacalcio/probabili-formazioni-serie-a)
-  — 217 titolari agganciati su 220
-- Rigoristi: [Sky Sport](https://sport.sky.it/fantacalcio/2026/08/10/rigoristi-serie-a-fantacalcio-2026-2027)
-  e [Goal.com](https://www.goal.com/it/liste/fantacalcio-rigoristi-serie-a-2026-2027-tiratori-e-gerarchie-dal-dischetto-delle-20-squadre-del-campionato/bltdebca56c3bd91419)
-  — 63 rigoristi agganciati
-- Punizioni e angoli: [FantaMaster](https://www.fantamaster.it/tiratori-punizioni-corner-calci-dangolo-seriea-2026-2027-gerarchie-fantacalcio/)
-- Marcatori: [DAZN](https://www.dazn.com/it-IT/news/calcio/capocannonieri-serie-a-classifica-marcatori-aggiornata/1sk4dtns3wmef1l94kdidtcn4c)
+Il numero che conta e' **quante volte su 38 giornate due squadre giocano entrambe in trasferta**.
+Piu' e' basso, meglio i due giocatori si coprono: quando uno e' fuori casa l'altro quasi sempre e'
+in casa, quindi ruotandoli in formazione si schiera quasi sempre quello favorito. Il caso limite
+sono i derby di citta' — Inter-Milan, Roma-Lazio, Juventus-Torino — che non vanno **mai** fuori
+insieme: valore 0.
 
-Le due fonti sui rigoristi non concordano su Atalanta (Scamacca / Kessie), Juventus (Kolo Muani /
-Yildiz), Milan (Nkunku / Ramos), Cagliari (Maldini / Fazzini) e Parma. Dove Sky collocava un
-giocatore in una squadra diversa da quella delle formazioni tipo ha vinto la formazione tipo, perche'
-combacia col listone. Ogni scelta e' annotata nella `nota` della squadra e visibile in dashboard.
+Sui terzetti vale un'identita' del calendario: se due squadre stanno a 0, una terza squadra
+qualsiasi divide le sue 19 trasferte fra le due, e la somma delle tre coppie fa esattamente **19**.
+E' il minimo possibile, ed e' il motivo per cui i terzetti migliori contengono sempre un derby.
+
+La colonna `Abbinamento` della lista mostra due righe: sopra la coppia migliore (nome, sigla e
+trasferte in comune, colorate secondo il giudizio del workbook: `Perfetto` fino a 3, `Ottimo` fino a
+6, poi `Nella media` e `Da evitare`), sotto il terzetto con il suo totale. Sono calcolati **sui
+giocatori ancora liberi**: appena qualcuno compra il partner ideale, la colonna propone il migliore
+fra quelli che restano.
+
+Il punteggio pesa **60% qualita'** (l'indice di priorita' del listone, normalizzato sul reparto) e
+**40% copertura** di calendario. E' una scelta esplicita: un portiere da 1 credito che copre
+perfettamente il calendario non serve a niente, e la copertura da sola metterebbe in cima i
+tappabuchi. La griglia limita a tre le comparsate dello stesso nome, altrimenti il miglior giocatore
+del reparto si prenderebbe quasi tutte le righe.
+
+La vista **Griglie** mette insieme la matrice 20x20 colorata, le classifiche di coppie di squadre
+del workbook, le coppie e i terzetti consigliati per reparto (con costo consigliato del blocco e
+indice medio) e, per i portieri, la top 20 fissa dei terzetti calcolata nel workbook.
+
+Anche i **piani rosa** usano il calendario: il blocco portieri non e' piu' titolare + riserva della
+stessa squadra, ma i tre portieri liberi che dentro il budget del reparto si coprono meglio a
+vicenda. La colonna "Blocco portieri" mostra le sigle e il totale di trasferte in comune.
 
 ## Dati via API: cosa esiste davvero
 
@@ -421,7 +492,7 @@ l'ingest da file e' il percorso principale di questo progetto.
 
 | Fonte | Cosa da' | Costo | Note |
 | --- | --- | --- | --- |
-| Excel ufficiale Fantacalcio.it | quotazioni Classic e Mantra, ruoli, FVM | gratis | fonte usata qui; nessun endpoint documentato, solo download del file |
+| Excel di Fantacalcio.it | quotazioni, ruoli, FVM, statistiche | gratis | la base del workbook usato qui; nessun endpoint documentato, solo download del file |
 | [football-data.org](https://www.football-data.org/) | rose, calendario, classifica, capocannonieri Serie A | gratis (top competizioni), 10 req/min | l'unica gratuita con termini chiari; niente quotazioni fantacalcio |
 | API-Football / api-sports.io | statistiche giocatore, infortuni, formazioni | free tier ~100 req/giorno | copertura buona, nomi diversi da quelli del listone |
 | [Sportmonks](https://www.sportmonks.com/football-api/serie-a-api/), [TheStatsAPI](https://www.thestatsapi.com/football/league/serie-a), [Enetpulse](https://enetpulse.com/italian-serie-a-api/) | dati completi, xG, storico | a pagamento (da ~50 $/mese) | sovradimensionati per un'asta |
@@ -432,41 +503,27 @@ Progetti community che affrontano lo stesso problema, utili come riferimento:
 [dandolodavid/fantasta_docker](https://github.com/dandolodavid/fantasta_docker) (wrapper HTTP
 sopra lo scraping di fantacalcio.it).
 
-### Arricchimento opzionale (football-data.org)
-
-`scripts/fetch_enrichment.mjs` scarica rose, capocannonieri e calendario Serie A e li salva in
-`src/data/enrichment.json`. Gira in Node, quindi **il token non finisce nel bundle**.
-
-```bash
-# 1. token gratuito: https://www.football-data.org/client/register
-# 2. .env con:  FOOTBALL_DATA_TOKEN=xxxxx
-npm run enrich
-```
-
-Il file prodotto **non e' ancora collegato all'interfaccia**: i nomi di football-data.org
-(`Lautaro Martinez`) non combaciano con quelli del listone (`Martinez L.`), e un match fuzzy
-sbagliato in asta e' peggio del dato mancante. I dati sono pronti per chi vuole aggiungere il
-collegamento con una tabella di corrispondenze.
-
 ## Struttura
 
 ```
 avvia.cmd                    doppio clic su Windows: compila (se serve) e apre
 .github/workflows/pages.yml  deploy automatico su GitHub Pages
-data/                        .xlsx ufficiali (il watcher guarda qui)
-data/extra.json              titolari, rigoristi, piazzati, prezzi di mercato
-scripts/ingest_xlsx.py       .xlsx + extra.json -> src/data/listone.json
-scripts/fetch_enrichment.mjs football-data.org -> src/data/enrichment.json
+data/                        il workbook .xlsx (il watcher guarda qui)
+data/ceduti.txt              chi ha lasciato la Serie A dopo la data del workbook
+scripts/ingest_xlsx.py       workbook - ceduti.txt -> src/data/listone.json
 scripts/serve.mjs            server statico senza dipendenze per dist/
 vite.config.ts               plugin autoIngest: rigenera il listone al volo
-src/lib/listone.ts           caricamento listone, ricerca, accessori per modalita'
+src/lib/listone.ts           caricamento listone, ricerca, filtri, matrice calendario
+src/lib/abbinamenti.ts       coppie e terzetti migliori fra i giocatori liberi
 src/lib/stats.ts             crediti, slot, offerta massima, statistiche di lega
 src/lib/market.ts            listino d'asta: curva di prezzo per reparto
 src/lib/advice.ts            prezzo atteso e Score dei consigli
 src/lib/utente.ts            splash di accesso (non e' sicurezza, vedi commento)
-src/lib/plans.ts             strategie, coppia portieri, piani rosa
+src/lib/plans.ts             strategie, blocco portieri, piani rosa
 src/store/useAuction.ts      stato asta (zustand + persist), undo, obiettivi, prezzi corretti
-src/components/              Asta, Piani, Squadre, Statistiche, Impostazioni
+src/components/PlayerCard.tsx  la scheda che si apre quando il giocatore va all'asta
+src/components/GriglieView.tsx matrice, coppie e terzetti
+src/components/              Asta, Griglie, Piani, Squadre, Statistiche, Impostazioni
 ```
 
 ## Backup
@@ -476,5 +533,5 @@ browser o cambiare computer cancella tutto: il file esportato e' l'unico modo pe
 
 ## Stack
 
-Vite · React 19 · TypeScript · Tailwind 4 · zustand. Nessuna dipendenza runtime esterna,
-nessuna chiamata di rete a meno che non lanci l'arricchimento.
+Vite · React 19 · TypeScript · Tailwind 4 · zustand. Nessuna dipendenza runtime esterna e
+nessuna chiamata di rete: tutto quello che serve e' nel bundle.

@@ -4,10 +4,11 @@ import { useAuction } from '../store/useAuction'
 import type { Utente } from '../lib/utente'
 import { Bar } from './ui'
 
-export type Tab = 'asta' | 'piani' | 'squadre' | 'stats' | 'setup'
+export type Tab = 'asta' | 'griglie' | 'piani' | 'squadre' | 'stats' | 'setup'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'asta', label: 'Asta' },
+  { id: 'griglie', label: 'Griglie' },
   { id: 'piani', label: 'Piani' },
   { id: 'squadre', label: 'Squadre' },
   { id: 'stats', label: 'Statistiche' },
@@ -24,7 +25,6 @@ export default function Header({
   utente: Utente
 }) {
   const settings = useAuction((s) => s.settings)
-  const setMode = useAuction((s) => s.setMode)
   const undo = useAuction((s) => s.undo)
   const canUndo = useAuction((s) => s.undoStack.length > 0)
   const league = useLeague()
@@ -43,20 +43,6 @@ export default function Header({
           >
             {utente.nome}
           </span>
-        </div>
-
-        <div className="flex items-center rounded-lg border border-ink-700 bg-ink-850 p-0.5 text-xs">
-          {(['classic', 'mantra'] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={`rounded-md px-2 py-0.5 font-medium capitalize transition-colors ${
-                settings.mode === m ? 'bg-sky-600 text-white' : 'text-ink-400 hover:text-ink-100'
-              }`}
-            >
-              {m}
-            </button>
-          ))}
         </div>
 
         <div className="hidden min-w-40 max-w-64 flex-1 md:block">

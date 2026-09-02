@@ -1,4 +1,4 @@
-import type { Mode, Player, Role } from '../types'
+import type { Player, Role } from '../types'
 import { ROLES } from '../types'
 import { fvm } from './listone'
 
@@ -188,7 +188,7 @@ export interface Calibrazione {
  * budget che si prende la fascia alta. Dipende solo dal listone e dalle regole
  * di lega, quindi si calcola una volta.
  */
-export function calibra(players: Player[], mode: Mode, cfg: MarketConfig): Calibrazione {
+export function calibra(players: Player[], cfg: MarketConfig): Calibrazione {
   const scala = TEMPERATURE[cfg.temperatura].scala
   const gamma = {} as Record<Role, number>
   const quotaFascia = {} as Record<Role, number>
@@ -196,13 +196,13 @@ export function calibra(players: Player[], mode: Mode, cfg: MarketConfig): Calib
   const fvmTop = {} as Record<Role, number>
 
   for (const r of ROLES) {
-    const lista = players.filter((p) => p.r === r).sort((a, b) => fvm(b, mode) - fvm(a, mode))
+    const lista = players.filter((p) => p.r === r).sort((a, b) => fvm(b) - fvm(a))
     const comprati = Math.min(lista.length, Math.max(1, cfg.slotIniziali[r]))
     const budget = QUOTA_REPARTO[r] * cfg.creditiIniziali
     const top = Math.max(1, Math.round(TOP_REPARTO[r] * cfg.budgetSquadra * scala))
-    const fvmTop_ = Math.max(1, fvm(lista[0], mode))
+    const fvmTop_ = Math.max(1, fvm(lista[0]))
 
-    const rapporti = lista.slice(0, comprati).map((p) => fvm(p, mode) / fvmTop_)
+    const rapporti = lista.slice(0, comprati).map((p) => fvm(p) / fvmTop_)
     const g = calibraGamma(rapporti, top, budget)
 
     // Quanto si prende la fascia alta a inizio asta, con la curva calibrata.
@@ -227,12 +227,7 @@ export function calibra(players: Player[], mode: Mode, cfg: MarketConfig): Calib
  * `available` sono i giocatori ancora liberi: e' la lista che si svuota, ed e'
  * quello che fa salire i prezzi di chi resta.
  */
-export function buildMarket(
-  available: Player[],
-  mode: Mode,
-  cfg: MarketConfig,
-  cal: Calibrazione,
-): Market {
+export function buildMarket(available: Player[], cfg: MarketConfig, cal: Calibrazione): Market {
   const prezzi = new Map<number, number>()
   const reparti = {} as Record<Role, MarketReparto>
 
@@ -247,7 +242,7 @@ export function buildMarket(
   const pesoTotale = ROLES.reduce((n, r) => n + pesoReparto[r], 0)
 
   for (const r of ROLES) {
-    const lista = available.filter((p) => p.r === r).sort((a, b) => fvm(b, mode) - fvm(a, mode))
+    const lista = available.filter((p) => p.r === r).sort((a, b) => fvm(b) - fvm(a))
     const slotResidui = Math.max(0, cfg.slotResidui[r])
     const budgetResiduo =
       pesoTotale > 0 ? (cfg.creditiResidui * pesoReparto[r]) / pesoTotale : 0
@@ -281,7 +276,7 @@ export function buildMarket(
     // Curva base: riferita al migliore di INIZIO asta, non a quello che resta.
     // Se il riferimento si spostasse, togliere il numero uno rivaluterebbe da
     // solo tutti gli altri e il modello perderebbe la scala.
-    const base = (p: Player) => cal.topIniziale[r] * potenza(fvm(p, mode) / cal.fvmTop[r], cal.gamma[r])
+    const base = (p: Player) => cal.topIniziale[r] * potenza(fvm(p) / cal.fvmTop[r], cal.gamma[r])
 
     const budgetFascia = nFascia > 0 ? budgetResiduo * cal.quotaFascia[r] : 0
     const budgetResto = budgetResiduo - budgetFascia

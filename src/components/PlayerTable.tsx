@@ -1,19 +1,31 @@
 import { useMemo } from 'react'
+import type { Abbinamento } from '../lib/abbinamenti'
+import { giudizio } from '../lib/abbinamenti'
 import type { Advice } from '../lib/advice'
-import { dec, int, signed } from '../lib/format'
-import { fvm, noteSquadre, quot, roleLabelOf } from '../lib/listone'
+import { int } from '../lib/format'
 import type { EnrichedPick } from '../lib/stats'
-import type { Mode, Player } from '../types'
-import PlayerTags from './PlayerTags'
-import { RoleBadge } from './ui'
+import type { Player } from '../types'
+import PlayerTags, { FasciaBadge } from './PlayerTags'
+import { RoleBadge, TONO_TRASFERTE } from './ui'
 
-export type SortKey = 'consiglio' | 'quot' | 'atteso' | 'fvm' | 'valore' | 'nome' | 'squadra' | 'prezzo'
+export type SortKey =
+  | 'consiglio'
+  | 'prio'
+  | 'quot'
+  | 'cons'
+  | 'atteso'
+  | 'fvm'
+  | 'fascia'
+  | 'nome'
+  | 'squadra'
+  | 'abbinamento'
+  | 'prezzo'
 
 interface Props {
   rows: Player[]
-  mode: Mode
   pickByPlayer: Map<number, EnrichedPick>
   advice: Map<number, Advice>
+  abbinamenti: Map<number, Abbinamento>
   targetIds: Set<number>
   selectedId: number | null
   highlightIndex: number
@@ -28,12 +40,15 @@ interface Props {
 
 const HEAD: { key: SortKey; label: string; className: string; title?: string }[] = [
   { key: 'nome', label: 'Giocatore', className: 'text-left' },
-  { key: 'squadra', label: 'Squadra', className: 'text-left' },
-  { key: 'quot', label: 'Qt.A', className: 'text-right', title: 'Quotazione attuale' },
+  { key: 'squadra', label: 'Sq', className: 'text-left' },
+  { key: 'fascia', label: 'Fascia', className: 'text-left', title: 'Fascia del listone: da Top a Scommessa' },
+  { key: 'prio', label: 'Prio', className: 'text-right', title: 'Priorita nel reparto secondo l indice del listone' },
+  { key: 'quot', label: 'Qt.A', className: 'text-right', title: 'Quotazione attuale Classic' },
+  { key: 'cons', label: 'Cons', className: 'text-right', title: 'Prezzo consigliato dal listone (e prezzo max nel tooltip)' },
   { key: 'atteso', label: 'Asta', className: 'text-right', title: 'Prezzo a cui il giocatore finira davvero: listino d asta modellato sul budget della lega, non la quotazione' },
   { key: 'fvm', label: 'FVM', className: 'text-right', title: 'Fanta Valore di Mercato' },
-  { key: 'valore', label: 'FVM/cr', className: 'text-right', title: 'FVM per credito di prezzo d asta: e qui che si vede se un top conviene' },
   { key: 'consiglio', label: 'Score', className: 'text-right', title: 'Quanto conviene a te adesso: qualita nel reparto, resa per credito, slot che ti servono e budget sostenibile' },
+  { key: 'abbinamento', label: 'Abbinamento', className: 'text-left', title: 'Con chi accoppiarlo fra i giocatori ancora liberi: coppia e terzetto che si coprono meglio sul calendario' },
   { key: 'prezzo', label: 'Pagato', className: 'text-right' },
 ]
 
@@ -47,9 +62,9 @@ const scoreColor = (a: Advice) => {
 
 export default function PlayerTable({
   rows,
-  mode,
   pickByPlayer,
   advice,
+  abbinamenti,
   targetIds,
   selectedId,
   highlightIndex,
@@ -69,19 +84,27 @@ export default function PlayerTable({
           return p.nome
         case 'squadra':
           return p.squadra
+        case 'fascia':
+          // Le fasce alte hanno indice basso: si invertono per ordinarle come i numeri.
+          return -p.fasciaIdx
+        case 'prio':
+          return -p.prio
         case 'fvm':
-          return fvm(p, mode)
+          return p.fvm
+        case 'cons':
+          return p.cons
         case 'atteso':
-          return advice.get(p.id)?.expPrice ?? quot(p, mode)
-        case 'valore':
-          return advice.get(p.id)?.value ?? 0
+          return advice.get(p.id)?.expPrice ?? p.qtA
+        case 'abbinamento':
+          // Meno trasferte in comune = abbinamento migliore, quindi va in cima.
+          return -(abbinamenti.get(p.id)?.coppia?.t ?? 99)
         case 'consiglio':
           // I giocatori gia presi non hanno consiglio: restano in fondo.
           return advice.get(p.id)?.score ?? -1
         case 'prezzo':
           return pickByPlayer.get(p.id)?.price ?? -1
         default:
-          return quot(p, mode)
+          return p.qtA
       }
     }
     return [...rows].sort((a, b) => {
@@ -90,9 +113,9 @@ export default function PlayerTable({
       if (typeof va === 'string' || typeof vb === 'string') {
         return String(va).localeCompare(String(vb), 'it') * dir
       }
-      return (va - vb) * dir || fvm(b, mode) - fvm(a, mode)
+      return (va - vb) * dir || b.indice - a.indice
     })
-  }, [rows, sort, mode, pickByPlayer, advice, searching])
+  }, [rows, sort, pickByPlayer, advice, abbinamenti, searching])
 
   return (
     <div className="min-h-0 flex-1 overflow-auto">
@@ -126,22 +149,16 @@ export default function PlayerTable({
           {sorted.map((p, i) => {
             const pick = pickByPlayer.get(p.id)
             const a = advice.get(p.id)
+            const ab = abbinamenti.get(p.id)
             const isTarget = targetIds.has(p.id)
-            const q = quot(p, mode)
-            const f = fvm(p, mode)
             const isSel = p.id === selectedId
             const isHi = i === highlightIndex
-            const storico =
-              p.fm2025 != null
-                ? `2025/26: fantamedia ${p.fm2025}${p.gol2025 != null ? `, ${p.gol2025} gol` : ''}`
-                : undefined
-            const tooltip = [p.nota, storico].filter(Boolean).join(' — ') || undefined
             return (
               <tr
                 key={p.id}
                 onClick={() => onSelect(p)}
                 data-row={i}
-                title={tooltip}
+                title={[p.nota, p.inf?.dettaglio].filter(Boolean).join(' — ')}
                 className={`cursor-pointer border-b border-ink-800/70 ${
                   isSel
                     ? 'bg-sky-500/15'
@@ -155,7 +172,7 @@ export default function PlayerTable({
                 }`}
               >
                 <td className="px-2 py-1">
-                  <RoleBadge role={p.r} text={mode === 'mantra' ? roleLabelOf(p, mode) : p.r} />
+                  <RoleBadge role={p.r} />
                 </td>
                 <td className="px-0 py-1 text-center">
                   <button
@@ -171,7 +188,7 @@ export default function PlayerTable({
                     &#9733;
                   </button>
                 </td>
-                <td className="max-w-64 px-2 py-1 font-medium">
+                <td className="max-w-56 px-2 py-1 font-medium">
                   <span className="flex items-center gap-1.5">
                     <span className="min-w-0 truncate">
                       {pick ? <span className="line-through decoration-ink-600">{p.nome}</span> : p.nome}
@@ -179,33 +196,48 @@ export default function PlayerTable({
                     <PlayerTags p={p} />
                   </span>
                 </td>
-                <td className="px-2 py-1 text-ink-300" title={noteSquadre[p.squadra]}>
-                  {p.squadra}
-                  {noteSquadre[p.squadra] && <span className="ml-1 text-amber-500/70">*</span>}
+                <td className="px-2 py-1 font-mono text-[11px] text-ink-300" title={p.squadra}>
+                  {p.cod}
                 </td>
-                <td className="px-2 py-1 text-right font-semibold">{int(q)}</td>
+                <td className="px-2 py-1">
+                  <FasciaBadge fascia={p.fascia} />
+                </td>
+                <td className="px-2 py-1 text-right text-ink-400" title={`Indice di priorita ${p.indice}`}>
+                  {int(p.prio)}
+                </td>
+                <td className="px-2 py-1 text-right font-semibold">{int(p.qtA)}</td>
+                <td className="px-2 py-1 text-right text-ink-300" title={`Prezzo max consigliato: ${p.max}`}>
+                  {int(p.cons)}
+                  <span className="ml-1 text-[10px] text-ink-500">/{int(p.max)}</span>
+                </td>
                 <td
                   className={`px-2 py-1 text-right ${
                     a?.fontePrezzo === 'override'
                       ? 'font-semibold text-sky-300'
-                      : a?.fontePrezzo === 'mercato'
+                      : a?.sopraMax
                         ? 'font-semibold text-amber-300'
                         : 'text-ink-300'
                   }`}
                   title={
                     a?.fontePrezzo === 'override'
                       ? 'Prezzo corretto a mano'
-                      : a?.fontePrezzo === 'mercato'
-                        ? 'Prezzo di mercato da data/extra.json'
+                      : a?.sopraMax
+                        ? `Il listino d asta lo porta oltre il prezzo max del listone (${p.max})`
                         : undefined
                   }
                 >
                   {a ? int(a.expPrice) : '-'}
                 </td>
-                <td className="px-2 py-1 text-right text-ink-300">{int(f)}</td>
-                <td className="px-2 py-1 text-right text-ink-400">{a ? dec(a.value) : '-'}</td>
+                <td className="px-2 py-1 text-right text-ink-300">{int(p.fvm)}</td>
                 <td className="px-2 py-1 text-right" title={a?.motivi.join(' · ')}>
-                  {a ? <span className={`font-semibold ${scoreColor(a)}`}>{a.score}</span> : <span className="text-ink-700">-</span>}
+                  {a ? (
+                    <span className={`font-semibold ${scoreColor(a)}`}>{a.score}</span>
+                  ) : (
+                    <span className="text-ink-700">-</span>
+                  )}
+                </td>
+                <td className="px-2 py-1">
+                  <AbbinamentoCell ab={ab} />
                 </td>
                 <td className="px-2 py-1 text-right">
                   {pick ? (
@@ -213,17 +245,22 @@ export default function PlayerTable({
                       {int(pick.price)}
                       <span
                         className={`ml-1 text-[11px] font-normal ${
-                          pick.delta > 0 ? 'text-rose-400' : pick.delta < 0 ? 'text-emerald-400' : 'text-ink-400'
+                          pick.price > p.max
+                            ? 'text-rose-400'
+                            : pick.price <= p.cons
+                              ? 'text-emerald-400'
+                              : 'text-ink-400'
                         }`}
+                        title={`Consigliato ${p.cons}, max ${p.max}`}
                       >
-                        {signed(pick.delta)}
+                        {pick.price > p.max ? '↑' : pick.price <= p.cons ? '↓' : '='}
                       </span>
                     </span>
                   ) : (
                     <span className="text-ink-600">-</span>
                   )}
                 </td>
-                <td className="max-w-32 truncate px-2 py-1 text-xs text-ink-300">{pick?.team.nome ?? ''}</td>
+                <td className="max-w-28 truncate px-2 py-1 text-xs text-ink-300">{pick?.team.nome ?? ''}</td>
                 <td className="px-1 py-1 text-right">
                   {pick && (
                     <button
@@ -243,13 +280,49 @@ export default function PlayerTable({
           })}
           {!sorted.length && (
             <tr>
-              <td colSpan={12} className="px-3 py-8 text-center text-sm text-ink-400">
+              <td colSpan={15} className="px-3 py-8 text-center text-sm text-ink-400">
                 Nessun giocatore trovato con questi filtri.
               </td>
             </tr>
           )}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+/**
+ * Con chi accoppiarlo: sopra la coppia migliore, sotto il terzetto.
+ *
+ * Il numero e' quante volte su 38 giornate le squadre giocano ENTRAMBE in
+ * trasferta: piu basso, meglio si coprono a vicenda quando si ruota.
+ */
+function AbbinamentoCell({ ab }: { ab: Abbinamento | undefined }) {
+  if (!ab?.coppia) return <span className="text-ink-700">-</span>
+
+  const { coppia, terzetto } = ab
+  const g = giudizio(coppia.t)
+  const terzo = terzetto?.altri.filter((p) => p.id !== coppia.partner.id) ?? []
+
+  return (
+    <div className="min-w-0 max-w-52 leading-tight">
+      <div className="truncate text-xs" title={`Coppia consigliata: ${coppia.partner.nome} (${coppia.partner.squadra}) — ${coppia.t} trasferte in comune su 38 · ${g.label}`}>
+        <span className="text-ink-200">{coppia.partner.nome}</span>
+        <span className="ml-1 font-mono text-[10px] text-ink-500">{coppia.partner.cod}</span>
+        <span className={`ml-1.5 text-[11px] font-semibold ${TONO_TRASFERTE[g.tono]}`}>{coppia.t}</span>
+      </div>
+      {terzetto && (
+        <div
+          className="truncate text-[11px] text-ink-500"
+          title={`Terzetto: ${terzetto.altri.map((p) => `${p.nome} (${p.squadra})`).join(' + ')} — trasferte in comune ${terzetto.t.join(' + ')} = ${terzetto.tot}`}
+        >
+          +{' '}
+          {terzo.length
+            ? terzo.map((p) => `${p.nome} ${p.cod}`).join(', ')
+            : terzetto.altri.map((p) => `${p.nome} ${p.cod}`).join(', ')}
+          <span className="ml-1 text-ink-600">· {terzetto.tot}</span>
+        </div>
+      )}
     </div>
   )
 }

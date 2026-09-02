@@ -24,7 +24,7 @@ export default function LoginSplash({ onEntra }: { onEntra: (u: Utente) => void 
     onEntra(salvaUtente(id))
   }
 
-  const attivi = listone.giocatori.length - listone.ceduti
+  const attivi = listone.giocatori.length
 
   return (
     <div className="flex min-h-full items-center justify-center bg-ink-950 p-6">
