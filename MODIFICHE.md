@@ -286,7 +286,63 @@ Tre dettagli:
 
 ---
 
-## 9. Cose minori
+## 9. Il listino d'asta rifatto
+
+Il vecchio modello ricostruiva una curva di prezzo da FVM con una gamma calibrata, divideva ogni
+reparto in due blocchi e li riscalava con moltiplicatori limitati. Circa 185 righe per riprodurre
+qualcosa che il workbook aveva gia' calcolato.
+
+Adesso si parte dal **prezzo consigliato** e si modella solo lo scostamento:
+
+```
+prezzo = consigliato x spintaDellaFascia x lambda     dentro [1, offerta massima sostenibile]
+```
+
+**Spinta della fascia** — dipende da quanta parte della fascia e' gia' andata, elevata a 0,6 perche'
+ogni acquisto alzi meno del precedente. Contagio 0,35 alla fascia adiacente, troncato oltre.
+L'ampiezza (quanto una fascia *puo'* scaldarsi) non e' un parametro: e' `quota crediti / quota
+giocatori` letta dal listone, quindi il modello scopre da solo che gli attaccanti Top si scaldano e
+quelli di 2a fascia no.
+
+Verificato dal vivo comprando i primi due Top — prezzo medio dei rimanenti:
+
+| | Top | 1a | 2a | 3a | 4a |
+| --- | --- | --- | --- | --- | --- |
+| inizio | 92,3 | 43,0 | 20,4 | 1 | 1 |
+| dopo Malen | **114,0** | 47,6 | 20,5 | 1 | 1 |
+| dopo Martinez L. | **122,4** | 50,3 | 21,2 | 1 | 1 |
+
+**Lambda** — tiene insieme il portafoglio (crediti per slot che restano) e la temperatura osservata
+(quanto la lega ha pagato sopra il consigliato). A inizio asta spendere tanto vuol dire "lega calda";
+a fine asta vuol dire "non ci sono piu' soldi": il peso si sposta dall'una all'altro con
+l'avanzamento. Ci si fida della temperatura osservata solo man mano che le assegnazioni la rendono
+credibile, e lambda e' limitata fra 0,5 e 2.
+
+Tarato su aste simulate contro tre curve di lega. Errore medio sui primi 60 giocatori chiamati:
+
+| Lega | prima | adesso |
+| --- | --- | --- |
+| calda (top strapagati) | 32% | **17%** |
+| piatta (disciplinata) | 17% | 23% |
+| tardiva (tutti tengono) | 47% | **32%** |
+
+Due cose che le prove hanno smentito rispetto a quanto avevo proposto: la **banda morta** sulla
+temperatura osservata non serviva (peggiorava due scenari su tre, tolta), e il **tetto su lambda**
+serviva molto piu' del previsto — nella lega tardiva l'errore finale passa da 24 crediti a 4.
+
+Il selettore Freddo/Normale/Caldo cambia significato: non scala piu' il picco della curva, ma fissa
+l'attesa di partenza (0,85x / 1,00x / 1,35x) prima che ci siano assegnazioni da cui imparare. E'
+l'unica leva sul punto cieco del modello, il primo quarto d'asta.
+
+## 10. Infortuni successivi al workbook
+
+`data/infortuni.json` aggiunge o sovrascrive lo stato fisico di un giocatore dopo la data del
+workbook, con lo stesso vocabolario del foglio Infortunati (e quindi gli stessi pesi nello Score).
+Primo caso: **Thuram K. (Juventus)**, operato al ginocchio, rientro previsto a febbraio 2027 — da
+"In dubbio per la prossima" a "Infortunato - lungo stop", con il moltiplicatore che scende da 0,95 a
+0,60. Come per i ceduti, una chiave che non corrisponde a nessuno ferma l'ingest.
+
+## 11. Cose minori
 
 - Il plugin `autoIngest` non stampa piu' un falso `ingest fallito (-2)` su macOS: il comando `python`
   non esiste, e l'avviso usciva prima che scattasse il fallback su `python3`.
@@ -303,6 +359,7 @@ nuovi
   data/Fantacalcio_Classic_202627_Listone_e_Asta.xlsx   la fonte
   data/ceduti.txt                                       chi e' uscito dopo il workbook
   data/formazioni-tipo.json                              undici probabili da due fonti
+  data/infortuni.json                                    infortuni dopo la data del workbook
   src/lib/abbinamenti.ts                                 coppie e terzetti fra i liberi
   src/lib/ballottaggi.ts                                 chi si gioca il posto con chi
   src/components/PlayerCard.tsx                          la scheda che si apre in asta

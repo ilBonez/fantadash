@@ -19,6 +19,7 @@ Ci sono due file accanto, che non sono fonti alternative ma correzioni:
   Servono solo a contare quante fonti danno un giocatore titolare: la gerarchia
   del workbook e' derivata dalle quotazioni, e sulle quotazioni un titolare
   economico sembra una riserva.
+- data/infortuni.json, gli infortuni successivi alla data del workbook.
 """
 from __future__ import annotations
 
@@ -36,6 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "src" / "data" / "listone.json"
 CEDUTI = ROOT / "data" / "ceduti.txt"
 FORMAZIONI = ROOT / "data" / "formazioni-tipo.json"
+INFORTUNI = ROOT / "data" / "infortuni.json"
 
 # Nei fogli di reparto la riga 1 e' il titolo, la 2 il conteggio, la 3 l'header.
 HEADER_ROW = 3
@@ -366,6 +368,36 @@ def applica_formazioni(giocatori: list[dict]) -> tuple[dict, list[str]]:
     return meta, problemi
 
 
+# --- infortuni successivi alla data del workbook -----------------------------
+
+
+def applica_infortuni(giocatori: list[dict]) -> tuple[int, list[str]]:
+    """Sovrascrive lo stato fisico per i giocatori elencati in infortuni.json.
+
+    Il workbook e' una fotografia: chi si opera il giorno dopo resta segnato
+    sano, e all'asta e' l'errore che costa di piu'.
+    """
+    if not INFORTUNI.exists():
+        return 0, []
+
+    dati = json.loads(INFORTUNI.read_text(encoding="utf-8"))
+    per_chiave = {p["chiave"]: p for p in giocatori}
+    ignoti: list[str] = []
+    applicati = 0
+
+    for voce in dati.get("infortuni") or []:
+        p = per_chiave.get(voce.get("chiave", ""))
+        if p is None:
+            ignoti.append(voce.get("chiave", "?"))
+            continue
+        p["inf"] = {"stato": voce.get("stato", ""), "dettaglio": voce.get("dettaglio", "")}
+        if voce.get("nota"):
+            p["nota"] = voce["nota"]
+        applicati += 1
+
+    return applicati, ignoti
+
+
 # --- giocatori usciti dopo la data del workbook ------------------------------
 
 
@@ -498,6 +530,12 @@ def main() -> None:
         giocatori = [p for p in giocatori if p["chiave"] not in via]
 
     formazioni, form_persi = applica_formazioni(giocatori)
+    n_inf, inf_ignoti = applica_infortuni(giocatori)
+    if inf_ignoti:
+        sys.exit(
+            f"data/infortuni.json: chiavi non trovate nel listone {inf_ignoti}. "
+            "Il formato e' \"Cognome (SIG)\", come nella colonna Chiave del foglio DB."
+        )
 
     giocatori.sort(key=lambda p: p["id"])
     per_chiave = {p["chiave"]: p["id"] for p in giocatori}
@@ -545,6 +583,8 @@ def main() -> None:
     print(f"  {sum(1 for p in giocatori if 'inf' in p)} con nota infortunio")
     if ceduti:
         print(f"  {len(ceduti)} tolti da data/ceduti.txt: {', '.join(ceduti)}")
+    if n_inf:
+        print(f"  {n_inf} infortuni aggiornati da data/infortuni.json")
     if formazioni:
         due = sum(1 for p in giocatori if p["fonti"] >= 2)
         una = sum(1 for p in giocatori if p["fonti"] == 1)

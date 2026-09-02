@@ -3,14 +3,7 @@ import { useAuction } from '../store/useAuction'
 import { abbinamentiPerRuolo, type Abbinamento } from './abbinamenti'
 import { adviceMap, makePrezzoAtteso, type Advice, type PrezzoAtteso } from './advice'
 import { players } from './listone'
-import {
-  buildMarket,
-  calibra,
-  CERCATI_PER_SQUADRA,
-  SOGLIA_TOP,
-  type Market,
-  type MarketConfig,
-} from './market'
+import { buildMarket, SOGLIA_TOP, type Market, type MarketConfig } from './market'
 import { enrich, leagueStats, type EnrichedPick, type LeagueStats, type TeamStats } from './stats'
 import { ROLES, type Player, type Role } from '../types'
 
@@ -54,24 +47,21 @@ export function useLeague(): League {
 
     const slotIniziali = {} as Record<Role, number>
     const slotResidui = {} as Record<Role, number>
-    const cercatiFascia = {} as Record<Role, number>
     const tettoFascia = {} as Record<Role, number>
 
     for (const r of ROLES) {
       slotIniziali[r] = teams.length * settings.slots[r]
       slotResidui[r] = stats.teams.reduce((n, t) => n + t.byRole[r].left, 0)
-      // Domanda di fascia alta: quanti top cerca ancora ogni squadra, al netto
-      // di quelli che ha gia in rosa e limitato dagli slot che le restano.
-      cercatiFascia[r] = stats.teams.reduce((n, t) => {
-        const gia = t.picks.filter((p) => p.player.r === r && p.price >= sogliaTop).length
-        return n + Math.min(t.byRole[r].left, Math.max(0, CERCATI_PER_SQUADRA[r] - gia))
-      }, 0)
       // Il prezzo non puo superare l'offerta massima di chi cerca ancora.
       tettoFascia[r] = stats.teams.reduce(
         (max, t) => (t.byRole[r].left > 0 ? Math.max(max, t.maxBid) : max),
         0,
       )
     }
+
+    // La temperatura osservata: quanto la lega ha pagato rispetto ai prezzi
+    // consigliati del listone. E' il segnale che a inizio asta conta di piu'.
+    const consVenduti = enriched.reduce((n, p) => n + p.player.cons, 0)
 
     const cfg: MarketConfig = {
       budgetSquadra: settings.budget,
@@ -81,12 +71,13 @@ export function useLeague(): League {
       creditiIniziali: stats.creditiTotali,
       slotResidui,
       creditiResidui: Math.max(0, stats.residui),
-      cercatiFascia,
+      speso: stats.spesi,
+      consVenduti,
+      assegnati: enriched.length,
       tettoFascia,
     }
 
-    const cal = calibra(players, cfg)
-    const market = buildMarket(available, cfg, cal)
+    const market = buildMarket(available, cfg)
     const prezzo = makePrezzoAtteso(market, overrides)
 
     return {

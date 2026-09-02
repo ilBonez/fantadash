@@ -2,7 +2,7 @@
  "stagione": "FANTACALCIO CLASSIC - SERIE A 2026/27",
  "descrizione": "Listone, priorita, abbinamenti di calendario e foglio d'asta. Dati: Fantacalcio.it, aggiornati al 1 settembre 2026. Solo giocatori nelle rose ufficiali di Serie A.",
  "sorgente": "Fantacalcio_Classic_202627_Listone_e_Asta.xlsx",
- "generatoIl": "2026-09-02T07:11:23+00:00",
+ "generatoIl": "2026-09-02T10:38:59+00:00",
  "parametri": {
   "budget": 500,
   "squadre": 10,
@@ -7030,7 +7030,7 @@
    "max": 14,
    "fascia": "3a fascia",
    "gerarchia": "Ballottaggio",
-   "nota": "In dubbio / da valutare - presenze finora: 0/2",
+   "nota": "INFORTUNATO (lungo stop) - rientro a febbraio 2027",
    "rig": null,
    "piaz": null,
    "fmPond": 6.4,
@@ -7061,8 +7061,8 @@
    "chiave": "Thuram K. (JUV)",
    "fasciaIdx": 3,
    "inf": {
-    "stato": "In dubbio per la prossima",
-    "dettaglio": "Sindrome femoro-rotulea, non convocato col Parma. Da valutare per il Milan."
+    "stato": "Infortunato - lungo stop",
+    "dettaglio": "Operato al ginocchio: rientro previsto a febbraio 2027. Salta piu' di mezzo campionato, all'asta vale molto meno del prezzo consigliato."
    },
    "fonti": 0,
    "abbId": 99
