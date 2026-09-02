@@ -555,6 +555,12 @@ quindi lo slot resta libero e la spesa non li conta. Sono elencati a parte, e
 spiegano la differenza con il totale del file. Un nome **senza** marcatore che non
 si aggancia e' invece un problema segnalato in rosso.
 
+Ogni squadra ha una **spunta**: i blocchi a rosa vuota partono esclusi, perche'
+negli export capita di trovarne uno in coda che non e' una squadra vera. Non si
+possono pero' scartare in automatico: a inizio asta una squadra senza giocatori
+e' del tutto legittima, quindi la spunta si rimette. Puoi anche scegliere subito
+quale squadra e' la tua.
+
 L'import sostituisce squadre e assegnazioni, ma **tiene le regole di lega**:
 budget, slot e temperatura sono scelte tue, non del file.
 

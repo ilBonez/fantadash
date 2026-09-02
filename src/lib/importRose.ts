@@ -42,6 +42,8 @@ export interface RigaRosa {
 
 export interface SquadraImportata {
   nome: string
+  /** Ordine nel foglio: serve a dare id stabili anche escludendo blocchi. */
+  ordine: number
   presi: number
   spesa: number
   /** Totale dichiarato dalla riga "totale" del foglio, se c'era. */
@@ -51,8 +53,8 @@ export interface SquadraImportata {
 
 export interface EsitoImport {
   squadre: SquadraImportata[]
-  teams: Team[]
-  picks: Pick[]
+  /** Righe agganciate al listone, nell'ordine del foglio. */
+  righe: RigaRosa[]
   righeLette: number
   agganciati: number
   /** Marcati " *" e non nel listone: atteso, gli slot restano liberi. */
@@ -64,6 +66,41 @@ export interface EsitoImport {
   /** Reparti che sforano gli slot di lega, es. 9 difensori su 8. */
   sfori: string[]
 }
+
+/**
+ * Costruisce squadre e assegnazioni per i soli blocchi scelti.
+ *
+ * La selezione e' separata dalla lettura perche' un export puo' contenere
+ * blocchi che non sono squadre vere — capita di trovarne uno vuoto in coda. Non
+ * si possono pero' scartare in automatico tutti i blocchi vuoti: a inizio asta
+ * una squadra senza giocatori e' del tutto legittima. Decide l'utente, con il
+ * caso comune preselezionato.
+ */
+export function costruisci(esito: EsitoImport, nomiInclusi: string[]): { teams: Team[]; picks: Pick[] } {
+  const inclusi = new Set(nomiInclusi)
+  const teams: Team[] = esito.squadre
+    .filter((s) => inclusi.has(s.nome))
+    .map((s, i) => ({ id: `t${i + 1}`, nome: s.nome }))
+  const idPerNome = new Map(teams.map((t) => [t.nome, t.id]))
+
+  const visti = new Set<number>()
+  const picks: Pick[] = []
+  // Timestamp crescenti nell'ordine del foglio: il registro movimenti resta leggibile.
+  let ts = Date.now() - esito.righe.length * 1000
+
+  for (const r of esito.righe) {
+    const teamId = idPerNome.get(r.squadra)
+    if (!r.player || !teamId || visti.has(r.player.id)) continue
+    visti.add(r.player.id)
+    picks.push({ playerId: r.player.id, teamId, price: r.prezzo, ts: (ts += 1000) })
+  }
+
+  return { teams, picks }
+}
+
+/** Le squadre da preselezionare: tutte quelle con almeno un giocatore. */
+export const daIncludere = (esito: EsitoImport): string[] =>
+  esito.squadre.filter((s) => s.presi > 0).map((s) => s.nome)
 
 const testo = (c: Riga[number]): string => (c == null ? '' : String(c).trim())
 
@@ -130,6 +167,7 @@ export function parseRose(fogli: Foglio[], slots: Record<Role, number>): EsitoIm
 
     squadre.push({
       nome: b.nome,
+      ordine: squadre.length,
       presi: agganciate.length,
       spesa: agganciate.reduce((n, x) => n + x.prezzo, 0),
       totaleFile: totaliFile.get(b.nome) ?? null,
@@ -140,25 +178,10 @@ export function parseRose(fogli: Foglio[], slots: Record<Role, number>): EsitoIm
   // Un giocatore in due rose: la prima occorrenza vince, la seconda si segnala.
   const visti = new Set<number>()
   const duplicati: RigaRosa[] = []
-  const teams: Team[] = blocchi.map((b, i) => ({ id: `t${i + 1}`, nome: b.nome }))
-  const idPerNome = new Map(teams.map((t) => [t.nome, t.id]))
-  const picks: Pick[] = []
-  // Timestamp crescenti nell'ordine del foglio: il registro movimenti resta leggibile.
-  let ts = Date.now() - righe.length * 1000
-
   for (const r of righe) {
     if (!r.player) continue
-    if (visti.has(r.player.id)) {
-      duplicati.push(r)
-      continue
-    }
-    visti.add(r.player.id)
-    picks.push({
-      playerId: r.player.id,
-      teamId: idPerNome.get(r.squadra)!,
-      price: r.prezzo,
-      ts: (ts += 1000),
-    })
+    if (visti.has(r.player.id)) duplicati.push(r)
+    else visti.add(r.player.id)
   }
 
   const sfori: string[] = []
@@ -172,8 +195,7 @@ export function parseRose(fogli: Foglio[], slots: Record<Role, number>): EsitoIm
 
   return {
     squadre,
-    teams,
-    picks,
+    righe,
     righeLette: righe.length,
     agganciati: righe.filter((x) => x.player).length,
     fuoriLista: righe.filter((x) => !x.player && x.fuoriLista),

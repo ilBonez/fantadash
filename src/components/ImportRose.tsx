@@ -1,7 +1,13 @@
 import { useRef, useState } from 'react'
 import { int, signed } from '../lib/format'
-import { importaRoseDaFile, type EsitoImport, type RigaRosa } from '../lib/importRose'
-import { ROLES, type Role } from '../types'
+import {
+  costruisci,
+  daIncludere,
+  importaRoseDaFile,
+  type EsitoImport,
+  type RigaRosa,
+} from '../lib/importRose'
+import { ROLES, type Pick, type Role, type Team } from '../types'
 import { RoleBadge, Section } from './ui'
 
 /**
@@ -16,13 +22,15 @@ export default function ImportRose({
   onConferma,
 }: {
   slots: Record<Role, number>
-  onConferma: (esito: EsitoImport, myTeamId: string | null) => void
+  onConferma: (teams: Team[], picks: Pick[], myTeamId: string | null, esito: EsitoImport) => void
 }) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [esito, setEsito] = useState<EsitoImport | null>(null)
   const [nomeFile, setNomeFile] = useState('')
   const [errore, setErrore] = useState<string | null>(null)
   const [mia, setMia] = useState('')
+  /** Nomi dei blocchi da importare: quelli a rosa vuota partono esclusi. */
+  const [inclusi, setInclusi] = useState<string[]>([])
 
   const carica = async (file: File) => {
     setErrore(null)
@@ -31,11 +39,17 @@ export default function ImportRose({
       const e = await importaRoseDaFile(file, slots)
       setEsito(e)
       setNomeFile(file.name)
+      setInclusi(daIncludere(e))
       setMia('')
     } catch (err) {
       setErrore(err instanceof Error ? err.message : 'file non leggibile')
     }
   }
+
+  // Ricalcolata a ogni spunta: e' anche quel che finisce nello stato.
+  const selezione = esito ? costruisci(esito, inclusi) : { teams: [], picks: [] }
+  const miaValida = selezione.teams.some((t) => t.id === mia) ? mia : ''
+  const vuote = esito?.squadre.some((s) => s.presi === 0) ?? false
 
   return (
     <Section
@@ -72,9 +86,12 @@ export default function ImportRose({
         {esito && (
           <>
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[520px] text-sm">
+              <table className="w-full min-w-[560px] text-sm">
                 <thead>
                   <tr className="text-[11px] uppercase tracking-wide text-ink-400">
+                    <th className="w-8 px-2 py-1.5 text-center font-semibold" title="Da importare">
+                      Sì
+                    </th>
                     <th className="px-2 py-1.5 text-left font-semibold">Squadra</th>
                     {ROLES.map((r) => (
                       <th key={r} className="px-2 py-1.5 text-center font-semibold">
@@ -94,25 +111,37 @@ export default function ImportRose({
                 <tbody>
                   {esito.squadre.map((s) => {
                     const delta = s.totaleFile == null ? 0 : s.spesa - s.totaleFile
+                    const on = inclusi.includes(s.nome)
                     return (
-                      <tr key={s.nome} className="border-t border-ink-800">
-                        <td className="max-w-44 truncate px-2 py-1.5 font-medium">{s.nome}</td>
+                      <tr key={s.nome} className={`border-t border-ink-800 ${on ? '' : 'text-ink-600'}`}>
+                        <td className="px-2 py-1.5 text-center">
+                          <input
+                            type="checkbox"
+                            checked={on}
+                            onChange={(e) =>
+                              setInclusi((v) => (e.target.checked ? [...v, s.nome] : v.filter((x) => x !== s.nome)))
+                            }
+                            className="size-3.5 accent-sky-500"
+                          />
+                        </td>
+                        <td className="max-w-44 truncate px-2 py-1.5 font-medium">
+                          {s.nome}
+                          {s.presi === 0 && <span className="ml-1.5 text-[11px] text-ink-500">rosa vuota</span>}
+                        </td>
                         {ROLES.map((r) => (
                           <td
                             key={r}
                             className={`px-2 py-1.5 text-center ${
-                              s.perRuolo[r] > slots[r] ? 'font-semibold text-rose-400' : 'text-ink-300'
+                              s.perRuolo[r] > slots[r] ? 'font-semibold text-rose-400' : ''
                             }`}
                           >
                             {s.perRuolo[r]}
                           </td>
                         ))}
-                        <td className="px-2 py-1.5 text-right text-ink-300">{s.presi}</td>
+                        <td className="px-2 py-1.5 text-right">{s.presi}</td>
                         <td className="px-2 py-1.5 text-right font-semibold">{int(s.spesa)}</td>
                         <td
-                          className={`px-2 py-1.5 text-right text-xs ${
-                            delta === 0 ? 'text-ink-600' : 'text-amber-400'
-                          }`}
+                          className={`px-2 py-1.5 text-right text-xs ${delta === 0 ? 'text-ink-600' : 'text-amber-400'}`}
                         >
                           {s.totaleFile == null ? '-' : delta === 0 ? 'torna' : signed(delta)}
                         </td>
@@ -125,6 +154,13 @@ export default function ImportRose({
 
             <p className="text-xs text-ink-400">
               {esito.agganciati} giocatori su {esito.righeLette} agganciati al listone.
+              {vuote && (
+                <>
+                  {' '}
+                  I blocchi a rosa vuota partono esclusi: negli export capita di trovarne uno in coda che non e&apos;
+                  una squadra vera. Se invece e&apos; una squadra che non ha ancora comprato, rimettici la spunta.
+                </>
+              )}
             </p>
 
             {esito.fuoriLista.length > 0 && (
@@ -171,9 +207,9 @@ export default function ImportRose({
             <div className="flex flex-wrap items-center gap-2 border-t border-ink-800 pt-3">
               <label className="flex items-center gap-1.5 text-xs text-ink-400">
                 La mia squadra
-                <select value={mia} onChange={(e) => setMia(e.target.value)} className="field py-1">
+                <select value={miaValida} onChange={(e) => setMia(e.target.value)} className="field py-1">
                   <option value="">— scegli dopo —</option>
-                  {esito.teams.map((t) => (
+                  {selezione.teams.map((t) => (
                     <option key={t.id} value={t.id}>
                       {t.nome}
                     </option>
@@ -183,16 +219,19 @@ export default function ImportRose({
 
               <button
                 className="btn-primary"
+                disabled={!selezione.teams.length}
                 onClick={() => {
-                  const q = `Sostituire le squadre e le assegnazioni con ${esito.teams.length} squadre e ${esito.picks.length} giocatori dal file? Quello che c'e' adesso viene perso.`
+                  const q =
+                    `Sostituire le squadre e le assegnazioni con ${selezione.teams.length} squadre e ` +
+                    `${selezione.picks.length} giocatori dal file? Quello che c'e' adesso viene perso.`
                   if (confirm(q)) {
-                    onConferma(esito, mia || null)
+                    onConferma(selezione.teams, selezione.picks, miaValida || null, esito)
                     setEsito(null)
                     setNomeFile('')
                   }
                 }}
               >
-                Importa {esito.picks.length} assegnazioni
+                Importa {selezione.teams.length} squadre e {selezione.picks.length} assegnazioni
               </button>
               <button className="btn" onClick={() => setEsito(null)}>
                 Annulla
@@ -217,9 +256,7 @@ function Avviso({
   spiegazione: string
 }) {
   const cls =
-    tono === 'brutto'
-      ? 'border-rose-500/40 bg-rose-500/10 text-rose-200'
-      : 'border-ink-700 bg-ink-850 text-ink-300'
+    tono === 'brutto' ? 'border-rose-500/40 bg-rose-500/10 text-rose-200' : 'border-ink-700 bg-ink-850 text-ink-300'
 
   return (
     <div className={`rounded-lg border px-2.5 py-2 text-xs ${cls}`}>
